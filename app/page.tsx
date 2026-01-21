@@ -1,9 +1,5 @@
-import Image from "next/image";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <main>
-      <h1>Welcome to My Next.js App</h1>
-    </main>
-  );
+export default function HomeRedirect() {
+  redirect("/client");
 }

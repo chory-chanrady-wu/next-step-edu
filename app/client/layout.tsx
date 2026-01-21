@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
+import Header from "../components/common/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next Step Education",
+  title: "NextStepEdu",
+  description: "Your guide to universities and scholarships",
 };
 
 export default function RootLayout({
@@ -24,8 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased` }
       >
+        <Header />
         {children}
       </body>
     </html>

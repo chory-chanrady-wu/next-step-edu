@@ -1,34 +1,21 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import AdminSidebar from "../components/admin/sidebar";
+import AdminTopbar from "../components/admin/admintopbar";
 import "../styles/globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Next Step Education - Admin",
-  description: "Admin panel for Next Step Education",
-};
-
-export default function RootLayout({
+export default function AdminLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className="min-h-screen bg-gray-50 flex">
+        <AdminSidebar />
+        <div className="flex-1 flex flex-col">
+          <AdminTopbar />
+          <main className="flex-1 p-6">{children}</main>
+      </div>
+    </body>
     </html>
   );
 }
