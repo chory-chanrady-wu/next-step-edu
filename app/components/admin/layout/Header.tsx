@@ -1,5 +1,6 @@
 import { Bell, Menu, Settings, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BreadcrumbBasic } from "../../common/Breadcrumb";
 
 export function Header() {
   const notificationCount = 3;
@@ -22,9 +23,9 @@ export function Header() {
   const getDisplayName = (user: typeof currentUserDetails) => user.name;
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm backdrop-blur-sm bg-white/95">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 border-none backdrop-blur-sm ">
+      <div className="">
+        <div className="flex bg-white border border-gray-200/50 rounded-md  h-16 items-center justify-between gap-4">
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
@@ -34,12 +35,12 @@ export function Header() {
             <Menu className="h-5 w-5" />
           </Button>
 
-          <div className="flex-1 hidden md:block">
-            <h1 className="text-xl font-semibold text-gray-900 pl-4">Dashboard</h1>
+          <div className="flex-1 p-3 hidden md:block ">
+            <BreadcrumbBasic/>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex  items-center gap-2">
             {/* Notifications */}
             <Button
               variant="ghost"
