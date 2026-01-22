@@ -30,6 +30,57 @@ interface NavItemProps {
   subItems?: SubItem[];
 }
 
+
+const items = [
+  {
+    href: "/admin/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+  },
+  {
+    href: "/admin/universities",
+    icon: Building2,
+    label: "Universities",
+    subItems: [
+      { href: "/admin/universities", label: "List Universities", icon: List },
+      { href: "/admin/universities/create", label: "Create University", icon: PlusCircle },
+    ],
+  },
+  {
+    href: "/admin/scorlarships",
+    icon: Building2,
+    label: "Scholarships",
+    subItems: [
+      { href: "/admin/scholarships", label: "List Scholarships", icon: List },
+      { href: "/admin/scholarships/create", label: "Create Scholarships", icon: PlusCircle },
+    ],
+  },
+  {
+    href: "/admin/programs",
+    icon: Building2,
+    label: "Programs",
+    subItems: [
+      { href: "/admin/programs", label: "List Programs", icon: List },
+      { href: "/admin/programs/create", label: "Create Programs", icon: PlusCircle },
+    ],
+  },
+  {
+    href: "/admin/faculties",
+    icon: Award,
+    label: "Faculties",
+  },
+  {
+    href: "/admin/users",
+    icon: Users,
+    label: "Users",
+  },
+  {
+    href: "/admin/settings",
+    icon: Settings,
+    label: "Settings",
+  },
+];
+
 const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   const pathname = usePathname();
   const isChildActive = subItems?.some((child) => pathname === child.href);
@@ -53,7 +104,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
         className={cn(
           "group flex items-center justify-between px-4 py-3 text-sm font-medium transition-all duration-300 rounded-xl relative select-none cursor-pointer",
           isActive
-            ? "bg-[#1f2937] text-white"
+            ? "bg-[#1f2937] text-teal-400"
             : "text-slate-400 hover:text-white hover:bg-white/5"
         )}
       >
@@ -118,7 +169,11 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   );
 };
 
+
+
 export function SideBar() {
+
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0B1120] border-r border-slate-800/50 flex flex-col z-50">
       {/* Brand Header */}
@@ -135,41 +190,17 @@ export function SideBar() {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto custom-scrollbar">
-        <NavItem href="/admin/dashboard" icon={LayoutDashboard} label="Dashboard" />
-
-        <NavItem
-          href="/universities"
-          icon={Building2}
-          label="Universities"
-          subItems={[
-            { href: "/admin/universities", label: "List Universities", icon: List },
-            { href: "/admin/universities/create", label: "Create University", icon: PlusCircle },
-          ]}
-        />
-
-        <NavItem
-          href="/scholarships"
-          icon={GraduationCap}
-          label="Scholarships"
-          subItems={[
-            { href: "/admin/scholarships", label: "List Scholarships", icon: List },
-            { href: "/admin/scholarships/create", label: "Create Scholarship", icon: PlusCircle },
-          ]}
-        />
-
-        <NavItem
-          href="/programs"
-          icon={BookOpen}
-          label="Programs"
-          subItems={[
-            { href: "/admin/programs", label: "List Programs", icon: List },
-            { href: "/admin/programs/create", label: "Create Program", icon: PlusCircle },
-          ]}
-        />
-
-        <NavItem href="/admin/faculties" icon={Award} label="Faculties" />
-        <NavItem href="/admin/users" icon={Users} label="Users" />
-        <NavItem href="/admin/settings" icon={Settings} label="Settings" />
+        {
+          items.map((item) => (
+            <NavItem
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+              subItems={item.subItems}
+            />
+          ))
+        }
       </nav>
     </aside>
   );
