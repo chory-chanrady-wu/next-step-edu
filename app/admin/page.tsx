@@ -1,10 +1,13 @@
+'use client';
 
-import LoginPage from "./login/page";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <main>
-      <LoginPage/>
-    </main>
-  );
+export default function AdminHome() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace('/admin/login');
+  }, [router]);
+
+  return null;
 }
