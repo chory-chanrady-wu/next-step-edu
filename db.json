@@ -1,4 +1,3 @@
-
 {
   "users": [
     {
@@ -92,39 +91,79 @@
       "updated_at": "2026-01-14T12:00:00Z"
     }
   ],
-
   "user_profiles": [
-    { "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01", "full_name": "Admin One", "avatar_url": "https://picsum.photos/seed/u1/200", "phone": "+855 12 000 001" },
-    { "user_id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102", "full_name": "Editor One", "avatar_url": "https://picsum.photos/seed/u2/200", "phone": "+855 12 000 002" },
-    { "user_id": "7c2f8a9d-5f0f-44f4-bc1a-0b8e0a0e9103", "full_name": "Student One", "avatar_url": "https://picsum.photos/seed/u3/200", "phone": "+855 12 000 003" },
-    { "user_id": "2b5b3e3d-8c21-4c2a-a5bf-7f2b6f5dbb04", "full_name": "Student Two", "avatar_url": "https://picsum.photos/seed/u4/200", "phone": "+855 12 000 004" },
-    { "user_id": "4c3f7b2f-3f07-4ef3-9f6b-92fd0dbedb05", "full_name": "Student Three", "avatar_url": "https://picsum.photos/seed/u5/200", "phone": "+855 12 000 005" },
-    { "user_id": "0a91c7d3-60b2-4d49-b1e2-2e6b9f1cba06", "full_name": "Student Four", "avatar_url": "https://picsum.photos/seed/u6/200", "phone": "+855 12 000 006" },
-    { "user_id": "d88b6c2b-b5cc-4d60-b7d8-6c4f2e0b0e07", "full_name": "Student Five", "avatar_url": "https://picsum.photos/seed/u7/200", "phone": "+855 12 000 007" },
-    { "user_id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508", "full_name": "Editor Two", "avatar_url": "https://picsum.photos/seed/u8/200", "phone": "+855 12 000 008" },
-    { "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909", "full_name": "Admin Two", "avatar_url": "https://picsum.photos/seed/u9/200", "phone": "+855 12 000 009" },
-    { "user_id": "11a6f1e7-ec0e-4b6f-bcbb-6a8f6a4d3f10", "full_name": "Student Six", "avatar_url": "https://picsum.photos/seed/u10/200", "phone": "+855 12 000 010" }
-  ],
-
-  "universities": [
     {
-      "id": "a1000000-0000-4000-8000-000000000001",
-      "name": "Phnom Penh Tech University",
-      "slug": "phnom-penh-tech-university",
-      "logo_url": "https://picsum.photos/seed/uni1/200",
-      "cover_image_url": "https://picsum.photos/seed/uni1cover/1000/300",
-      "short_description": "Modern tech-focused university.",
-      "description": "Strong focus on software engineering, AI, and cloud computing.",
-      "tuition_rank": 2,
-      "country": "Cambodia",
-      "region_code": "KH-12",
-      "city": "Phnom Penh",
-      "official_website": "https://example.com/uni1",
-      "status": "published",
-      "deleted_at": null,
-      "created_at": "2026-01-01T08:00:00Z",
-      "updated_at": "2026-01-10T12:00:00Z"
+      "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "full_name": "Admin One",
+      "avatar_url": "https://picsum.photos/seed/u1/200",
+      "phone": "+855 12 000 001",
+      "id": "a68b"
     },
+    {
+      "user_id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102",
+      "full_name": "Editor One",
+      "avatar_url": "https://picsum.photos/seed/u2/200",
+      "phone": "+855 12 000 002",
+      "id": "b5e5"
+    },
+    {
+      "user_id": "7c2f8a9d-5f0f-44f4-bc1a-0b8e0a0e9103",
+      "full_name": "Student One",
+      "avatar_url": "https://picsum.photos/seed/u3/200",
+      "phone": "+855 12 000 003",
+      "id": "e7b9"
+    },
+    {
+      "user_id": "2b5b3e3d-8c21-4c2a-a5bf-7f2b6f5dbb04",
+      "full_name": "Student Two",
+      "avatar_url": "https://picsum.photos/seed/u4/200",
+      "phone": "+855 12 000 004",
+      "id": "6db2"
+    },
+    {
+      "user_id": "4c3f7b2f-3f07-4ef3-9f6b-92fd0dbedb05",
+      "full_name": "Student Three",
+      "avatar_url": "https://picsum.photos/seed/u5/200",
+      "phone": "+855 12 000 005",
+      "id": "30d2"
+    },
+    {
+      "user_id": "0a91c7d3-60b2-4d49-b1e2-2e6b9f1cba06",
+      "full_name": "Student Four",
+      "avatar_url": "https://picsum.photos/seed/u6/200",
+      "phone": "+855 12 000 006",
+      "id": "a2f7"
+    },
+    {
+      "user_id": "d88b6c2b-b5cc-4d60-b7d8-6c4f2e0b0e07",
+      "full_name": "Student Five",
+      "avatar_url": "https://picsum.photos/seed/u7/200",
+      "phone": "+855 12 000 007",
+      "id": "6170"
+    },
+    {
+      "user_id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508",
+      "full_name": "Editor Two",
+      "avatar_url": "https://picsum.photos/seed/u8/200",
+      "phone": "+855 12 000 008",
+      "id": "b09e"
+    },
+    {
+      "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "full_name": "Admin Two",
+      "avatar_url": "https://picsum.photos/seed/u9/200",
+      "phone": "+855 12 000 009",
+      "id": "e464"
+    },
+    {
+      "user_id": "11a6f1e7-ec0e-4b6f-bcbb-6a8f6a4d3f10",
+      "full_name": "Student Six",
+      "avatar_url": "https://picsum.photos/seed/u10/200",
+      "phone": "+855 12 000 010",
+      "id": "865c"
+    }
+  ],
+  "universities": [
     {
       "id": "a1000000-0000-4000-8000-000000000002",
       "name": "Mekong Business School",
@@ -288,46 +327,272 @@
       "updated_at": "2026-01-14T12:00:00Z"
     }
   ],
-
   "faculties": [
-    { "id": "b2000000-0000-4000-8000-000000000001", "university_id": "a1000000-0000-4000-8000-000000000001", "name": "Faculty of Computer Science", "description": "Software, AI and data systems." },
-    { "id": "b2000000-0000-4000-8000-000000000002", "university_id": "a1000000-0000-4000-8000-000000000002", "name": "Faculty of Business", "description": "Finance, marketing and entrepreneurship." },
-    { "id": "b2000000-0000-4000-8000-000000000003", "university_id": "a1000000-0000-4000-8000-000000000003", "name": "Faculty of Nursing", "description": "Clinical nursing and community health." },
-    { "id": "b2000000-0000-4000-8000-000000000004", "university_id": "a1000000-0000-4000-8000-000000000004", "name": "Faculty of Design", "description": "Visual design and UX." },
-    { "id": "b2000000-0000-4000-8000-000000000005", "university_id": "a1000000-0000-4000-8000-000000000005", "name": "Faculty of International Studies", "description": "International programs and language training." },
-    { "id": "b2000000-0000-4000-8000-000000000006", "university_id": "a1000000-0000-4000-8000-000000000006", "name": "Faculty of Engineering", "description": "Civil, electrical, mechanical." },
-    { "id": "b2000000-0000-4000-8000-000000000007", "university_id": "a1000000-0000-4000-8000-000000000007", "name": "Faculty of Agriculture", "description": "Agronomy and food science." },
-    { "id": "b2000000-0000-4000-8000-000000000008", "university_id": "a1000000-0000-4000-8000-000000000008", "name": "Faculty of Hospitality", "description": "Hotel and culinary management." },
-    { "id": "b2000000-0000-4000-8000-000000000009", "university_id": "a1000000-0000-4000-8000-000000000009", "name": "Faculty of Languages", "description": "Modern languages and translation." },
-    { "id": "b2000000-0000-4000-8000-000000000010", "university_id": "a1000000-0000-4000-8000-000000000010", "name": "Faculty of Law", "description": "Law and governance." }
+    {
+      "id": "b2000000-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Computer Science",
+      "description": "Software, AI and data systems."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Business",
+      "description": "Finance, marketing and entrepreneurship."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Nursing",
+      "description": "Clinical nursing and community health."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Design",
+      "description": "Visual design and UX."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of International Studies",
+      "description": "International programs and language training."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Engineering",
+      "description": "Civil, electrical, mechanical."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Agriculture",
+      "description": "Agronomy and food science."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Hospitality",
+      "description": "Hotel and culinary management."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of Languages",
+      "description": "Modern languages and translation."
+    },
+    {
+      "id": "b2000000-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of Law",
+      "description": "Law and governance."
+    }
   ],
-
   "programs": [
-    { "id": "c3000000-0000-4000-8000-000000000001", "university_id": "a1000000-0000-4000-8000-000000000001", "faculty_id": "b2000000-0000-4000-8000-000000000001", "name": "BSc Software Engineering", "description": "Full-stack development and DevOps.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 1800.0, "currency": "USD", "study_period_months": 48 },
-    { "id": "c3000000-0000-4000-8000-000000000002", "university_id": "a1000000-0000-4000-8000-000000000002", "faculty_id": "b2000000-0000-4000-8000-000000000002", "name": "MBA Business Administration", "description": "Leadership and strategy.", "degree_level": 3, "exam_required": true, "tuition_fee_amount": 2500.0, "currency": "USD", "study_period_months": 24 },
-    { "id": "c3000000-0000-4000-8000-000000000003", "university_id": "a1000000-0000-4000-8000-000000000003", "faculty_id": "b2000000-0000-4000-8000-000000000003", "name": "BSc Nursing", "description": "Clinical practice and patient care.", "degree_level": 2, "exam_required": true, "tuition_fee_amount": 2000.0, "currency": "USD", "study_period_months": 48 },
-    { "id": "c3000000-0000-4000-8000-000000000004", "university_id": "a1000000-0000-4000-8000-000000000004", "faculty_id": "b2000000-0000-4000-8000-000000000004", "name": "BA Graphic Design", "description": "Branding and digital design.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 1500.0, "currency": "USD", "study_period_months": 42 },
-    { "id": "c3000000-0000-4000-8000-000000000005", "university_id": "a1000000-0000-4000-8000-000000000005", "faculty_id": "b2000000-0000-4000-8000-000000000005", "name": "BA International Relations", "description": "Diplomacy and regional studies.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 2200.0, "currency": "USD", "study_period_months": 48 },
-    { "id": "c3000000-0000-4000-8000-000000000006", "university_id": "a1000000-0000-4000-8000-000000000006", "faculty_id": "b2000000-0000-4000-8000-000000000006", "name": "BEng Civil Engineering", "description": "Structures and construction.", "degree_level": 2, "exam_required": true, "tuition_fee_amount": 2300.0, "currency": "USD", "study_period_months": 54 },
-    { "id": "c3000000-0000-4000-8000-000000000007", "university_id": "a1000000-0000-4000-8000-000000000007", "faculty_id": "b2000000-0000-4000-8000-000000000007", "name": "BSc Agribusiness", "description": "Farming economics and supply chains.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 1400.0, "currency": "USD", "study_period_months": 48 },
-    { "id": "c3000000-0000-4000-8000-000000000008", "university_id": "a1000000-0000-4000-8000-000000000008", "faculty_id": "b2000000-0000-4000-8000-000000000008", "name": "BA Hospitality Management", "description": "Hotel operations and service excellence.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 1600.0, "currency": "USD", "study_period_months": 42 },
-    { "id": "c3000000-0000-4000-8000-000000000009", "university_id": "a1000000-0000-4000-8000-000000000009", "faculty_id": "b2000000-0000-4000-8000-000000000009", "name": "BA English Translation", "description": "Translation and interpretation.", "degree_level": 2, "exam_required": false, "tuition_fee_amount": 1200.0, "currency": "USD", "study_period_months": 42 },
-    { "id": "c3000000-0000-4000-8000-000000000010", "university_id": "a1000000-0000-4000-8000-000000000010", "faculty_id": "b2000000-0000-4000-8000-000000000010", "name": "LLB Law", "description": "Legal systems and practice.", "degree_level": 2, "exam_required": true, "tuition_fee_amount": 2100.0, "currency": "USD", "study_period_months": 48 }
+    {
+      "id": "c3000000-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000000-0000-4000-8000-000000000001",
+      "name": "BSc Software Engineering",
+      "description": "Full-stack development and DevOps.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000000-0000-4000-8000-000000000002",
+      "name": "MBA Business Administration",
+      "description": "Leadership and strategy.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000000-0000-4000-8000-000000000003",
+      "name": "BSc Nursing",
+      "description": "Clinical practice and patient care.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000000-0000-4000-8000-000000000004",
+      "name": "BA Graphic Design",
+      "description": "Branding and digital design.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000000-0000-4000-8000-000000000005",
+      "name": "BA International Relations",
+      "description": "Diplomacy and regional studies.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000000-0000-4000-8000-000000000006",
+      "name": "BEng Civil Engineering",
+      "description": "Structures and construction.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000000-0000-4000-8000-000000000007",
+      "name": "BSc Agribusiness",
+      "description": "Farming economics and supply chains.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000000-0000-4000-8000-000000000008",
+      "name": "BA Hospitality Management",
+      "description": "Hotel operations and service excellence.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000000-0000-4000-8000-000000000009",
+      "name": "BA English Translation",
+      "description": "Translation and interpretation.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1200,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000000-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000000-0000-4000-8000-000000000010",
+      "name": "LLB Law",
+      "description": "Legal systems and practice.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    }
   ],
-
   "university_contacts": [
-    { "id": "d4000000-0000-4000-8000-000000000001", "university_id": "a1000000-0000-4000-8000-000000000001", "label": "Admissions", "email": "admissions@uni1.com", "phone": "+855 23 111 111", "website_url": "https://example.com/uni1/admissions" },
-    { "id": "d4000000-0000-4000-8000-000000000002", "university_id": "a1000000-0000-4000-8000-000000000002", "label": "Admissions", "email": "admissions@uni2.com", "phone": "+855 23 222 222", "website_url": "https://example.com/uni2/admissions" },
-    { "id": "d4000000-0000-4000-8000-000000000003", "university_id": "a1000000-0000-4000-8000-000000000003", "label": "Info Desk", "email": "info@uni3.com", "phone": "+855 63 333 333", "website_url": "https://example.com/uni3/contact" },
-    { "id": "d4000000-0000-4000-8000-000000000004", "university_id": "a1000000-0000-4000-8000-000000000004", "label": "Student Affairs", "email": "students@uni4.com", "phone": "+855 53 444 444", "website_url": "https://example.com/uni4/students" },
-    { "id": "d4000000-0000-4000-8000-000000000005", "university_id": "a1000000-0000-4000-8000-000000000005", "label": "International Office", "email": "international@uni5.com", "phone": "+855 23 555 555", "website_url": "https://example.com/uni5/international" },
-    { "id": "d4000000-0000-4000-8000-000000000006", "university_id": "a1000000-0000-4000-8000-000000000006", "label": "Engineering Office", "email": "engineering@uni6.com", "phone": "+855 42 666 666", "website_url": "https://example.com/uni6/engineering" },
-    { "id": "d4000000-0000-4000-8000-000000000007", "university_id": "a1000000-0000-4000-8000-000000000007", "label": "Agriculture Office", "email": "agri@uni7.com", "phone": "+855 32 777 777", "website_url": "https://example.com/uni7/agri" },
-    { "id": "d4000000-0000-4000-8000-000000000008", "university_id": "a1000000-0000-4000-8000-000000000008", "label": "Hospitality Office", "email": "hospitality@uni8.com", "phone": "+855 34 888 888", "website_url": "https://example.com/uni8/hospitality" },
-    { "id": "d4000000-0000-4000-8000-000000000009", "university_id": "a1000000-0000-4000-8000-000000000009", "label": "Languages Office", "email": "languages@uni9.com", "phone": "+855 54 999 999", "website_url": "https://example.com/uni9/languages" },
-    { "id": "d4000000-0000-4000-8000-000000000010", "university_id": "a1000000-0000-4000-8000-000000000010", "label": "Law Office", "email": "law@uni10.com", "phone": "+855 23 101 010", "website_url": "https://example.com/uni10/law" }
+    {
+      "id": "d4000000-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "label": "Admissions",
+      "email": "admissions@uni1.com",
+      "phone": "+855 23 111 111",
+      "website_url": "https://example.com/uni1/admissions"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "label": "Admissions",
+      "email": "admissions@uni2.com",
+      "phone": "+855 23 222 222",
+      "website_url": "https://example.com/uni2/admissions"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "label": "Info Desk",
+      "email": "info@uni3.com",
+      "phone": "+855 63 333 333",
+      "website_url": "https://example.com/uni3/contact"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "label": "Student Affairs",
+      "email": "students@uni4.com",
+      "phone": "+855 53 444 444",
+      "website_url": "https://example.com/uni4/students"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "label": "International Office",
+      "email": "international@uni5.com",
+      "phone": "+855 23 555 555",
+      "website_url": "https://example.com/uni5/international"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "label": "Engineering Office",
+      "email": "engineering@uni6.com",
+      "phone": "+855 42 666 666",
+      "website_url": "https://example.com/uni6/engineering"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "label": "Agriculture Office",
+      "email": "agri@uni7.com",
+      "phone": "+855 32 777 777",
+      "website_url": "https://example.com/uni7/agri"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "label": "Hospitality Office",
+      "email": "hospitality@uni8.com",
+      "phone": "+855 34 888 888",
+      "website_url": "https://example.com/uni8/hospitality"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "label": "Languages Office",
+      "email": "languages@uni9.com",
+      "phone": "+855 54 999 999",
+      "website_url": "https://example.com/uni9/languages"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "label": "Law Office",
+      "email": "law@uni10.com",
+      "phone": "+855 23 101 010",
+      "website_url": "https://example.com/uni10/law"
+    }
   ],
-
   "scholarships": [
     {
       "id": "e5000000-0000-4000-8000-000000000001",
@@ -339,8 +604,14 @@
       "cover_image_url": "https://picsum.photos/seed/sch1cover/1000/300",
       "description": "Merit-based support for top tech students.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 50, "stipend_usd_per_month": 50 },
-      "requirements": { "min_gpa": 3.2, "essay_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 50,
+        "stipend_usd_per_month": 50
+      },
+      "requirements": {
+        "min_gpa": 3.2,
+        "essay_required": true
+      },
       "how_to_apply": "Submit transcript and essay.",
       "apply_link": "https://example.com/sch1/apply",
       "status": "published",
@@ -359,8 +630,14 @@
       "cover_image_url": "https://picsum.photos/seed/sch2cover/1000/300",
       "description": "Support for MBA candidates with leadership potential.",
       "level": 3,
-      "benefits": { "tuition_coverage_percent": 40, "stipend_usd_per_month": 75 },
-      "requirements": { "min_experience_years": 1, "interview_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 40,
+        "stipend_usd_per_month": 75
+      },
+      "requirements": {
+        "min_experience_years": 1,
+        "interview_required": true
+      },
       "how_to_apply": "Apply online and schedule interview.",
       "apply_link": "https://example.com/sch2/apply",
       "status": "published",
@@ -379,8 +656,13 @@
       "cover_image_url": "https://picsum.photos/seed/sch3cover/1000/300",
       "description": "Merit scholarship for nursing and public health.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 30 },
-      "requirements": { "min_gpa": 3.0, "recommendation_letters": 1 },
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "min_gpa": 3,
+        "recommendation_letters": 1
+      },
       "how_to_apply": "Submit transcript and recommendation letter.",
       "apply_link": "https://example.com/sch3/apply",
       "status": "published",
@@ -399,8 +681,12 @@
       "cover_image_url": "https://picsum.photos/seed/sch4cover/1000/300",
       "description": "Support for talented design students.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 35 },
-      "requirements": { "portfolio_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 35
+      },
+      "requirements": {
+        "portfolio_required": true
+      },
       "how_to_apply": "Submit portfolio and application form.",
       "apply_link": "https://example.com/sch4/apply",
       "status": "published",
@@ -419,8 +705,13 @@
       "cover_image_url": "https://picsum.photos/seed/sch5cover/1000/300",
       "description": "Scholarship for students in exchange programs.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 25, "travel_support_usd": 300 },
-      "requirements": { "english_test_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 25,
+        "travel_support_usd": 300
+      },
+      "requirements": {
+        "english_test_required": true
+      },
       "how_to_apply": "Apply with test score and statement.",
       "apply_link": "https://example.com/sch5/apply",
       "status": "published",
@@ -439,8 +730,13 @@
       "cover_image_url": "https://picsum.photos/seed/sch6cover/1000/300",
       "description": "Funding for engineering students with project ideas.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 20, "project_grant_usd": 500 },
-      "requirements": { "proposal_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 20,
+        "project_grant_usd": 500
+      },
+      "requirements": {
+        "proposal_required": true
+      },
       "how_to_apply": "Submit project proposal and transcript.",
       "apply_link": "https://example.com/sch6/apply",
       "status": "published",
@@ -459,8 +755,12 @@
       "cover_image_url": "https://picsum.photos/seed/sch7cover/1000/300",
       "description": "Scholarship for sustainability-focused agribusiness.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 30 },
-      "requirements": { "community_service_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "community_service_required": true
+      },
       "how_to_apply": "Apply with service proof and essay.",
       "apply_link": "https://example.com/sch7/apply",
       "status": "published",
@@ -479,8 +779,12 @@
       "cover_image_url": "https://picsum.photos/seed/sch8cover/1000/300",
       "description": "Scholarship for future hospitality professionals.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 25 },
-      "requirements": { "interview_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 25
+      },
+      "requirements": {
+        "interview_required": true
+      },
       "how_to_apply": "Apply and attend interview.",
       "apply_link": "https://example.com/sch8/apply",
       "status": "published",
@@ -499,8 +803,12 @@
       "cover_image_url": "https://picsum.photos/seed/sch9cover/1000/300",
       "description": "Scholarship for translation and language students.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 20 },
-      "requirements": { "writing_test_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 20
+      },
+      "requirements": {
+        "writing_test_required": true
+      },
       "how_to_apply": "Take writing test and submit documents.",
       "apply_link": "https://example.com/sch9/apply",
       "status": "published",
@@ -519,8 +827,12 @@
       "cover_image_url": "https://picsum.photos/seed/sch10cover/1000/300",
       "description": "Support for law & governance students.",
       "level": 2,
-      "benefits": { "tuition_coverage_percent": 30 },
-      "requirements": { "essay_required": true },
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "essay_required": true
+      },
       "how_to_apply": "Submit essay and academic record.",
       "apply_link": "https://example.com/sch10/apply",
       "status": "published",
@@ -530,30 +842,138 @@
       "updated_at": "2026-01-14T12:00:00Z"
     }
   ],
-
   "scholarship_contacts": [
-    { "id": "f6000000-0000-4000-8000-000000000001", "scholarship_id": "e5000000-0000-4000-8000-000000000001", "label": "Coordinator", "email": "sch1@uniapp.com", "phone": "+855 23 111 222", "website_url": "https://example.com/sch1/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000002", "scholarship_id": "e5000000-0000-4000-8000-000000000002", "label": "Coordinator", "email": "sch2@uniapp.com", "phone": "+855 23 222 333", "website_url": "https://example.com/sch2/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000003", "scholarship_id": "e5000000-0000-4000-8000-000000000003", "label": "Coordinator", "email": "sch3@uniapp.com", "phone": "+855 63 333 444", "website_url": "https://example.com/sch3/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000004", "scholarship_id": "e5000000-0000-4000-8000-000000000004", "label": "Coordinator", "email": "sch4@uniapp.com", "phone": "+855 53 444 555", "website_url": "https://example.com/sch4/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000005", "scholarship_id": "e5000000-0000-4000-8000-000000000005", "label": "Coordinator", "email": "sch5@uniapp.com", "phone": "+855 23 555 666", "website_url": "https://example.com/sch5/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000006", "scholarship_id": "e5000000-0000-4000-8000-000000000006", "label": "Coordinator", "email": "sch6@uniapp.com", "phone": "+855 42 666 777", "website_url": "https://example.com/sch6/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000007", "scholarship_id": "e5000000-0000-4000-8000-000000000007", "label": "Coordinator", "email": "sch7@uniapp.com", "phone": "+855 32 777 888", "website_url": "https://example.com/sch7/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000008", "scholarship_id": "e5000000-0000-4000-8000-000000000008", "label": "Coordinator", "email": "sch8@uniapp.com", "phone": "+855 34 888 999", "website_url": "https://example.com/sch8/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000009", "scholarship_id": "e5000000-0000-4000-8000-000000000009", "label": "Coordinator", "email": "sch9@uniapp.com", "phone": "+855 54 999 000", "website_url": "https://example.com/sch9/contact" },
-    { "id": "f6000000-0000-4000-8000-000000000010", "scholarship_id": "e5000000-0000-4000-8000-000000000010", "label": "Coordinator", "email": "sch10@uniapp.com", "phone": "+855 23 101 111", "website_url": "https://example.com/sch10/contact" }
+    {
+      "id": "f6000000-0000-4000-8000-000000000001",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000001",
+      "label": "Coordinator",
+      "email": "sch1@uniapp.com",
+      "phone": "+855 23 111 222",
+      "website_url": "https://example.com/sch1/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000002",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000002",
+      "label": "Coordinator",
+      "email": "sch2@uniapp.com",
+      "phone": "+855 23 222 333",
+      "website_url": "https://example.com/sch2/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000003",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000003",
+      "label": "Coordinator",
+      "email": "sch3@uniapp.com",
+      "phone": "+855 63 333 444",
+      "website_url": "https://example.com/sch3/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000004",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000004",
+      "label": "Coordinator",
+      "email": "sch4@uniapp.com",
+      "phone": "+855 53 444 555",
+      "website_url": "https://example.com/sch4/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000005",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000005",
+      "label": "Coordinator",
+      "email": "sch5@uniapp.com",
+      "phone": "+855 23 555 666",
+      "website_url": "https://example.com/sch5/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000006",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000006",
+      "label": "Coordinator",
+      "email": "sch6@uniapp.com",
+      "phone": "+855 42 666 777",
+      "website_url": "https://example.com/sch6/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000007",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000007",
+      "label": "Coordinator",
+      "email": "sch7@uniapp.com",
+      "phone": "+855 32 777 888",
+      "website_url": "https://example.com/sch7/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000008",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000008",
+      "label": "Coordinator",
+      "email": "sch8@uniapp.com",
+      "phone": "+855 34 888 999",
+      "website_url": "https://example.com/sch8/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000009",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000009",
+      "label": "Coordinator",
+      "email": "sch9@uniapp.com",
+      "phone": "+855 54 999 000",
+      "website_url": "https://example.com/sch9/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000010",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000010",
+      "label": "Coordinator",
+      "email": "sch10@uniapp.com",
+      "phone": "+855 23 101 111",
+      "website_url": "https://example.com/sch10/contact"
+    }
   ],
-
   "scholarship_programs": [
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000001", "program_id": "c3000000-0000-4000-8000-000000000001" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000002", "program_id": "c3000000-0000-4000-8000-000000000002" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000003", "program_id": "c3000000-0000-4000-8000-000000000003" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000004", "program_id": "c3000000-0000-4000-8000-000000000004" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000005", "program_id": "c3000000-0000-4000-8000-000000000005" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000006", "program_id": "c3000000-0000-4000-8000-000000000006" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000007", "program_id": "c3000000-0000-4000-8000-000000000007" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000008", "program_id": "c3000000-0000-4000-8000-000000000008" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000009", "program_id": "c3000000-0000-4000-8000-000000000009" },
-    { "scholarship_id": "e5000000-0000-4000-8000-000000000010", "program_id": "c3000000-0000-4000-8000-000000000010" }
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000001",
+      "program_id": "c3000000-0000-4000-8000-000000000001",
+      "id": "2b58"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000002",
+      "program_id": "c3000000-0000-4000-8000-000000000002",
+      "id": "e05b"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000003",
+      "program_id": "c3000000-0000-4000-8000-000000000003",
+      "id": "38b1"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000004",
+      "program_id": "c3000000-0000-4000-8000-000000000004",
+      "id": "f4e4"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000005",
+      "program_id": "c3000000-0000-4000-8000-000000000005",
+      "id": "8e9f"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000006",
+      "program_id": "c3000000-0000-4000-8000-000000000006",
+      "id": "70ff"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000007",
+      "program_id": "c3000000-0000-4000-8000-000000000007",
+      "id": "8979"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000008",
+      "program_id": "c3000000-0000-4000-8000-000000000008",
+      "id": "5f8e"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000009",
+      "program_id": "c3000000-0000-4000-8000-000000000009",
+      "id": "e50e"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000010",
+      "program_id": "c3000000-0000-4000-8000-000000000010",
+      "id": "3687"
+    }
   ]
 }
