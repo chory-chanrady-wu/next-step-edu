@@ -82,7 +82,7 @@ export default function UniversityPage() {
       </section>
 
       {/* Search and Filter Section */}
-      <section className="bg-white border-b py-6 px-4 sticky top-0 z-40">
+      <section className="backdrop-blur-md py-6 px-4 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Search Bar */}
