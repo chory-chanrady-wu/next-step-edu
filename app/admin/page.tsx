@@ -1,9 +1,13 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <main>
-      <h1 className="text-black">Welcome to home page</h1>
-    </main>
-  );
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function AdminHome() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace('/admin/login');
+  }, [router]);
+
+  return null;
 }
