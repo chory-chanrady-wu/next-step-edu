@@ -3,7 +3,7 @@ import { routes } from "../../lib/routes";
 
 export default function Header() {
   return (
-    <header className="bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -40,11 +40,14 @@ export default function Header() {
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
-            <button className="flex items-center gap-2 text-gray-700 hover:text-teal-600 font-medium">
+            <Link
+              href={routes.login}
+              className="flex items-center gap-2 text-gray-700 hover:text-teal-600 font-medium transition-colors"
+            >
               <span>🔓</span>
               Login
-            </button>
-            <button className="bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 font-medium">
+            </Link>
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 font-medium transition-colors">
               Get Started
             </button>
           </div>
