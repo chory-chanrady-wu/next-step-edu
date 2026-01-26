@@ -74,7 +74,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
           <p className="text-xl text-gray-600 mb-4">
             Explore {programs.length} programs offered by this university
           </p>
-          <div className="w-full h-1 bg-linear-to-r from-blue-600 to-blue-400"></div>
+          <div className="w-full h-1 bg-linear-to-r from-blue-900 to-blue-700"></div>
         </div>
 
         {/* Programs Grid */}
@@ -87,7 +87,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
               className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group"
             >
               {/* Header */}
-              <div className="bg-linear-to-r from-blue-600 to-blue-700 p-4">
+              <div className="bg-linear-to-r from-blue-900 to-blue-700 p-4">
                 <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md text-white text-sm rounded-full mb-2">
                   {getDegreeLabel(program.degree_level)}
                 </span>
@@ -127,7 +127,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                 </div>
 
                 {/* Action Button */}
-                <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                <button className="w-full mt-4 px-4 py-2 bg-linear-to-r from-blue-900 to-blue-700 text-white rounded-lg transition-colors font-medium">
                   Learn More
                 </button>
               </div>
