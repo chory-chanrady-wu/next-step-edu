@@ -54,7 +54,7 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           </p>
         </div>
 
-        {/* Faculties Grid */}
+        {/* Faculties Table */}
         {loading ? (
           <div className="text-center text-gray-500 py-12">
             Loading faculties...
@@ -64,30 +64,48 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
             No faculties available
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {faculties.map((faculty, index) => (
-                <div
-                  key={faculty.id}
-                  data-aos="fade-up"
-                  data-aos-delay={`${index * 100}`}
-                  className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="text-4xl">{faculty.icon || "🎓"}</div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">
+          <div
+            data-aos="fade-up"
+            className="overflow-x-auto bg-white rounded-lg shadow-lg"
+          >
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-linear-to-r from-blue-900 to-blue-700 text-white">
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Icon
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Faculty Name
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {faculties.map((faculty, index) => (
+                  <tr
+                    key={faculty.id}
+                    data-aos="fade-up"
+                    data-aos-delay={`${index * 100}`}
+                    className="border-b border-gray-200 hover:bg-blue-50 transition-colors"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="text-4xl">{faculty.icon || "🎓"}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-lg font-bold text-gray-900">
                         {faculty.name}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {faculty.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </>
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-600">
+                      {faculty.description}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {/* Statistics Section */}
@@ -95,7 +113,7 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           <div
             data-aos="fade-up"
             data-aos-delay="600"
-            className="mt-16 bg-linear-to-r from-blue-600 to-blue-500 rounded-xl p-8 text-white shadow-lg"
+            className="mt-16 bg-linear-to-r from-blue-600 to-blue-400 rounded-xl p-8 text-white shadow-lg"
           >
             <div className="flex justify-center items-center">
               <div>

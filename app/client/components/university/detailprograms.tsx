@@ -77,62 +77,77 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
           <div className="w-full h-1 bg-linear-to-r from-blue-900 to-blue-700"></div>
         </div>
 
-        {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {programs.map((program, index) => (
-            <div
-              key={program.id}
-              data-aos="fade-up"
-              data-aos-delay={`${100 + index * 50}`}
-              className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group"
-            >
-              {/* Header */}
-              <div className="bg-linear-to-r from-blue-900 to-blue-700 p-4">
-                <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md text-white text-sm rounded-full mb-2">
-                  {getDegreeLabel(program.degree_level)}
-                </span>
-                <h3 className="text-xl font-bold text-white group-hover:text-blue-50 transition">
-                  {program.name}
-                </h3>
-              </div>
-
-              {/* Body */}
-              <div className="p-6">
-                <p className="text-gray-700 mb-4 line-clamp-3">
-                  {program.description}
-                </p>
-
-                {/* Details */}
-                <div className="">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-lg">⏱️</span>
-                    <span>
-                      Duration: {formatDuration(program.study_period_months)}
+        {/* Programs Table */}
+        <div
+          data-aos="fade-up"
+          className="overflow-x-auto bg-white rounded-lg shadow-lg"
+        >
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-linear-to-r from-blue-900 to-blue-700 text-white">
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Program Name
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Degree Level
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Duration
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Tuition Fee
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Entrance Exam
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {programs.map((program, index) => (
+                <tr
+                  key={program.id}
+                  data-aos="fade-up"
+                  data-aos-delay={`${100 + index * 50}`}
+                  className="border-b border-gray-200 hover:bg-blue-50 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <span className="font-semibold text-gray-900">
+                      {program.name}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-lg">💰</span>
-                    <span>
-                      Tuition: {program.currency} $
-                      {program.tuition_fee_amount.toLocaleString()}/year
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
+                      {getDegreeLabel(program.degree_level)}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-lg">📝</span>
-                    <span>
-                      Entrance Exam Required :{" "}
+                  </td>
+                  <td className="px-6 py-4 text-gray-700">
+                    {formatDuration(program.study_period_months)}
+                  </td>
+                  <td className="px-6 py-4 text-gray-700 font-medium">
+                    {program.currency} $
+                    {program.tuition_fee_amount.toLocaleString()}/year
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-block px-3 py-1 text-sm rounded-full font-medium ${
+                        program.exam_required
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
+                      }`}
+                    >
                       {program.exam_required ? "Yes" : "No"}
                     </span>
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <button className="w-full mt-4 px-4 py-2 bg-linear-to-r from-blue-900 to-blue-700 text-white rounded-lg transition-colors font-medium">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          ))}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600 max-w-xs">
+                    <p className="line-clamp-2">{program.description}</p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

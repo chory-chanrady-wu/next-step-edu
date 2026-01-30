@@ -66,7 +66,7 @@ export default function DetailNavigation() {
               onClick={() => scrollToSection(item.id)}
               className={`flex items-center gap-2 px-5 md:px-6 py-2.5 rounded-lg font-semibold transition-all duration-200 ${
                 activeSection === item.id
-                  ? "bg-blue-600 text-white shadow-md"
+                  ? "bg-blue-400 text-white shadow-md"
                   : "border-2 border-gray-300 text-gray-700 hover:border-blue-300 hover:text-gray-900"
               }`}
             >

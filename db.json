@@ -1303,18 +1303,6 @@
       "study_period_months": 42
     },
     {
-      "id": "c3000004-0000-4000-8000-000000000012",
-      "university_id": "a1000000-0000-4000-8000-000000000004",
-      "faculty_id": "b2000004-0000-4000-8000-000000000004",
-      "name": "BA Visual Effects",
-      "description": "VFX and motion graphics.",
-      "degree_level": 2,
-      "exam_required": false,
-      "tuition_fee_amount": 1800,
-      "currency": "USD",
-      "study_period_months": 42
-    },
-    {
       "id": "c3000004-0000-4000-8000-000000000013",
       "university_id": "a1000000-0000-4000-8000-000000000004",
       "faculty_id": "b2000004-0000-4000-8000-000000000005",

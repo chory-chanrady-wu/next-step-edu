@@ -11,7 +11,18 @@ export async function fetchUniversities() {
   if (!response.ok) {
     throw new Error("Failed to fetch universities");
   }
-  return response.json();
+  const universities = await response.json();
+
+  // Fetch all programs to count per university
+  const programsResponse = await fetch(`${API_BASE_URL}/programs`);
+  const programs = programsResponse.ok ? await programsResponse.json() : [];
+
+  // Add programs_count to each university
+  return universities.map((uni: any) => ({
+    ...uni,
+    programs_count: programs.filter((p: any) => p.university_id === uni.id)
+      .length,
+  }));
 }
 
 /**
