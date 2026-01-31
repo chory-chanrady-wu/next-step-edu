@@ -1,5 +1,5 @@
+import SignUp from "@/app/components/common/signup";
 import React from "react";
-import Login from "../components/common/login";
 import "@/app/styles/globals.css";
 
 type Props = {};
@@ -7,7 +7,7 @@ type Props = {};
 const page = (props: Props) => {
   return (
     <div>
-      <Login />
+      <SignUp />
     </div>
   );
 };
