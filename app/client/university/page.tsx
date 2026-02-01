@@ -6,6 +6,7 @@ import HeroSection from "../components/university/herosection";
 import SearchSection from "../components/university/searchsection";
 import Contents from "../components/university/contents";
 import { fetchUniversities } from "../../lib/api";
+import Footer from "@/app/components/common/Footer";
 
 interface University {
   id: string;
@@ -152,6 +153,8 @@ export default function UniversityPage() {
         error={error}
         viewMode={viewMode}
       />
+
+      <Footer />
     </main>
   );
 }

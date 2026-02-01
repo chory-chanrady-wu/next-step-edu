@@ -12,6 +12,7 @@ import DetailFaculty from "../../components/university/detailfaculty";
 import DetailPrograms from "../../components/university/detailprograms";
 import DetailContact from "../../components/university/detailcontact";
 import DetailNavigation from "../../components/university/detailnavigation";
+import Footer from "@/app/components/common/Footer";
 
 interface University {
   id: string;
@@ -167,6 +168,7 @@ export default function UniversityDetailPage() {
           </svg>
         </button>
       )}
+      <Footer />
     </main>
   );
 }

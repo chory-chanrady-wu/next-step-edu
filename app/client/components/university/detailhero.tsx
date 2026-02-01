@@ -27,7 +27,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
   }, []);
 
   return (
-    <div className="relative w-full bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div className="relative w-full bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500">
       {/* button back */}
       <div className="absolute top-4 left-4 z-10">
         <button
@@ -129,15 +129,15 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
             {/* Quick Action */}
             <div
-              className="bg-linear-to-r from-blue-600 to-blue-700 rounded-lg p-6 hover:from-blue-700 hover:to-blue-800 transition-all flex items-center justify-center"
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all"
               data-aos="zoom-in"
               data-aos-delay="500"
             >
               <div className="text-center">
-                <p className="text-gray-100 text-sm mb-2">Get Started</p>
+                <p className="text-gray-300 text-sm">Get Started</p>
                 <a
                   href="#programs"
-                  className="text-white font-bold text-lg hover:text-blue-100 transition"
+                  className="text-3xl font-bold text-white"
                 >
                   Explore Programs ↓
                 </a>

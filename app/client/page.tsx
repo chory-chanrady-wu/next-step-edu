@@ -1,4 +1,3 @@
-import Navbar from "../components/common/Navbar"
 import Hero from "../components/home/Hero";
 import FeaturedUniversities from "../components/home/FeaturedUniversities";
 import Choose from "../components/home/Choose";
@@ -8,7 +7,6 @@ import Footer from "../components/common/Footer";
 export default function ClientHomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
-      <Navbar />
       <Hero />
       <FeaturedScholarships />
       <FeaturedUniversities />

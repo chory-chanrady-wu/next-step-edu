@@ -141,7 +141,7 @@ export default function Contents({
                         <div className="flex gap-2">
                           <Link
                             href={`/client/university/${university.id}`}
-                            className="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                            className="flex-1 text-center bg-amber-400 text-white py-2 rounded-lg hover:bg-amber-500 transition-colors text-sm font-medium"
                           >
                             View Details
                           </Link>
@@ -240,7 +240,7 @@ export default function Contents({
                           <div className="flex gap-3">
                             <Link
                               href={`/client/university/${university.id}`}
-                              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                              className="px-6 py-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition-colors font-medium"
                             >
                               View Details
                             </Link>

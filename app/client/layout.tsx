@@ -18,19 +18,15 @@ export const metadata: Metadata = {
   description: "Your guide to universities and scholarships",
 };
 
-export default function RootLayout({
+export default function ClientLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        {children}
-      </body>
-    </html>
+    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <Header />
+      {children}
+    </div>
   );
 }
