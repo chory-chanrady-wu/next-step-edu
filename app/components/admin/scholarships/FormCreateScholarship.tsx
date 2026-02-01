@@ -34,6 +34,10 @@ import {
 } from "@/components/ui/select"
 import { DatePickerScholarship } from "./DatePicker"
 import MultipleSelect from "./MultipleSelect"
+import { Textarea } from "@/components/ui/textarea"
+import UploadImage from "./UploadImage"
+import { useState } from "react"
+import { UploadFile } from "antd"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -56,6 +60,7 @@ const educationLevel = [
 ] as const
 
 export function FormCreateScholarship() {
+  const [files, setFiles] = useState<UploadFile[]>([]);
   const form = useForm<ScholarshipTask>({
     // resolver: zodResolver(scholarshipSchema),
     // defaultValues: {
@@ -148,19 +153,34 @@ export function FormCreateScholarship() {
                     <FieldLabel htmlFor="form-rhf-input-username">
                       Provider Logo
                     </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Provider Logo"
-                      autoComplete="username"
-                      className="rounded"
+                    <UploadImage
+                      value={field.value || []}
+                      listType="picture"
+                      onChange={field.onChange}
+                      multiple={false}
                     />
-                    {/* <FieldDescription>
-                      This is your public display name. Must be between 3 and 10
-                      characters. Must only contain letters, numbers, and
-                      underscores.
-                    </FieldDescription> */}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
+              <Controller
+                name="coverImage"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Cover Image
+                    </FieldLabel>
+                    <UploadImage
+                      value={field.value || []}
+                      listType="picture"
+                      onChange={field.onChange}
+                      multiple={false}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -408,6 +428,31 @@ export function FormCreateScholarship() {
             </FieldGroup>
             <FieldGroup className="col-span-1">
               <Controller
+                name="eligibility"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Slug
+                    </FieldLabel>
+                    <MultipleSelect />
+                    {/* <Input
+                      {...field}
+                      id="form-rhf-input-username"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Eligibility"
+                      autoComplete="username"
+                      className="rounded"
+                    /> */}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
+              <Controller
                 name="awardType"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -529,6 +574,62 @@ export function FormCreateScholarship() {
                         </SelectContent>
                       </Select>
                     </div>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
+              <Controller
+                name="renewable"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field
+                    orientation="responsive"
+                    data-invalid={fieldState.invalid}
+                    className="w-full"
+                  >
+                    <div className="w-full flex flex-col gap-1">
+                      <FieldLabel htmlFor="form-rhf-input-username">
+                        Program
+                      </FieldLabel>
+
+                      <Select
+                        // name={field.name}
+                        // value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id="form-rhf-select-language"
+                          aria-invalid={fieldState.invalid}
+                          className="w-[34.1rem] rounded"
+                        >
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+
+                        <SelectContent position="item-aligned">
+                          <SelectItem value="auto">Auto</SelectItem>
+                          <SelectSeparator />
+                          {educationLevel.map((language) => (
+                            <SelectItem key={language.value} value={language.value}>
+                              {language.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="col-span-2">
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field>
+                    <FieldLabel htmlFor="textarea-message">Description</FieldLabel>
+                    <FieldDescription>Enter your description below.</FieldDescription>
+                    <Textarea aria-invalid={fieldState.invalid} id="textarea-message" placeholder="Type your message here." />
                   </Field>
                 )}
               />

@@ -4,7 +4,8 @@ export const scholarshipSchema = z.object({
   name: z.string().min(1),
 
   provider: z.string(),
-  providerLogo: z.string().url(),
+  providerLogo: z.array(z.any()).min(1, "Provider logo is required"),
+  coverImage: z.array(z.any()).min(1, "Cover Image is required"),
 
   amount: z.number(),
   currency: z
