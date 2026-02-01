@@ -1,11 +1,9 @@
-import React from 'react'
+"use client";
 
-const CreateUniversity = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+import UniversityForm from "@/app/components/admin/universities/UniversityForm";
 
-export default CreateUniversity
+const CreateUniversityPage = () => {
+  return <UniversityForm mode="create" />;
+};
+
+export default CreateUniversityPage;
