@@ -1,3 +1,6 @@
+import { sign } from "crypto";
+import { register } from "module";
+
 export const routes = {
   home: "/",
 
@@ -14,6 +17,7 @@ export const routes = {
   },
 
   login: "/login",
+  signup: "/login/signup",
 
   components: {
     admin: "/components/admin",
