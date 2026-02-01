@@ -58,6 +58,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { useScholarships } from "@/hooks/scholarships";
 
 // ========== TYPES ==========
 export type Scholarship = {
@@ -979,9 +980,12 @@ export const columns: ColumnDef<Scholarship>[] = [
 // ========== MAIN COMPONENT ==========
 export const TableListScholarship = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const {isLoading, data: ScholarshipData} = useScholarships();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
+  console.log('scholarship: ',ScholarshipData);
+  
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
