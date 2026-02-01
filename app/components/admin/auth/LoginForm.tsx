@@ -10,7 +10,7 @@ const DEMO_CREDENTIALS = {
   password: "admin123",
 };
 
-export function LoginForm() {
+export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
