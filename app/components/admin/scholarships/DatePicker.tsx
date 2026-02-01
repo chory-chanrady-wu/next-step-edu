@@ -12,7 +12,11 @@ import {
 import { format } from "date-fns"
 import { Calendar1 } from "lucide-react"
 
-export function DatePickerScholarship() {
+type PropType = {
+    placeholder?: string;
+}
+
+export function DatePickerScholarship(prop: PropType) {
     const [date, setDate] = React.useState<Date>()
 
     return (
@@ -25,7 +29,7 @@ export function DatePickerScholarship() {
                         className="justify-start font-normal flex items-center"
                     >
                         <Calendar1/>
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                        {date ? format(date, "PPP") : <span>{prop.placeholder}</span>}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">

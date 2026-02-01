@@ -1,6 +1,10 @@
 import { SideBar } from '.././components/admin/layout/Sidebar';
 import { Header } from '.././components/admin/layout/Header';
-import "../styles/globals.css";
+import "../styles/globals.css"
+/**
+ * Ant Design CSS
+ */
+// import "antd/dist/reset.css";
 import { Roboto } from 'next/font/google';
 
 const inter = Roboto({
