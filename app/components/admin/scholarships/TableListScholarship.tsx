@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ import {
   Target,
   Sparkles,
   TrendingDown,
+  MoreHorizontalIcon,
 } from "lucide-react";
 import {
   flexRender,
@@ -55,6 +57,7 @@ import {
 } from "@tanstack/react-table";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 // ========== TYPES ==========
 export type Scholarship = {
@@ -920,33 +923,51 @@ export const columns: ColumnDef<Scholarship>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-gray-100">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+            <button
+              className="cursor-pointer shadow-none outline-0 ring-0"
+              aria-label="Open menu"
+            >
+              <MoreHorizontalIcon size={18} />
+            </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuLabel className="text-xs font-semibold text-gray-500">
-              Quick Actions
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+          <DropdownMenuContent className="w-56" align="start">
+            <DropdownMenuLabel>About task</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => window.open(scholarship.website, "_blank")}
-                className="cursor-pointer"
-              >
-                <ExternalLink className="mr-2 h-4 w-4 text-gray-500" />
-                <span>Open Scholarship Page</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Eye className="mr-2 h-4 w-4 text-gray-500" />
-                <span>View Full Details</span>
-              </DropdownMenuItem>
+              <Link href={`/tasks/1`}>
+                <DropdownMenuItem>
+                  View
+                  <DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
+              <Link href={`/tasks/edit/2`}>
+                <DropdownMenuItem>
+                  Edit
+                  <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
+
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <Download className="mr-2 h-4 w-4 text-gray-500" />
-              <span>Download Requirements</span>
+            <DropdownMenuItem
+              className="text-red-600 focus:text-red-600 hover:text-red-600"
+              // disabled={deleteTaskMutation.isPending}
+              onClick={async () => {
+                const confirmed = window.confirm(
+                  "Are you sure you want to delete this task?"
+                );
+                if (confirmed) {
+                  try {
+                    // await deleteTaskMutation.mutateAsync(id);
+                    // The mutation will handle invalidating queries and updating the UI
+                  } catch (error) {
+                    console.error("Failed to delete task:", error);
+                    // You might want to show an error message to the user here
+                  }
+                }
+              }}
+            >
+              Delete
+              <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

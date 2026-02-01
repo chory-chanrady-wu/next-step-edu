@@ -1,0 +1,2887 @@
+{
+  "users": [
+    {
+      "id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "email": "admin1@uniapp.com",
+      "password_hash": "$2b$10$hash_admin1",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-01-01T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102",
+      "email": "editor1@uniapp.com",
+      "password_hash": "$2b$10$hash_editor1",
+      "role": "editor",
+      "status": "active",
+      "created_at": "2026-01-02T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "7c2f8a9d-5f0f-44f4-bc1a-0b8e0a0e9103",
+      "email": "student1@uniapp.com",
+      "password_hash": "$2b$10$hash_student1",
+      "role": "student",
+      "status": "active",
+      "created_at": "2026-01-03T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "2b5b3e3d-8c21-4c2a-a5bf-7f2b6f5dbb04",
+      "email": "student2@uniapp.com",
+      "password_hash": "$2b$10$hash_student2",
+      "role": "student",
+      "status": "active",
+      "created_at": "2026-01-04T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "4c3f7b2f-3f07-4ef3-9f6b-92fd0dbedb05",
+      "email": "student3@uniapp.com",
+      "password_hash": "$2b$10$hash_student3",
+      "role": "student",
+      "status": "active",
+      "created_at": "2026-01-05T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "0a91c7d3-60b2-4d49-b1e2-2e6b9f1cba06",
+      "email": "student4@uniapp.com",
+      "password_hash": "$2b$10$hash_student4",
+      "role": "student",
+      "status": "inactive",
+      "created_at": "2026-01-06T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "d88b6c2b-b5cc-4d60-b7d8-6c4f2e0b0e07",
+      "email": "student5@uniapp.com",
+      "password_hash": "$2b$10$hash_student5",
+      "role": "student",
+      "status": "active",
+      "created_at": "2026-01-07T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508",
+      "email": "editor2@uniapp.com",
+      "password_hash": "$2b$10$hash_editor2",
+      "role": "editor",
+      "status": "active",
+      "created_at": "2026-01-08T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "email": "admin2@uniapp.com",
+      "password_hash": "$2b$10$hash_admin2",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-01-09T08:00:00Z",
+      "updated_at": "2026-01-13T12:00:00Z"
+    },
+    {
+      "id": "11a6f1e7-ec0e-4b6f-bcbb-6a8f6a4d3f10",
+      "email": "student6@uniapp.com",
+      "password_hash": "$2b$10$hash_student6",
+      "role": "student",
+      "status": "active",
+      "created_at": "2026-01-10T08:00:00Z",
+      "updated_at": "2026-01-14T12:00:00Z"
+    }
+  ],
+  "user_profiles": [
+    {
+      "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "full_name": "Admin One",
+      "avatar_url": "https://picsum.photos/seed/u1/200",
+      "phone": "+855 12 000 001",
+      "id": "a68b"
+    },
+    {
+      "user_id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102",
+      "full_name": "Editor One",
+      "avatar_url": "https://picsum.photos/seed/u2/200",
+      "phone": "+855 12 000 002",
+      "id": "b5e5"
+    },
+    {
+      "user_id": "7c2f8a9d-5f0f-44f4-bc1a-0b8e0a0e9103",
+      "full_name": "Student One",
+      "avatar_url": "https://picsum.photos/seed/u3/200",
+      "phone": "+855 12 000 003",
+      "id": "e7b9"
+    },
+    {
+      "user_id": "2b5b3e3d-8c21-4c2a-a5bf-7f2b6f5dbb04",
+      "full_name": "Student Two",
+      "avatar_url": "https://picsum.photos/seed/u4/200",
+      "phone": "+855 12 000 004",
+      "id": "6db2"
+    },
+    {
+      "user_id": "4c3f7b2f-3f07-4ef3-9f6b-92fd0dbedb05",
+      "full_name": "Student Three",
+      "avatar_url": "https://picsum.photos/seed/u5/200",
+      "phone": "+855 12 000 005",
+      "id": "30d2"
+    },
+    {
+      "user_id": "0a91c7d3-60b2-4d49-b1e2-2e6b9f1cba06",
+      "full_name": "Student Four",
+      "avatar_url": "https://picsum.photos/seed/u6/200",
+      "phone": "+855 12 000 006",
+      "id": "a2f7"
+    },
+    {
+      "user_id": "d88b6c2b-b5cc-4d60-b7d8-6c4f2e0b0e07",
+      "full_name": "Student Five",
+      "avatar_url": "https://picsum.photos/seed/u7/200",
+      "phone": "+855 12 000 007",
+      "id": "6170"
+    },
+    {
+      "user_id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508",
+      "full_name": "Editor Two",
+      "avatar_url": "https://picsum.photos/seed/u8/200",
+      "phone": "+855 12 000 008",
+      "id": "b09e"
+    },
+    {
+      "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "full_name": "Admin Two",
+      "avatar_url": "https://picsum.photos/seed/u9/200",
+      "phone": "+855 12 000 009",
+      "id": "e464"
+    },
+    {
+      "user_id": "11a6f1e7-ec0e-4b6f-bcbb-6a8f6a4d3f10",
+      "full_name": "Student Six",
+      "avatar_url": "https://picsum.photos/seed/u10/200",
+      "phone": "+855 12 000 010",
+      "id": "865c"
+    }
+  ],
+  "universities": [
+    {
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Mekong Business School",
+      "slug": "mekong-business-school",
+      "logo_url": "https://picsum.photos/seed/uni2/200",
+      "cover_image_url": "https://picsum.photos/seed/uni2cover/1000/300",
+      "short_description": "Business and entrepreneurship leader.",
+      "description": "MBA, finance, marketing, and startup incubation.",
+      "tuition_rank": 3,
+      "country": "Cambodia",
+      "region_code": "KH-12",
+      "city": "Phnom Penh",
+      "official_website": "https://example.com/uni2",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-02T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Angkor Health Sciences Institute",
+      "slug": "angkor-health-sciences-institute",
+      "logo_url": "https://picsum.photos/seed/uni3/200",
+      "cover_image_url": "https://picsum.photos/seed/uni3cover/1000/300",
+      "short_description": "Medical and health sciences programs.",
+      "description": "Nursing, pharmacy, public health and lab science.",
+      "tuition_rank": 4,
+      "country": "Cambodia",
+      "region_code": "KH-17",
+      "city": "Siem Reap",
+      "official_website": "https://example.com/uni3",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-03T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Tonle Sap Arts Academy",
+      "slug": "tonle-sap-arts-academy",
+      "logo_url": "https://picsum.photos/seed/uni4/200",
+      "cover_image_url": "https://picsum.photos/seed/uni4cover/1000/300",
+      "short_description": "Arts and design education.",
+      "description": "Graphic design, UX/UI, fine arts and media production.",
+      "tuition_rank": 5,
+      "country": "Cambodia",
+      "region_code": "KH-3",
+      "city": "Battambang",
+      "official_website": "https://example.com/uni4",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-04T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000005",
+      "name": "ASEAN International University",
+      "slug": "asean-international-university",
+      "logo_url": "https://picsum.photos/seed/uni5/200",
+      "cover_image_url": "https://picsum.photos/seed/uni5cover/1000/300",
+      "short_description": "International programs and exchange.",
+      "description": "English-taught degrees with regional partnerships.",
+      "tuition_rank": 1,
+      "country": "Cambodia",
+      "region_code": "KH-12",
+      "city": "Phnom Penh",
+      "official_website": "https://example.com/uni5",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-05T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Pacific Engineering College",
+      "slug": "pacific-engineering-college",
+      "logo_url": "https://picsum.photos/seed/uni6/200",
+      "cover_image_url": "https://picsum.photos/seed/uni6cover/1000/300",
+      "short_description": "Civil, electrical and mechanical engineering.",
+      "description": "Hands-on labs with industry internship tracks.",
+      "tuition_rank": 6,
+      "country": "Cambodia",
+      "region_code": "KH-7",
+      "city": "Kampong Cham",
+      "official_website": "https://example.com/uni6",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-06T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000007",
+      "name": "River Delta Agriculture University",
+      "slug": "river-delta-agriculture-university",
+      "logo_url": "https://picsum.photos/seed/uni7/200",
+      "cover_image_url": "https://picsum.photos/seed/uni7cover/1000/300",
+      "short_description": "Agriculture and food science.",
+      "description": "Crop science, agribusiness and sustainable farming.",
+      "tuition_rank": 7,
+      "country": "Cambodia",
+      "region_code": "KH-21",
+      "city": "Takeo",
+      "official_website": "https://example.com/uni7",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-07T08:00:00Z",
+      "updated_at": "2026-01-13T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Coastal Tourism & Hospitality Institute",
+      "slug": "coastal-tourism-hospitality-institute",
+      "logo_url": "https://picsum.photos/seed/uni8/200",
+      "cover_image_url": "https://picsum.photos/seed/uni8cover/1000/300",
+      "short_description": "Hospitality and tourism excellence.",
+      "description": "Hotel management, culinary arts and event planning.",
+      "tuition_rank": 8,
+      "country": "Cambodia",
+      "region_code": "KH-18",
+      "city": "Sihanoukville",
+      "official_website": "https://example.com/uni8",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-08T08:00:00Z",
+      "updated_at": "2026-01-13T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Northern Languages & Culture University",
+      "slug": "northern-languages-culture-university",
+      "logo_url": "https://picsum.photos/seed/uni9/200",
+      "cover_image_url": "https://picsum.photos/seed/uni9cover/1000/300",
+      "short_description": "Languages, culture and translation.",
+      "description": "English, Chinese, Japanese and interpretation studies.",
+      "tuition_rank": 9,
+      "country": "Cambodia",
+      "region_code": "KH-1",
+      "city": "Banteay Meanchey",
+      "official_website": "https://example.com/uni9",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-09T08:00:00Z",
+      "updated_at": "2026-01-14T12:00:00Z"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Capital Law & Governance School",
+      "slug": "capital-law-governance-school",
+      "logo_url": "https://picsum.photos/seed/uni10/200",
+      "cover_image_url": "https://picsum.photos/seed/uni10cover/1000/300",
+      "short_description": "Law, governance and public policy.",
+      "description": "LLB, public administration, and policy research.",
+      "tuition_rank": 10,
+      "country": "Cambodia",
+      "region_code": "KH-12",
+      "city": "Phnom Penh",
+      "official_website": "https://example.com/uni10",
+      "status": "published",
+      "deleted_at": null,
+      "created_at": "2026-01-10T08:00:00Z",
+      "updated_at": "2026-01-14T12:00:00Z"
+    }
+  ],
+  "faculties": [
+    {
+      "id": "b2000001-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Computer Science",
+      "description": "Software, AI and data systems."
+    },
+    {
+      "id": "b2000001-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Business & Economics",
+      "description": "Business management, finance and economics."
+    },
+    {
+      "id": "b2000001-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Engineering",
+      "description": "Software engineering and systems architecture."
+    },
+    {
+      "id": "b2000001-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Arts & Sciences",
+      "description": "Liberal arts and general sciences."
+    },
+    {
+      "id": "b2000001-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Faculty of Graduate Studies",
+      "description": "Advanced research and postgraduate programs."
+    },
+    {
+      "id": "b2000002-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Business",
+      "description": "Finance, marketing and entrepreneurship."
+    },
+    {
+      "id": "b2000002-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Management",
+      "description": "Business administration and management."
+    },
+    {
+      "id": "b2000002-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Economics",
+      "description": "Economics and quantitative analysis."
+    },
+    {
+      "id": "b2000002-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Accounting",
+      "description": "Accounting and financial management."
+    },
+    {
+      "id": "b2000002-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Faculty of Human Resources",
+      "description": "HR management and organizational development."
+    },
+    {
+      "id": "b2000003-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Nursing",
+      "description": "Clinical nursing and community health."
+    },
+    {
+      "id": "b2000003-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Medical Sciences",
+      "description": "Medicine and medical research."
+    },
+    {
+      "id": "b2000003-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Pharmacy",
+      "description": "Pharmacy and pharmaceutical sciences."
+    },
+    {
+      "id": "b2000003-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Public Health",
+      "description": "Public health and epidemiology."
+    },
+    {
+      "id": "b2000003-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Faculty of Laboratory Sciences",
+      "description": "Medical laboratory and pathology."
+    },
+    {
+      "id": "b2000004-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Design",
+      "description": "Visual design and UX."
+    },
+    {
+      "id": "b2000004-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Fine Arts",
+      "description": "Fine arts and creative expression."
+    },
+    {
+      "id": "b2000004-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Media Production",
+      "description": "Film, video and media production."
+    },
+    {
+      "id": "b2000004-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Animation & Game Design",
+      "description": "Animation and game development."
+    },
+    {
+      "id": "b2000004-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Faculty of Fashion & Textiles",
+      "description": "Fashion design and textile arts."
+    },
+    {
+      "id": "b2000005-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of International Studies",
+      "description": "International programs and language training."
+    },
+    {
+      "id": "b2000005-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of Languages",
+      "description": "English, Chinese, Japanese and other languages."
+    },
+    {
+      "id": "b2000005-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of Business English",
+      "description": "English for business and professional contexts."
+    },
+    {
+      "id": "b2000005-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of Cultural Studies",
+      "description": "International culture and regional studies."
+    },
+    {
+      "id": "b2000005-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Faculty of Tourism & Hospitality",
+      "description": "Tourism management and hospitality."
+    },
+    {
+      "id": "b2000006-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Engineering",
+      "description": "Civil, electrical, mechanical."
+    },
+    {
+      "id": "b2000006-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Electrical Engineering",
+      "description": "Electrical and power systems."
+    },
+    {
+      "id": "b2000006-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Mechanical Engineering",
+      "description": "Mechanical design and production."
+    },
+    {
+      "id": "b2000006-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Architecture",
+      "description": "Building design and urban planning."
+    },
+    {
+      "id": "b2000006-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Faculty of Construction Management",
+      "description": "Project management and construction."
+    },
+    {
+      "id": "b2000007-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Agriculture",
+      "description": "Agronomy and food science."
+    },
+    {
+      "id": "b2000007-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Crop Science",
+      "description": "Plant breeding and crop management."
+    },
+    {
+      "id": "b2000007-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Agricultural Engineering",
+      "description": "Farm machinery and irrigation systems."
+    },
+    {
+      "id": "b2000007-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Animal Science",
+      "description": "Livestock management and veterinary science."
+    },
+    {
+      "id": "b2000007-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Faculty of Food Science & Technology",
+      "description": "Food processing and nutrition."
+    },
+    {
+      "id": "b2000008-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Hospitality",
+      "description": "Hotel and culinary management."
+    },
+    {
+      "id": "b2000008-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Culinary Arts",
+      "description": "Chef training and gastronomy."
+    },
+    {
+      "id": "b2000008-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Hotel Management",
+      "description": "Hotel operations and customer service."
+    },
+    {
+      "id": "b2000008-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Event Management",
+      "description": "Event planning and conference management."
+    },
+    {
+      "id": "b2000008-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Faculty of Food & Beverage",
+      "description": "Food and beverage management."
+    },
+    {
+      "id": "b2000009-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of Languages",
+      "description": "Modern languages and translation."
+    },
+    {
+      "id": "b2000009-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of English Studies",
+      "description": "English language and literature."
+    },
+    {
+      "id": "b2000009-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of Asian Languages",
+      "description": "Chinese, Japanese and other Asian languages."
+    },
+    {
+      "id": "b2000009-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of Interpretation & Translation",
+      "description": "Professional interpretation and translation."
+    },
+    {
+      "id": "b2000009-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Faculty of Linguistics & Phonetics",
+      "description": "Language science and phonetics."
+    },
+    {
+      "id": "b2000010-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of Law",
+      "description": "Law and governance."
+    },
+    {
+      "id": "b2000010-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of Public Administration",
+      "description": "Government and public policy."
+    },
+    {
+      "id": "b2000010-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of International Law",
+      "description": "International relations and law."
+    },
+    {
+      "id": "b2000010-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of Criminal Justice",
+      "description": "Criminal law and justice systems."
+    },
+    {
+      "id": "b2000010-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Faculty of Corporate Law",
+      "description": "Business law and corporate governance."
+    }
+  ],
+  "programs": [
+    {
+      "id": "c3000001-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000001",
+      "name": "BSc Software Engineering",
+      "description": "Full-stack development and DevOps.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000001",
+      "name": "BSc Data Science",
+      "description": "Machine learning and big data analytics.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000001",
+      "name": "BSc Cybersecurity",
+      "description": "Network security and information protection.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000002",
+      "name": "BBA Business Administration",
+      "description": "General business management and strategy.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000002",
+      "name": "BSc Finance",
+      "description": "Corporate finance and investment management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000002",
+      "name": "BSc Marketing",
+      "description": "Marketing strategy and digital marketing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000003",
+      "name": "BEng Software Engineering",
+      "description": "Advanced software systems and architecture.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000003",
+      "name": "BEng Cloud Computing",
+      "description": "Cloud infrastructure and distributed systems.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1950,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000003",
+      "name": "BEng AI & Robotics",
+      "description": "Artificial intelligence and robotic systems.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000004",
+      "name": "BA General Studies",
+      "description": "Broad liberal arts education.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000004",
+      "name": "BA Psychology",
+      "description": "Psychology and behavioral sciences.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000004",
+      "name": "BA Communications",
+      "description": "Media and communication studies.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000005",
+      "name": "MSc Computer Science",
+      "description": "Advanced computing research and theory.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000005",
+      "name": "MBA Tech Management",
+      "description": "Technology management and innovation.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000001-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "faculty_id": "b2000001-0000-4000-8000-000000000005",
+      "name": "PhD Computer Science",
+      "description": "Doctoral research in computing.",
+      "degree_level": 4,
+      "exam_required": true,
+      "tuition_fee_amount": 3000,
+      "currency": "USD",
+      "study_period_months": 36
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000001",
+      "name": "BBA Business",
+      "description": "Business fundamentals and entrepreneurship.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000001",
+      "name": "BSc Finance & Banking",
+      "description": "Financial institutions and banking systems.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000001",
+      "name": "BSc Entrepreneurship",
+      "description": "Start-up creation and business development.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000002",
+      "name": "BBA Management",
+      "description": "Organizational management and operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000002",
+      "name": "BBA Project Management",
+      "description": "Project planning and execution.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000002",
+      "name": "BBA Supply Chain Management",
+      "description": "Logistics and supply chain optimization.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1950,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000003",
+      "name": "BSc Economics",
+      "description": "Economic theory and policy analysis.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000003",
+      "name": "BSc International Economics",
+      "description": "Global trade and international economics.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000003",
+      "name": "BSc Development Economics",
+      "description": "Economic development and emerging markets.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000004",
+      "name": "BAcct Accounting",
+      "description": "Financial and managerial accounting.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000004",
+      "name": "BAcct Auditing",
+      "description": "Audit practice and internal controls.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000004",
+      "name": "BAcct Taxation",
+      "description": "Tax planning and compliance.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000005",
+      "name": "BBA Human Resources",
+      "description": "HR strategy and talent management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000005",
+      "name": "BBA Organizational Development",
+      "description": "Organizational change and culture.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000002-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "faculty_id": "b2000002-0000-4000-8000-000000000005",
+      "name": "MBA Business Administration",
+      "description": "Leadership and strategy.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000001",
+      "name": "BSc Nursing",
+      "description": "Clinical practice and patient care.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000001",
+      "name": "BSc Midwifery",
+      "description": "Obstetric and midwifery care.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 1950,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000001",
+      "name": "MSc Advanced Nursing Practice",
+      "description": "Specialist nursing roles.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000002",
+      "name": "MD Medicine",
+      "description": "Doctor of Medicine degree.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 3500,
+      "currency": "USD",
+      "study_period_months": 72
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000002",
+      "name": "MSc Public Health",
+      "description": "Population health and epidemiology.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000002",
+      "name": "MSc Clinical Medicine",
+      "description": "Advanced clinical practice.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000003",
+      "name": "BPharm Pharmacy",
+      "description": "Pharmaceutical sciences and practice.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 60
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000003",
+      "name": "MSc Pharmaceutical Sciences",
+      "description": "Drug development and research.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000003",
+      "name": "BPharm Hospital Pharmacy",
+      "description": "Hospital practice and medication management.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 60
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000004",
+      "name": "MPH Public Health",
+      "description": "Master of Public Health degree.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000004",
+      "name": "BSc Community Health",
+      "description": "Community-based health programs.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000004",
+      "name": "BSc Health Promotion",
+      "description": "Disease prevention and health education.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000005",
+      "name": "BSc Medical Laboratory Science",
+      "description": "Laboratory testing and analysis.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000005",
+      "name": "BSc Clinical Pathology",
+      "description": "Disease pathology and diagnosis.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000003-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "faculty_id": "b2000003-0000-4000-8000-000000000005",
+      "name": "MSc Medical Laboratory Science",
+      "description": "Advanced laboratory management.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000001",
+      "name": "BA Graphic Design",
+      "description": "Branding and digital design.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000001",
+      "name": "BA UX/UI Design",
+      "description": "User experience and interface design.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000001",
+      "name": "BA Web Design",
+      "description": "Web technologies and digital design.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000002",
+      "name": "BA Fine Arts",
+      "description": "Painting, sculpture and drawing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000002",
+      "name": "BA Contemporary Art",
+      "description": "Contemporary art practices.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000002",
+      "name": "MFA Fine Arts",
+      "description": "Advanced fine arts practice.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000003",
+      "name": "BA Film Production",
+      "description": "Filmmaking and cinematography.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000003",
+      "name": "BA Video Production",
+      "description": "Video creation and editing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000003",
+      "name": "BA Sound Design",
+      "description": "Audio production and mixing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000004",
+      "name": "BA Game Design",
+      "description": "Game design and development.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000004",
+      "name": "BA Animation",
+      "description": "2D and 3D animation.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000005",
+      "name": "BA Fashion Design",
+      "description": "Clothing design and collection development.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000005",
+      "name": "BA Fashion Merchandising",
+      "description": "Fashion business and marketing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000004-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "faculty_id": "b2000004-0000-4000-8000-000000000005",
+      "name": "BA Textile Design",
+      "description": "Fabric and textile design.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000001",
+      "name": "BA International Relations",
+      "description": "Diplomacy and regional studies.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000001",
+      "name": "BA Global Studies",
+      "description": "Comparative global issues.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000001",
+      "name": "MA International Studies",
+      "description": "Advanced international affairs.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000002",
+      "name": "BA English Language",
+      "description": "English language studies and linguistics.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000002",
+      "name": "BA Chinese Language",
+      "description": "Modern Chinese language and culture.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000002",
+      "name": "BA Japanese Language",
+      "description": "Japanese language and culture.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000003",
+      "name": "BA Business English",
+      "description": "English for professional contexts.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000003",
+      "name": "BA English for Communications",
+      "description": "Business communications and writing.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1950,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000003",
+      "name": "BA English Presentation Skills",
+      "description": "Public speaking and presentation.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000004",
+      "name": "BA Cultural Studies",
+      "description": "Cultural analysis and society.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000004",
+      "name": "BA Southeast Asian Studies",
+      "description": "ASEAN region studies.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000004",
+      "name": "MA Intercultural Studies",
+      "description": "Cross-cultural communication.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000005",
+      "name": "BA Tourism Management",
+      "description": "Tourism industry management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000005",
+      "name": "BA Hospitality Tourism",
+      "description": "Hotel and tourism operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000005-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "faculty_id": "b2000005-0000-4000-8000-000000000005",
+      "name": "MA Tourism Studies",
+      "description": "Advanced tourism management.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000001",
+      "name": "BEng Civil Engineering",
+      "description": "Structures and construction.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000001",
+      "name": "BEng Structural Engineering",
+      "description": "Building structures and design.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000001",
+      "name": "MEng Civil Engineering",
+      "description": "Advanced civil engineering.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2600,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000002",
+      "name": "BEng Electrical Engineering",
+      "description": "Power systems and electronics.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000002",
+      "name": "BEng Power Engineering",
+      "description": "Electrical power generation and distribution.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000002",
+      "name": "MEng Electrical Engineering",
+      "description": "Advanced electrical systems.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2600,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000003",
+      "name": "BEng Mechanical Engineering",
+      "description": "Machine design and manufacturing.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000003",
+      "name": "BEng Automotive Engineering",
+      "description": "Vehicle design and systems.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000003",
+      "name": "MEng Mechanical Engineering",
+      "description": "Advanced mechanical systems.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2600,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000004",
+      "name": "BArch Architecture",
+      "description": "Building design and planning.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 60
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000004",
+      "name": "BArch Urban Design",
+      "description": "City planning and development.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 60
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000004",
+      "name": "MArch Architecture",
+      "description": "Advanced architectural design.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000005",
+      "name": "BEng Construction Management",
+      "description": "Project management and construction.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000005",
+      "name": "BSc Quantity Surveying",
+      "description": "Cost management and estimation.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000006-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "faculty_id": "b2000006-0000-4000-8000-000000000005",
+      "name": "MSc Construction Management",
+      "description": "Advanced construction management.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000001",
+      "name": "BSc Agribusiness",
+      "description": "Farming economics and supply chains.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000001",
+      "name": "BSc Agricultural Economics",
+      "description": "Agricultural business and markets.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1450,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000001",
+      "name": "MSc Agribusiness Management",
+      "description": "Advanced agricultural business.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000002",
+      "name": "BSc Agronomy",
+      "description": "Crop management and science.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000002",
+      "name": "BSc Plant Science",
+      "description": "Plant biology and breeding.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1450,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000002",
+      "name": "MSc Crop Science",
+      "description": "Advanced crop research.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000003",
+      "name": "BEng Agricultural Engineering",
+      "description": "Farm machinery and systems.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 1550,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000003",
+      "name": "BEng Irrigation Engineering",
+      "description": "Water management systems.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 54
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000003",
+      "name": "MEng Agricultural Engineering",
+      "description": "Advanced agricultural systems.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000004",
+      "name": "BSc Animal Science",
+      "description": "Livestock management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000004",
+      "name": "BSc Veterinary Science",
+      "description": "Animal health and medicine.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2000,
+      "currency": "USD",
+      "study_period_months": 60
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000004",
+      "name": "MSc Animal Science",
+      "description": "Advanced animal research.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1800,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000005",
+      "name": "BSc Food Science",
+      "description": "Food processing and safety.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1450,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000005",
+      "name": "BSc Nutrition",
+      "description": "Nutritional science and dietetics.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000007-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "faculty_id": "b2000007-0000-4000-8000-000000000005",
+      "name": "MSc Food Science & Technology",
+      "description": "Advanced food research.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000001",
+      "name": "BA Hospitality Management",
+      "description": "Hotel operations and service excellence.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000001",
+      "name": "BA Resort Management",
+      "description": "Beach resort operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000001",
+      "name": "BBA Hospitality Business",
+      "description": "Business management for hospitality.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1650,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000002",
+      "name": "BA Culinary Arts",
+      "description": "Chef training and gastronomy.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000002",
+      "name": "BA International Cuisine",
+      "description": "World cuisines and food cultures.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1750,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000002",
+      "name": "BA Pastry Arts",
+      "description": "Baking and pastry creation.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000003",
+      "name": "BA Hotel Management",
+      "description": "Hotel operations and management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000003",
+      "name": "BA Front Office Management",
+      "description": "Hotel front desk operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1550,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000003",
+      "name": "BA Housekeeping Management",
+      "description": "Hotel housekeeping operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1550,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000004",
+      "name": "BA Event Management",
+      "description": "Event planning and coordination.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1650,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000004",
+      "name": "BA Conference Management",
+      "description": "Conference organization.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1650,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000004",
+      "name": "BA Wedding & Party Planning",
+      "description": "Wedding and special events.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000005",
+      "name": "BA Food & Beverage Management",
+      "description": "F&B operations and service.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1650,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000005",
+      "name": "BA Bar Management",
+      "description": "Bar and beverage service.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000008-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "faculty_id": "b2000008-0000-4000-8000-000000000005",
+      "name": "BA Restaurant Management",
+      "description": "Restaurant operations.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1650,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000001",
+      "name": "BA English Translation",
+      "description": "Translation and interpretation.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1200,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000001",
+      "name": "BA Multilingual Translation",
+      "description": "Translation in multiple languages.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000001",
+      "name": "MA Specialized Translation",
+      "description": "Advanced translation specialization.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1600,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000002",
+      "name": "BA English Literature",
+      "description": "Literature and language studies.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000002",
+      "name": "BA English Linguistics",
+      "description": "Language structure and analysis.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000002",
+      "name": "MA English Studies",
+      "description": "Advanced English studies.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000003",
+      "name": "BA Chinese Language",
+      "description": "Mandarin Chinese language.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1300,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000003",
+      "name": "BA Japanese Language",
+      "description": "Japanese language.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1300,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000003",
+      "name": "BA Korean Language",
+      "description": "Korean language and culture.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1300,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000004",
+      "name": "BA Simultaneous Interpretation",
+      "description": "Real-time interpretation.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000004",
+      "name": "BA Conference Interpretation",
+      "description": "Professional conference interpreting.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 1400,
+      "currency": "USD",
+      "study_period_months": 42
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000004",
+      "name": "MA Interpretation Studies",
+      "description": "Advanced interpretation.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1700,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000005",
+      "name": "BA Linguistics",
+      "description": "Linguistic theory and phonetics.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000005",
+      "name": "BA Phonetics & Speech",
+      "description": "Sound systems and speech.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1250,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000009-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "faculty_id": "b2000009-0000-4000-8000-000000000005",
+      "name": "MA Applied Linguistics",
+      "description": "Linguistics in practice.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 1500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000001",
+      "name": "LLB Law",
+      "description": "Legal systems and practice.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000001",
+      "name": "LLB Commercial Law",
+      "description": "Business and commercial law.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000001",
+      "name": "LLM Laws of ASEAN",
+      "description": "ASEAN legal systems.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000002",
+      "name": "BA Public Administration",
+      "description": "Government management.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000002",
+      "name": "BA Public Policy",
+      "description": "Policy analysis and development.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1950,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000002",
+      "name": "MPA Public Administration",
+      "description": "Advanced public management.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2300,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000003",
+      "name": "LLB International Law",
+      "description": "Treaties and international law.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000003",
+      "name": "BA International Relations",
+      "description": "Global politics and diplomacy.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000003",
+      "name": "MA International Law",
+      "description": "Advanced international studies.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000004",
+      "name": "LLB Criminal Law",
+      "description": "Criminal justice and procedure.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2100,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000011",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000004",
+      "name": "BA Criminal Justice",
+      "description": "Justice system administration.",
+      "degree_level": 2,
+      "exam_required": false,
+      "tuition_fee_amount": 1900,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000012",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000004",
+      "name": "LLM Criminal Law",
+      "description": "Advanced criminal law.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2400,
+      "currency": "USD",
+      "study_period_months": 24
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000013",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000005",
+      "name": "LLB Corporate Law",
+      "description": "Company and business law.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2200,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000014",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000005",
+      "name": "LLB Intellectual Property Law",
+      "description": "IP and copyright law.",
+      "degree_level": 2,
+      "exam_required": true,
+      "tuition_fee_amount": 2150,
+      "currency": "USD",
+      "study_period_months": 48
+    },
+    {
+      "id": "c3000010-0000-4000-8000-000000000015",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "faculty_id": "b2000010-0000-4000-8000-000000000005",
+      "name": "LLM Corporate Governance",
+      "description": "Advanced corporate law.",
+      "degree_level": 3,
+      "exam_required": true,
+      "tuition_fee_amount": 2500,
+      "currency": "USD",
+      "study_period_months": 24
+    }
+  ],
+  "university_contacts": [
+    {
+      "id": "d4000000-0000-4000-8000-000000000001",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "label": "Admissions",
+      "email": "admissions@uni1.com",
+      "phone": "+855 23 111 111",
+      "website_url": "https://example.com/uni1/admissions"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000002",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "label": "Admissions",
+      "email": "admissions@uni2.com",
+      "phone": "+855 23 222 222",
+      "website_url": "https://example.com/uni2/admissions"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000003",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "label": "Info Desk",
+      "email": "info@uni3.com",
+      "phone": "+855 63 333 333",
+      "website_url": "https://example.com/uni3/contact"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000004",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "label": "Student Affairs",
+      "email": "students@uni4.com",
+      "phone": "+855 53 444 444",
+      "website_url": "https://example.com/uni4/students"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000005",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "label": "International Office",
+      "email": "international@uni5.com",
+      "phone": "+855 23 555 555",
+      "website_url": "https://example.com/uni5/international"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000006",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "label": "Engineering Office",
+      "email": "engineering@uni6.com",
+      "phone": "+855 42 666 666",
+      "website_url": "https://example.com/uni6/engineering"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000007",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "label": "Agriculture Office",
+      "email": "agri@uni7.com",
+      "phone": "+855 32 777 777",
+      "website_url": "https://example.com/uni7/agri"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000008",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "label": "Hospitality Office",
+      "email": "hospitality@uni8.com",
+      "phone": "+855 34 888 888",
+      "website_url": "https://example.com/uni8/hospitality"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000009",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "label": "Languages Office",
+      "email": "languages@uni9.com",
+      "phone": "+855 54 999 999",
+      "website_url": "https://example.com/uni9/languages"
+    },
+    {
+      "id": "d4000000-0000-4000-8000-000000000010",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "label": "Law Office",
+      "email": "law@uni10.com",
+      "phone": "+855 23 101 010",
+      "website_url": "https://example.com/uni10/law"
+    }
+  ],
+  "scholarships": [
+    {
+      "id": "e5000000-0000-4000-8000-000000000001",
+      "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "university_id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Tech Excellence Scholarship",
+      "slug": "tech-excellence-scholarship",
+      "logo_url": "https://picsum.photos/seed/sch1/200",
+      "cover_image_url": "https://picsum.photos/seed/sch1cover/1000/300",
+      "description": "Merit-based support for top tech students.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 50,
+        "stipend_usd_per_month": 50
+      },
+      "requirements": {
+        "min_gpa": 3.2,
+        "essay_required": true
+      },
+      "how_to_apply": "Submit transcript and essay.",
+      "apply_link": "https://example.com/sch1/apply",
+      "status": "published",
+      "location": "Phnom Penh",
+      "deleted_at": null,
+      "created_at": "2026-01-01T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000002",
+      "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "university_id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Mekong Future Leaders Grant",
+      "slug": "mekong-future-leaders-grant",
+      "logo_url": "https://picsum.photos/seed/sch2/200",
+      "cover_image_url": "https://picsum.photos/seed/sch2cover/1000/300",
+      "description": "Support for MBA candidates with leadership potential.",
+      "level": 3,
+      "benefits": {
+        "tuition_coverage_percent": 40,
+        "stipend_usd_per_month": 75
+      },
+      "requirements": {
+        "min_experience_years": 1,
+        "interview_required": true
+      },
+      "how_to_apply": "Apply online and schedule interview.",
+      "apply_link": "https://example.com/sch2/apply",
+      "status": "published",
+      "location": "Phnom Penh",
+      "deleted_at": null,
+      "created_at": "2026-01-02T08:00:00Z",
+      "updated_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000003",
+      "user_id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102",
+      "university_id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Health Science Merit Award",
+      "slug": "health-science-merit-award",
+      "logo_url": "https://picsum.photos/seed/sch3/200",
+      "cover_image_url": "https://picsum.photos/seed/sch3cover/1000/300",
+      "description": "Merit scholarship for nursing and public health.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "min_gpa": 3,
+        "recommendation_letters": 1
+      },
+      "how_to_apply": "Submit transcript and recommendation letter.",
+      "apply_link": "https://example.com/sch3/apply",
+      "status": "published",
+      "location": "Siem Reap",
+      "deleted_at": null,
+      "created_at": "2026-01-03T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000004",
+      "user_id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508",
+      "university_id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Creative Arts Scholarship",
+      "slug": "creative-arts-scholarship",
+      "logo_url": "https://picsum.photos/seed/sch4/200",
+      "cover_image_url": "https://picsum.photos/seed/sch4cover/1000/300",
+      "description": "Support for talented design students.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 35
+      },
+      "requirements": {
+        "portfolio_required": true
+      },
+      "how_to_apply": "Submit portfolio and application form.",
+      "apply_link": "https://example.com/sch4/apply",
+      "status": "published",
+      "location": "Battambang",
+      "deleted_at": null,
+      "created_at": "2026-01-04T08:00:00Z",
+      "updated_at": "2026-01-11T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000005",
+      "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "university_id": "a1000000-0000-4000-8000-000000000005",
+      "name": "ASEAN Exchange Scholarship",
+      "slug": "asean-exchange-scholarship",
+      "logo_url": "https://picsum.photos/seed/sch5/200",
+      "cover_image_url": "https://picsum.photos/seed/sch5cover/1000/300",
+      "description": "Scholarship for students in exchange programs.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 25,
+        "travel_support_usd": 300
+      },
+      "requirements": {
+        "english_test_required": true
+      },
+      "how_to_apply": "Apply with test score and statement.",
+      "apply_link": "https://example.com/sch5/apply",
+      "status": "published",
+      "location": "Phnom Penh",
+      "deleted_at": null,
+      "created_at": "2026-01-05T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000006",
+      "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "university_id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Engineering Innovation Fund",
+      "slug": "engineering-innovation-fund",
+      "logo_url": "https://picsum.photos/seed/sch6/200",
+      "cover_image_url": "https://picsum.photos/seed/sch6cover/1000/300",
+      "description": "Funding for engineering students with project ideas.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 20,
+        "project_grant_usd": 500
+      },
+      "requirements": {
+        "proposal_required": true
+      },
+      "how_to_apply": "Submit project proposal and transcript.",
+      "apply_link": "https://example.com/sch6/apply",
+      "status": "published",
+      "location": "Kampong Cham",
+      "deleted_at": null,
+      "created_at": "2026-01-06T08:00:00Z",
+      "updated_at": "2026-01-12T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000007",
+      "user_id": "f7b62a43-9e4a-4b1e-8f28-7d6e4d2be102",
+      "university_id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Sustainable Agriculture Award",
+      "slug": "sustainable-agriculture-award",
+      "logo_url": "https://picsum.photos/seed/sch7/200",
+      "cover_image_url": "https://picsum.photos/seed/sch7cover/1000/300",
+      "description": "Scholarship for sustainability-focused agribusiness.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "community_service_required": true
+      },
+      "how_to_apply": "Apply with service proof and essay.",
+      "apply_link": "https://example.com/sch7/apply",
+      "status": "published",
+      "location": "Takeo",
+      "deleted_at": null,
+      "created_at": "2026-01-07T08:00:00Z",
+      "updated_at": "2026-01-13T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000008",
+      "user_id": "e3b6a7de-785b-4e1d-9d78-0e3f47d9b508",
+      "university_id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Hospitality Talent Scholarship",
+      "slug": "hospitality-talent-scholarship",
+      "logo_url": "https://picsum.photos/seed/sch8/200",
+      "cover_image_url": "https://picsum.photos/seed/sch8cover/1000/300",
+      "description": "Scholarship for future hospitality professionals.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 25
+      },
+      "requirements": {
+        "interview_required": true
+      },
+      "how_to_apply": "Apply and attend interview.",
+      "apply_link": "https://example.com/sch8/apply",
+      "status": "published",
+      "location": "Sihanoukville",
+      "deleted_at": null,
+      "created_at": "2026-01-08T08:00:00Z",
+      "updated_at": "2026-01-13T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000009",
+      "user_id": "3f8a1bb5-2a85-4f44-a2c7-1b5eae2b2d01",
+      "university_id": "a1000000-0000-4000-8000-000000000009",
+      "name": "Languages Excellence Grant",
+      "slug": "languages-excellence-grant",
+      "logo_url": "https://picsum.photos/seed/sch9/200",
+      "cover_image_url": "https://picsum.photos/seed/sch9cover/1000/300",
+      "description": "Scholarship for translation and language students.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 20
+      },
+      "requirements": {
+        "writing_test_required": true
+      },
+      "how_to_apply": "Take writing test and submit documents.",
+      "apply_link": "https://example.com/sch9/apply",
+      "status": "published",
+      "location": "Banteay Meanchey",
+      "deleted_at": null,
+      "created_at": "2026-01-09T08:00:00Z",
+      "updated_at": "2026-01-14T12:00:00Z"
+    },
+    {
+      "id": "e5000000-0000-4000-8000-000000000010",
+      "user_id": "9a2b3f3a-6a09-43b2-a56d-0d54e3f1c909",
+      "university_id": "a1000000-0000-4000-8000-000000000010",
+      "name": "Public Policy Scholarship",
+      "slug": "public-policy-scholarship",
+      "logo_url": "https://picsum.photos/seed/sch10/200",
+      "cover_image_url": "https://picsum.photos/seed/sch10cover/1000/300",
+      "description": "Support for law & governance students.",
+      "level": 2,
+      "benefits": {
+        "tuition_coverage_percent": 30
+      },
+      "requirements": {
+        "essay_required": true
+      },
+      "how_to_apply": "Submit essay and academic record.",
+      "apply_link": "https://example.com/sch10/apply",
+      "status": "published",
+      "location": "Phnom Penh",
+      "deleted_at": null,
+      "created_at": "2026-01-10T08:00:00Z",
+      "updated_at": "2026-01-14T12:00:00Z"
+    }
+  ],
+  "scholarship_contacts": [
+    {
+      "id": "f6000000-0000-4000-8000-000000000001",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000001",
+      "label": "Coordinator",
+      "email": "sch1@uniapp.com",
+      "phone": "+855 23 111 222",
+      "website_url": "https://example.com/sch1/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000002",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000002",
+      "label": "Coordinator",
+      "email": "sch2@uniapp.com",
+      "phone": "+855 23 222 333",
+      "website_url": "https://example.com/sch2/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000003",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000003",
+      "label": "Coordinator",
+      "email": "sch3@uniapp.com",
+      "phone": "+855 63 333 444",
+      "website_url": "https://example.com/sch3/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000004",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000004",
+      "label": "Coordinator",
+      "email": "sch4@uniapp.com",
+      "phone": "+855 53 444 555",
+      "website_url": "https://example.com/sch4/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000005",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000005",
+      "label": "Coordinator",
+      "email": "sch5@uniapp.com",
+      "phone": "+855 23 555 666",
+      "website_url": "https://example.com/sch5/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000006",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000006",
+      "label": "Coordinator",
+      "email": "sch6@uniapp.com",
+      "phone": "+855 42 666 777",
+      "website_url": "https://example.com/sch6/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000007",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000007",
+      "label": "Coordinator",
+      "email": "sch7@uniapp.com",
+      "phone": "+855 32 777 888",
+      "website_url": "https://example.com/sch7/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000008",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000008",
+      "label": "Coordinator",
+      "email": "sch8@uniapp.com",
+      "phone": "+855 34 888 999",
+      "website_url": "https://example.com/sch8/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000009",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000009",
+      "label": "Coordinator",
+      "email": "sch9@uniapp.com",
+      "phone": "+855 54 999 000",
+      "website_url": "https://example.com/sch9/contact"
+    },
+    {
+      "id": "f6000000-0000-4000-8000-000000000010",
+      "scholarship_id": "e5000000-0000-4000-8000-000000000010",
+      "label": "Coordinator",
+      "email": "sch10@uniapp.com",
+      "phone": "+855 23 101 111",
+      "website_url": "https://example.com/sch10/contact"
+    }
+  ],
+  "scholarship_programs": [
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000001",
+      "program_id": "c3000000-0000-4000-8000-000000000001",
+      "id": "2b58"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000002",
+      "program_id": "c3000000-0000-4000-8000-000000000002",
+      "id": "e05b"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000003",
+      "program_id": "c3000000-0000-4000-8000-000000000003",
+      "id": "38b1"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000004",
+      "program_id": "c3000000-0000-4000-8000-000000000004",
+      "id": "f4e4"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000005",
+      "program_id": "c3000000-0000-4000-8000-000000000005",
+      "id": "8e9f"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000006",
+      "program_id": "c3000000-0000-4000-8000-000000000006",
+      "id": "70ff"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000007",
+      "program_id": "c3000000-0000-4000-8000-000000000007",
+      "id": "8979"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000008",
+      "program_id": "c3000000-0000-4000-8000-000000000008",
+      "id": "5f8e"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000009",
+      "program_id": "c3000000-0000-4000-8000-000000000009",
+      "id": "e50e"
+    },
+    {
+      "scholarship_id": "e5000000-0000-4000-8000-000000000010",
+      "program_id": "c3000000-0000-4000-8000-000000000010",
+      "id": "3687"
+    }
+  ]
+}
