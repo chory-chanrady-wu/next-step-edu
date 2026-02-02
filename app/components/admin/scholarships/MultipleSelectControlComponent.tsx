@@ -9,6 +9,7 @@ import { Field, FieldLabel } from "@/components/ui/field";
 interface MultipleSelectProps {
     control: Control<ScholarshipTask>; // You can narrow this to your form type
     name: keyof ScholarshipTask;
+    mode?: "tags" | "multiple"
     options: { value: string; label: string }[];
     placeholder?: string;
     defaultValue?: string[];
@@ -20,6 +21,7 @@ const MultipleSelectControlComponent: React.FC<MultipleSelectProps> = ({
     control,
     name,
     label = "Label",
+    mode = "multiple",
     options,
     placeholder = "Select items",
     defaultValue = [],
@@ -37,7 +39,7 @@ const MultipleSelectControlComponent: React.FC<MultipleSelectProps> = ({
                     </FieldLabel>
                     <Select
                         {...field}
-                        mode="tags"
+                        mode={mode}
                         size={size}
                         placeholder={placeholder}
                         style={{ width: "100%", borderRadius: 4 }}

@@ -40,6 +40,7 @@ import { useState } from "react"
 import { UploadFile } from "antd"
 import CheckboxScholarship from "./CheckboxScholarship"
 import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
+import UploadImageControl from "./UploadImage"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -49,16 +50,29 @@ const statusOpts = [
   { label: "Open", value: "open" },
   { label: "Closed", value: "closed" },
   { label: "Upcoming", value: "upcoming" },
+  { label: "Extended", value: "extended" },
 ] as const
 const awardType = [
   { label: "Full", value: "full" },
   { label: "Partial", value: "partial" },
+  { label: "Tuition", value: "tuition" },
+  { label: "Stipend", value: "stipend" },
 ] as const
 const educationLevel = [
   { label: "Undergraduate", value: "undergraduate" },
   { label: "Graduate", value: "graduate" },
   { label: "Phd", value: "phd" },
   { label: "Diploma", value: "diploma" },
+] as const
+const categories = [
+  { label: "Academic", value: "academic" },
+  { label: "Sports", value: "sports" },
+  { label: "Arts", value: "arts" },
+  { label: "Stem", value: "stem" },
+  { label: "Need-based", value: "need-based" },
+  { label: "Merit", value: "merit" },
+  { label: "Minority", value: "minority" },
+  { label: "Community", value: "community" },
 ] as const
 
 export function FormCreateScholarship() {
@@ -98,6 +112,10 @@ export function FormCreateScholarship() {
       <CardContent>
         <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-3">
+
+            {/*
+              ** @Field Title
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="title"
@@ -122,6 +140,10 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Field Provider
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="provider"
@@ -146,51 +168,24 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @File Provider Logo
+              */}
             <FieldGroup className="col-span-1">
-              <Controller
-                name="providerLogo"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Provider Logo
-                    </FieldLabel>
-                    <UploadImage
-                      value={field.value || []}
-                      listType="picture"
-                      onChange={field.onChange}
-                      multiple={false}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="coverImage"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Cover Image
-                    </FieldLabel>
-                    <UploadImage
-                      value={field.value || []}
-                      listType="picture"
-                      onChange={field.onChange}
-                      multiple={false}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+              <UploadImageControl name="providerLogo" label="Provider Logo" control={form.control} multiple={false} />
             </FieldGroup>
 
+            {/*
+              ** @File Cover Image
+              */}
+            <FieldGroup className="col-span-1">
+              <UploadImageControl name="coverImage" label="Cover Image" control={form.control} multiple={false} />
+            </FieldGroup>
+
+            {/*
+              ** @Select Field Amount
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="amount"
@@ -215,6 +210,10 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Select Field Currency
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="currency"
@@ -257,6 +256,10 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Select Field Status
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="status"
@@ -287,9 +290,9 @@ export function FormCreateScholarship() {
                         <SelectContent position="item-aligned">
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
-                          {statusOpts.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
-                              {language.label}
+                          {statusOpts.map((status) => (
+                            <SelectItem key={status.value} value={status.value}>
+                              {status.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -300,6 +303,9 @@ export function FormCreateScholarship() {
               />
             </FieldGroup>
 
+            {/*
+              ** @Select Field Category
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="category"
@@ -330,9 +336,9 @@ export function FormCreateScholarship() {
                         <SelectContent position="item-aligned">
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
-                          {statusOpts.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
-                              {language.label}
+                          {categories.map((category) => (
+                            <SelectItem key={category.value} value={category.value}>
+                              {category.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -342,58 +348,31 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Date Field Deadline
+              */}
             <FieldGroup className="col-span-1">
-              <Controller
-                name="deadline"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <div className="flex flex-col gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Deadline
-                    </FieldLabel>
-                    <DatePickerScholarship placeholder="Pick a date" />
-                  </div>
-                )}
-              />
+              <DatePickerScholarship placeholder="Pick a date" name="deadline" control={form.control} />
             </FieldGroup>
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="applicants"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Applicants
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="applicants"
-                      autoComplete="username"
-                      className="rounded"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
+
+            {/*
+              ** @Field Max Applicants
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="maxApplicants"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Max Applicants
+                    <FieldLabel htmlFor="form-rhf-input-username" className="flex items-center">
+                      Total Accept Applicants<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-rhf-input-username"
                       aria-invalid={fieldState.invalid}
-                      placeholder="max applicants"
+                      placeholder="applicants(etc. 200, 300"
                       autoComplete="username"
                       className="rounded"
                     />
@@ -404,48 +383,24 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Selects control component Eligibility field
+              */}
             <FieldGroup className="col-span-1">
-              <Controller
-                name="eligibility"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Eligibility
-                    </FieldLabel>
-                    <MultipleSelect />
-                    {/* <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Eligibility"
-                      autoComplete="username"
-                      className="rounded"
-                    /> */}
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+              <MultipleSelectControlComponent control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
+
+            {/*
+              ** @Selects control component Slugs field
+              */}
             <FieldGroup className="col-span-1">
-              <Controller
-                name="slug"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Slug
-                    </FieldLabel>
-                    <MultipleSelect />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+              <MultipleSelectControlComponent control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
+
+            {/*
+              ** @Selection Award Type
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="awardType"
@@ -476,9 +431,9 @@ export function FormCreateScholarship() {
                         <SelectContent position="item-aligned">
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
-                          {awardType.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
-                              {language.label}
+                          {awardType.map((award) => (
+                            <SelectItem key={award.value} value={award.value}>
+                              {award.label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -488,6 +443,10 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @Selection Education Level
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="educationLevel"
@@ -530,12 +489,17 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
-            <FieldGroup className="col-span-1">
-              {/*
-              ** @Checkbox control component
+
+            {/*
+              ** @Checkbox control component Scholarship
               */}
+            <FieldGroup className="col-span-1">
               <CheckboxScholarship title="Rewable" name="renewable" control={form.control} />
             </FieldGroup>
+
+            {/*
+              ** @Program Field
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="program"
@@ -560,6 +524,10 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
+            {/*
+              ** @ Website Field
+              */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="website"
@@ -584,50 +552,43 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
-            <FieldGroup className="col-span-1">
-              {/*
-              ** @Checkbox control component
+
+            {/*
+              ** @Checkbox control component Featured
               */}
+            <FieldGroup className="col-span-1">
               <CheckboxScholarship title="Featured" name="featured" control={form.control} />
             </FieldGroup>
 
-            <FieldGroup className="col-span-1">
-              {/*
-              ** @Checkbox control component
+            {/*
+              ** @Checkbox control component Application Fee
               */}
+            <FieldGroup className="col-span-1">
               <CheckboxScholarship title="Application Fee" name="applicationFee" control={form.control} />
             </FieldGroup>
+            {/*
+              ** @Multiple Select control component Tags fields
+              */}
             <FieldGroup className="col-span-1">
-              <Controller
-                name="tags"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Tags
-                    </FieldLabel>
-                    <MultipleSelect />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+              <MultipleSelectControlComponent control={form.control} label="Tags" name="tags" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
-            <FieldGroup className="col-span-1">
-              {/*
+            {/*
               ** @Checkbox control component
               */}
+            <FieldGroup className="col-span-1">
               <CheckboxScholarship title="International Scholarship" name="international" control={form.control} />
             </FieldGroup>
 
-            <FieldGroup className="col-span-1">
-              {/*
-              ** @Multiple Select control component
+            {/*
+              ** @Multiple Select control component fields
               */}
+            <FieldGroup className="col-span-1">
               <MultipleSelectControlComponent control={form.control} label="Document Required" name="documentsRequired" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
 
+            {/*
+            ** @Location Field
+            */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="location"
@@ -653,8 +614,9 @@ export function FormCreateScholarship() {
               />
             </FieldGroup>
 
-
-
+            {/*
+            ** @Description Field
+            */}
             <FieldGroup className="col-span-2">
               <Controller
                 name="description"
@@ -668,8 +630,6 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
-
-
           </div>
         </form>
       </CardContent>
