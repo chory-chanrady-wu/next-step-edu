@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import Footer from "@/app/components/common/Footer";
@@ -46,11 +47,16 @@ function getPaginationModel(current: number, total: number) {
 }
 
 export default function ScholarshipClientPage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [query, setQuery] = React.useState("");
   const [location, setLocation] = React.useState<string>("all");
   const [level, setLevel] = React.useState<string>("all");
   const [sort, setSort] = React.useState<SortKey>("name_asc");
-  const [page, setPage] = React.useState(1);
+  const pageFromUrl = Number(searchParams.get("page") ?? "1");
+  const page = Number.isFinite(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
 
   const locations = React.useMemo(() => {
     const uniq = Array.from(new Set(SCHOLARSHIPS.map((s) => s.location))).sort();
@@ -87,12 +93,33 @@ export default function ScholarshipClientPage() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
   React.useEffect(() => {
-    setPage(1);
+    if (page === 1) return;
+    const next = new URLSearchParams(searchParams.toString());
+    next.delete("page");
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname);
   }, [query, location, level, sort]);
 
   React.useEffect(() => {
-    setPage((p) => Math.min(Math.max(1, p), totalPages));
-  }, [totalPages]);
+    if (page <= totalPages) return;
+    const next = new URLSearchParams(searchParams.toString());
+    if (totalPages <= 1) next.delete("page");
+    else next.set("page", String(totalPages));
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname);
+  }, [page, pathname, router, searchParams, totalPages]);
+
+  const makePageHref = React.useCallback(
+    (targetPage: number) => {
+      const safePage = Math.min(Math.max(1, targetPage), totalPages);
+      const next = new URLSearchParams(searchParams.toString());
+      if (safePage <= 1) next.delete("page");
+      else next.set("page", String(safePage));
+      const qs = next.toString();
+      return qs ? `${pathname}?${qs}` : pathname;
+    },
+    [pathname, searchParams, totalPages],
+  );
 
   const paged = React.useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
@@ -105,7 +132,7 @@ export default function ScholarshipClientPage() {
       {/* Hero */}
       <section className="bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500">
         <div className="container mx-auto px-4 py-14 text-center text-white sm:py-16 lg:py-20">
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2.5 text-sm font-semibold backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
             <Sparkles className="h-4 w-4" aria-hidden />
             <span>Funding Your Dreams</span>
           </div>
@@ -133,7 +160,7 @@ export default function ScholarshipClientPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:w-[560px]">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:w-140">
                 <Select value={location} onValueChange={setLocation}>
                   <SelectTrigger className="h-11 rounded-xl">
                     <div className="flex items-center gap-2">
@@ -212,14 +239,16 @@ export default function ScholarshipClientPage() {
             </div>
           )}
 
-          {filtered.length > 0 && totalPages > 1 && (
+          {filtered.length > 0 && (
             <div className="mx-auto mt-10 max-w-7xl">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
-                      disabled={page === 1}
+                      href={makePageHref(page - 1)}
+                      aria-disabled={page === 1}
+                      tabIndex={page === 1 ? -1 : undefined}
+                      className={page === 1 ? "pointer-events-none opacity-50" : undefined}
                     />
                   </PaginationItem>
 
@@ -235,7 +264,7 @@ export default function ScholarshipClientPage() {
                       <PaginationItem key={item}>
                         <PaginationLink
                           isActive={item === page}
-                          onClick={() => setPage(item)}
+                          href={makePageHref(item)}
                           size="icon"
                         >
                           {item}
@@ -246,8 +275,10 @@ export default function ScholarshipClientPage() {
 
                   <PaginationItem>
                     <PaginationNext
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                      disabled={page === totalPages}
+                      href={makePageHref(page + 1)}
+                      aria-disabled={page === totalPages}
+                      tabIndex={page === totalPages ? -1 : undefined}
+                      className={page === totalPages ? "pointer-events-none opacity-50" : undefined}
                     />
                   </PaginationItem>
                 </PaginationContent>
