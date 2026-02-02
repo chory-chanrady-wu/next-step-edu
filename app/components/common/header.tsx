@@ -72,16 +72,19 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden items-center gap-3 md:flex">
-            <Button variant="ghost" size="sm" className="gap-2" onClick={openAuth}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2"
+              onClick={openAuth}
+            >
               <LogIn className="h-4 w-4" />
               Login
             </Button>
-            <Link href={routes.signup}>
-              <Button size="sm" className="gap-2">
-                <User className="h-4 w-4" />
-                Get Started
-              </Button>
-            </Link>
+            <Button size="sm" className="gap-2" onClick={openAuth}>
+              <User className="h-4 w-4" />
+              Get Started
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -91,7 +94,11 @@ export default function Header() {
             aria-label="Toggle menu"
             type="button"
           >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
 
@@ -122,7 +129,12 @@ export default function Header() {
                 ))}
 
                 <div className="mt-3 grid gap-2 border-t border-slate-200 pt-4">
-                  <Button variant="outline" size="sm" className="gap-2" onClick={openAuth}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={openAuth}
+                  >
                     <LogIn className="h-4 w-4" />
                     Login
                   </Button>
