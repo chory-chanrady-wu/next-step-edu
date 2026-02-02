@@ -3,20 +3,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
-import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
   Field,
-  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -33,10 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { DatePickerScholarship } from "./DatePicker"
-import MultipleSelect from "./MultipleSelect"
 import { Textarea } from "@/components/ui/textarea"
-import UploadImage from "./UploadImage"
-import { useState } from "react"
 import { UploadFile } from "antd"
 import CheckboxScholarship from "./CheckboxScholarship"
 import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
@@ -428,35 +422,6 @@ export function FormCreateScholarship() {
               ** @Field Max Applicants
               */}
             <FieldGroup className="col-span-1">
-              {/* <Controller
-                name="maxApplicants"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-total-accept" className="flex items-center">
-                      Total Accept Applicants<span className="text-red-500">*</span>
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-input-total-accept"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="applicants (e.g. 200, 300)"
-                      autoComplete="off"
-                      className="rounded"
-                      type="number"
-                      value={field.value}
-                      onChange={e => {
-                        const value = e.target.value;
-                        const numberValue = value === "" ? undefined : Number(value);
-                        field.onChange(numberValue);
-                      }}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              /> */}
               <IncrementNumbers control={form.control} placeholder="Set maximum accept applicant" max={500} label="Set Maximun accept applicants" name="maxApplicants" />
             </FieldGroup>
 
