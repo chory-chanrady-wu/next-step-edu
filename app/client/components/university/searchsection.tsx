@@ -33,7 +33,7 @@ export default function SearchSection({
 
   return (
     <section
-      className="bg-white py-8 px-4 sticky top-16 z-10"
+      className="bg-white py-8 px-4 top-16 z-10"
       data-aos="fade-up"
     >
       <div className="max-w-7xl mx-auto">

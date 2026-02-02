@@ -47,7 +47,7 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Academic Faculties
           </h2>
-          <div className="w-full h-1 bg-linear-to-r from-blue-600 to-blue-400 mx-auto"></div>
+          <div className="w-full h-1 bg-linear-to-r from-teal-600 to-teal-400 mx-auto"></div>
           <p className="text-gray-600 mt-2 mx-auto text-left">
             Explore our diverse range of academic faculties offering world-class
             education across multiple disciplines
@@ -70,7 +70,7 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           >
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-linear-to-r from-blue-900 to-blue-700 text-white">
+                <tr className="bg-linear-to-r from-teal-900 to-teal-700 text-white">
                   <th className="px-6 py-4 text-left text-sm font-semibold">
                     Icon
                   </th>
@@ -88,7 +88,7 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
                     key={faculty.id}
                     data-aos="fade-up"
                     data-aos-delay={`${index * 100}`}
-                    className="border-b border-gray-200 hover:bg-blue-50 transition-colors"
+                    className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div className="text-4xl">{faculty.icon || "🎓"}</div>
@@ -113,14 +113,14 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           <div
             data-aos="fade-up"
             data-aos-delay="600"
-            className="mt-16 bg-linear-to-r from-blue-600 to-blue-400 rounded-xl p-8 text-white shadow-lg"
+            className="mt-16 bg-linear-to-r from-teal-600 to-teal-400 rounded-xl p-8 text-white shadow-lg"
           >
             <div className="flex justify-center items-center">
               <div>
                 <div className="text-4xl font-bold mb-2 text-center">
                   {faculties.length}
                 </div>
-                <p className="text-blue-100 text-center">Academic Faculties</p>
+                <p className="text-teal-100 text-center">Academic Faculties</p>
               </div>
             </div>
           </div>

@@ -66,11 +66,12 @@ export default function Contents({
             {viewMode === "grid" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {universities.map((university, index) => (
-                  <div
+                  <Link
                     key={university.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                    href={`/client/university/${university.id}`}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md transition-all duration-300 cursor-pointer"
                     data-aos="fade-up"
-                    data-aos-delay={`${index * 50}`}
+                    data-aos-delay={`${index * 10}`}
                   >
                     {/* Cover Image */}
                     <div className="relative h-48 bg-gray-200 overflow-hidden">
@@ -81,7 +82,7 @@ export default function Contents({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-linear-to-br from-blue-400 to-teal-400" />
+                        <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
                       )}
                     </div>
 
@@ -136,41 +137,21 @@ export default function Contents({
                             {university.programs_count || 0} Programs
                           </span>
                         </div>
-
-                        {/* Visit Buttons */}
-                        <div className="flex gap-2">
-                          <Link
-                            href={`/client/university/${university.id}`}
-                            className="flex-1 text-center bg-amber-400 text-white py-2 rounded-lg hover:bg-amber-500 transition-colors text-sm font-medium"
-                          >
-                            View Details
-                          </Link>
-
-                          {university.official_website && (
-                            <a
-                              href={university.official_website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 text-center bg-gray-100 text-gray-900 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
-                            >
-                              Official Site
-                            </a>
-                          )}
-                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
               /* Universities List View */
               <div className="space-y-4">
                 {universities.map((university, index) => (
-                  <div
+                  <Link
                     key={university.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    href={`/client/university/${university.id}`}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer block"
                     data-aos="fade-up"
-                    data-aos-delay={`${index * 30}`}
+                    data-aos-delay={`${index * 50}`}
                   >
                     <div className="flex flex-col md:flex-row">
                       {/* Image Section */}
@@ -182,7 +163,7 @@ export default function Contents({
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-linear-to-br from-blue-400 to-teal-400" />
+                          <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
                         )}
                         {university.logo_url && (
                           <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-white">
@@ -210,7 +191,7 @@ export default function Contents({
                             </p>
 
                             {/* Stats */}
-                            <div className="flex items-center gap-6 mb-4">
+                            <div className="flex items-center gap-6">
                               <div className="flex items-center gap-2">
                                 <div className="flex gap-1">
                                   {[...Array(5)].map((_, i) => (
@@ -230,35 +211,15 @@ export default function Contents({
                                   Tuition
                                 </span>
                               </div>
-                              <span className="text-sm bg-blue-100 px-3 py-1 rounded-full text-blue-700 font-medium">
+                              <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">
                                 {university.programs_count || 0} Programs
                               </span>
                             </div>
                           </div>
-
-                          {/* Action Buttons */}
-                          <div className="flex gap-3">
-                            <Link
-                              href={`/client/university/${university.id}`}
-                              className="px-6 py-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition-colors font-medium"
-                            >
-                              View Details
-                            </Link>
-                            {university.official_website && (
-                              <a
-                                href={university.official_website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-6 py-2 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-colors font-medium"
-                              >
-                                Official Site →
-                              </a>
-                            )}
-                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

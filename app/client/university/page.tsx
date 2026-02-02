@@ -125,7 +125,7 @@ export default function UniversityPage() {
                 onClick={() => setViewMode("grid")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                   viewMode === "grid"
-                    ? "bg-blue-600 text-white shadow-sm"
+                    ? "bg-teal-600 text-white shadow-sm"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
@@ -135,7 +135,7 @@ export default function UniversityPage() {
                 onClick={() => setViewMode("list")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                   viewMode === "list"
-                    ? "bg-blue-600 text-white shadow-sm"
+                    ? "bg-teal-600 text-white shadow-sm"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >

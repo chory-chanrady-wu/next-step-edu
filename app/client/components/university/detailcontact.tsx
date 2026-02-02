@@ -78,7 +78,7 @@ export default function DetailContact({
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Contact Information
           </h2>
-          <div className="w-24 h-1 bg-linear-to-r from-blue-600 to-blue-400 mx-auto"></div>
+          <div className="w-24 h-1 bg-linear-to-r from-teal-600 to-teal-400 mx-auto"></div>
         </div>
 
         {loading ? (
@@ -94,7 +94,7 @@ export default function DetailContact({
                   key={index}
                   data-aos="fade-up"
                   data-aos-delay={`${index * 100}`}
-                  className="bg-linear-to-br from-blue-50 to-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-blue-100"
+                  className="bg-linear-to-br from-teal-50 to-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-teal-100"
                 >
                   <div className="flex items-start gap-4">
                     <div className="text-4xl">{info.icon}</div>
@@ -107,7 +107,7 @@ export default function DetailContact({
                           href={info.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-700 hover:underline break-all"
+                          className="text-teal-600 hover:text-teal-700 hover:underline break-all"
                         >
                           {info.content}
                         </a>
@@ -124,10 +124,10 @@ export default function DetailContact({
             <div
               data-aos="fade-up"
               data-aos-delay="400"
-              className="bg-linear-to-r from-blue-600 to-blue-500 rounded-xl p-8 text-center text-white shadow-lg"
+              className="bg-linear-to-r from-teal-600 to-teal-500 rounded-xl p-8 text-center text-white shadow-lg"
             >
               <h3 className="text-2xl font-bold mb-4">Ready to Apply?</h3>
-              <p className="text-blue-50 mb-6 max-w-2xl mx-auto">
+              <p className="text-teal-50 mb-6 max-w-2xl mx-auto">
                 Take the first step towards your future. Visit our official
                 website to learn more about admission requirements and
                 application deadlines.
@@ -138,12 +138,12 @@ export default function DetailContact({
                     href={contact?.website || officialWebsite}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-colors"
+                    className="bg-white text-teal-600 font-semibold py-3 px-8 rounded-lg hover:bg-teal-50 transition-colors"
                   >
                     Visit Official Website
                   </a>
                 )}
-                <button className="bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-800 transition-colors">
+                <button className="bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg hover:bg-teal-800 transition-colors">
                   Request Information
                 </button>
               </div>

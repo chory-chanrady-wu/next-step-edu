@@ -40,7 +40,7 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="bg-[#1f3b5f] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
+      <div className="mx-auto max-w-7xl px-2 py-5 md:py-5">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-14">
           {/* Brand */}
           <div>
@@ -51,12 +51,12 @@ export default function Footer() {
               <span className="text-2xl font-extrabold">NextStepEdu</span>
             </Link>
 
-            <p className="mt-6 max-w-sm text-base leading-relaxed text-white/75">
+            <p className="mt-2 max-w-sm text-base leading-relaxed text-white/75">
               Empowering students to discover their path to higher education
               through comprehensive university and scholarship information.
             </p>
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-5 flex gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -73,7 +73,7 @@ export default function Footer() {
           {/* Explore */}
           <div>
             <h4 className="text-xl font-extrabold">Explore</h4>
-            <ul className="mt-6 space-y-4">
+            <ul className="mt-5 space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -90,7 +90,7 @@ export default function Footer() {
           {/* Resources */}
           <div>
             <h4 className="text-xl font-extrabold">Resources</h4>
-            <ul className="mt-6 space-y-4">
+            <ul className="mt-5 space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -107,7 +107,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="text-xl font-extrabold">Contact Us</h4>
-            <ul className="mt-6 space-y-5">
+            <ul className="mt-5 space-y-3">
               <li className="flex items-center gap-4 text-base text-white/75">
                 <MapPin className="h-5 w-5 shrink-0 text-white/70" />
                 <span>Phnom Penh, Cambodia</span>
@@ -129,7 +129,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="mt-14 border-t border-white/10 pt-10" />
+        <div className="mt-3 border-t border-white/10 pt-3" />
 
         {/* Bottom Bar */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">

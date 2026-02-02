@@ -73,7 +73,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
                 {university.name}
               </h1>
-              <p className="text-xl text-blue-200 flex items-center gap-2">
+              <p className="text-xl text-teal-200 flex items-center gap-2">
                 <span>📍</span>
                 {university.location}
               </p>
@@ -135,10 +135,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
             >
               <div className="text-center">
                 <p className="text-gray-300 text-sm">Get Started</p>
-                <a
-                  href="#programs"
-                  className="text-3xl font-bold text-white"
-                >
+                <a href="#programs" className="text-3xl font-bold text-white">
                   Explore Programs ↓
                 </a>
               </div>
@@ -147,7 +144,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
           {/* Divider */}
           <div
-            className="mt-8 h-1 bg-linear-to-r from-transparent via-blue-400 to-transparent"
+            className="mt-8 h-1 bg-linear-to-r from-transparent via-teal-400 to-transparent"
             data-aos="fade-in"
             data-aos-delay="600"
           ></div>

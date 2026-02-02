@@ -77,16 +77,7 @@ export default function HeroSection() {
 
   if (loading || universities.length === 0) {
     return (
-      <section className="relative bg-linear-to-r from-blue-600 to-teal-500 text-white py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            Explore Universities Worldwide
-          </h1>
-          <p className="text-xl text-blue-100">
-            Loading featured universities...
-          </p>
-        </div>
-      </section>
+      <p className="text-xl text-blue-100">Loading featured universities...</p>
     );
   }
 
@@ -119,7 +110,7 @@ export default function HeroSection() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-linear-to-r from-blue-600 to-teal-500" />
+              <div className="w-full h-full bg-linear-to-r from-teal-600 to-teal-500" />
             )}
             <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/50 to-transparent" />
           </div>
@@ -181,7 +172,7 @@ export default function HeroSection() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`/client/university/${university.id}`}
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="bg-teal-400 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   Explore University
                 </Link>
@@ -190,7 +181,7 @@ export default function HeroSection() {
                     href={university.official_website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all"
+                    className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-all"
                   >
                     Official Website →
                   </a>

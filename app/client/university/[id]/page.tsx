@@ -89,9 +89,14 @@ export default function UniversityDetailPage() {
 
   if (loading) {
     return (
-      <main className="p-8">
-        <div className="text-center text-gray-500 py-12">
-          Loading university details...
+      <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+          </div>
+          <p className="text-gray-600 font-medium">
+            Loading university details...
+          </p>
         </div>
       </main>
     );
@@ -99,17 +104,23 @@ export default function UniversityDetailPage() {
 
   if (error || !university) {
     return (
-      <main className="p-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {error || "University not found"}
+      <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 p-4">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-xl shadow-lg p-8 border-l-4 border-red-500">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="text-3xl">⚠️</div>
+              <h3 className="text-lg font-bold text-gray-900">Error</h3>
+            </div>
+            <p className="text-gray-600 mb-6">
+              {error || "University not found"}
+            </p>
+            <button
+              onClick={() => router.back()}
+              className="w-full px-6 py-3 bg-linear-to-r from-teal-600 to-teal-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 font-semibold"
+            >
+              ← Go Back
+            </button>
           </div>
-          <button
-            onClick={() => router.back()}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-          >
-            ← Go Back
-          </button>
         </div>
       </main>
     );
@@ -134,7 +145,7 @@ export default function UniversityDetailPage() {
       <DetailNavigation />
 
       {/* Main Content */}
-      <DetailAbout description={university.description} />
+      {/* <DetailAbout description={university.description} /> */}
       <DetailFaculty
         universityId={university.id}
         universityName={university.name}
@@ -150,7 +161,7 @@ export default function UniversityDetailPage() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 z-50 group"
+          className="fixed bottom-8 right-8 bg-linear-to-r from-teal-600 to-teal-500 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 z-50 group backdrop-blur-sm"
           aria-label="Back to top"
         >
           <svg

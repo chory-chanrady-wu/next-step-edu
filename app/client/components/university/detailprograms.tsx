@@ -74,7 +74,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
           <p className="text-xl text-gray-600 mb-4">
             Explore {programs.length} programs offered by this university
           </p>
-          <div className="w-full h-1 bg-linear-to-r from-blue-900 to-blue-700"></div>
+          <div className="w-full h-1 bg-linear-to-r from-teal-900 to-teal-700"></div>
         </div>
 
         {/* Programs Table */}
@@ -84,7 +84,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
         >
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-linear-to-r from-blue-900 to-blue-700 text-white">
+              <tr className="bg-linear-to-r from-teal-900 to-teal-700 text-white">
                 <th className="px-6 py-4 text-left text-sm font-semibold">
                   Program Name
                 </th>
@@ -111,7 +111,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                   key={program.id}
                   data-aos="fade-up"
                   data-aos-delay={`${100 + index * 50}`}
-                  className="border-b border-gray-200 hover:bg-blue-50 transition-colors"
+                  className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <span className="font-semibold text-gray-900">
@@ -119,7 +119,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
+                    <span className="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-sm rounded-full font-medium">
                       {getDegreeLabel(program.degree_level)}
                     </span>
                   </td>
