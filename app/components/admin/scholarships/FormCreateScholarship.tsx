@@ -43,6 +43,7 @@ import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
 import UploadImageControl from "./UploadImage"
 import { usePrograms } from "@/hooks/admin-custom-hook"
 import { programsToOptions } from "@/app/lib/formatters"
+import IncrementNumbers from "./IncredementNumbers"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -76,6 +77,28 @@ const categories = [
   { label: "Minority", value: "minority" },
   { label: "Community", value: "community" },
 ] as const
+
+export const eligibilityOptions = [
+  { value: "high-school-graduate", label: "High School Graduate" },
+  { value: "undergraduate-student", label: "Undergraduate Student" },
+  { value: "bachelor-degree", label: "Bachelor Degree" },
+  { value: "master-degree", label: "Master Degree" },
+  { value: "doctoral-degree", label: "Doctoral/PhD Degree" },
+  { value: "working-professional", label: "Working Professional" },
+  { value: "researcher", label: "Researcher" },
+  { value: "international-student", label: "International Student" },
+  { value: "domestic-student", label: "Domestic Student" },
+  { value: "low-income", label: "Low Income" },
+  { value: "merit-based", label: "Merit Based" },
+  { value: "athlete", label: "Athlete" },
+  { value: "minority", label: "Minority Group" },
+  { value: "disability", label: "Person with Disability" },
+  { value: "entrepreneur", label: "Entrepreneur" },
+  { value: "veteran", label: "Veteran" },
+  { value: "teacher", label: "Teacher/Educator" },
+  { value: "student-leader", label: "Student Leader" }
+];
+
 
 
 export function FormCreateScholarship() {
@@ -137,12 +160,21 @@ export function FormCreateScholarship() {
     })
   }
 
+
+  if (isLoading) {
+    return <div>Loading ...</div>
+  }
+
+  if (error) {
+    return <div>Something went wrong</div>
+  }
+
   return (
     <Card className="w-full flex px-5 shadow-none border-none">
       <CardHeader>
-        <CardTitle>Profile Settings</CardTitle>
+        <CardTitle>Create Scholarships</CardTitle>
         <CardDescription>
-          Update your profile information below.
+          Create scholarship information below.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -396,7 +428,7 @@ export function FormCreateScholarship() {
               ** @Field Max Applicants
               */}
             <FieldGroup className="col-span-1">
-              <Controller
+              {/* <Controller
                 name="maxApplicants"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -408,31 +440,38 @@ export function FormCreateScholarship() {
                       {...field}
                       id="form-rhf-input-total-accept"
                       aria-invalid={fieldState.invalid}
-                      placeholder="applicants(etc. 200, 300"
-                      autoComplete="username"
+                      placeholder="applicants (e.g. 200, 300)"
+                      autoComplete="off"
                       className="rounded"
                       type="number"
+                      value={field.value}
+                      onChange={e => {
+                        const value = e.target.value;
+                        const numberValue = value === "" ? undefined : Number(value);
+                        field.onChange(numberValue);
+                      }}
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
                   </Field>
                 )}
-              />
+              /> */}
+              <IncrementNumbers control={form.control} placeholder="Set maximum accept applicant" max={500} label="Set Maximun accept applicants" name="maxApplicants" />
             </FieldGroup>
 
             {/*
               ** @Selects control component Eligibility field
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-eligibility" control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-eligibility" control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={eligibilityOptions} />
             </FieldGroup>
 
             {/*
               ** @Selects control component Slugs field
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-slugs" control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-slugs" control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "bse", label: "B-S-E" }]} />
             </FieldGroup>
 
             {/*
@@ -531,7 +570,7 @@ export function FormCreateScholarship() {
               ** @Checkbox Renewable control component Scholarship
               */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship id="form-rhf-checkbox-renewable" title="Renewable"  name="renewable" control={form.control} />
+              <CheckboxScholarship id="form-rhf-checkbox-renewable" title="Renewable" name="renewable" control={form.control} />
             </FieldGroup>
 
             {/*
@@ -625,7 +664,7 @@ export function FormCreateScholarship() {
               ** @Multiple Select control component Tags fields
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-tags" control={form.control} label="Tags" mode="tags" name="tags" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-tags" control={form.control} label="Tags" mode="tags" name="tags" size="large" options={[{ value: "new-oppunity", label: "New Oppunity" }]} />
             </FieldGroup>
             {/*
               ** @Checkbox control component International
