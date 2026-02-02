@@ -53,10 +53,10 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
 
   if (programs.length === 0) {
     return (
-      <section className="py-5 md:py-5 bg-gray-50">
+      <section className="py-3 md:py-3 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div data-aos="fade-up" className="text-center text-gray-500">
-            <p className="text-xl">No programs available at this time.</p>
+            <p className="text-sm">No programs available at this time.</p>
           </div>
         </div>
       </section>
@@ -64,14 +64,14 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
   }
 
   return (
-    <section id="programs" className="py-5 md:py-5 bg-gray-50">
+    <section id="programs" className="py-3 md:py-3 bg-gray-50">
       <div className="px-4 max-w-7xl mx-auto">
         {/* Section Title */}
-        <div data-aos="fade-up" className="mb-12">
-          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+        <div data-aos="fade-up" className="mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
             Available Programs
           </h2>
-          <p className="text-xl text-gray-600 mb-4">
+          <p className="text-sm text-gray-600 mb-2">
             Explore {programs.length} programs offered by this university
           </p>
           <div className="w-full h-1 bg-linear-to-r from-teal-900 to-teal-700"></div>
@@ -85,22 +85,22 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-linear-to-r from-teal-900 to-teal-700 text-white">
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Program Name
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Degree Level
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Duration
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Tuition Fee
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Entrance Exam
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Description
                 </th>
               </tr>
@@ -113,26 +113,26 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                   data-aos-delay={`${100 + index * 50}`}
                   className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
                 >
-                  <td className="px-6 py-4">
-                    <span className="font-semibold text-gray-900">
+                  <td className="px-3 py-2">
+                    <span className="font-semibold text-gray-900 text-xs">
                       {program.name}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-sm rounded-full font-medium">
+                  <td className="px-3 py-2">
+                    <span className="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded-full font-medium">
                       {getDegreeLabel(program.degree_level)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-3 py-2 text-gray-700 text-xs">
                     {formatDuration(program.study_period_months)}
                   </td>
-                  <td className="px-6 py-4 text-gray-700 font-medium">
+                  <td className="px-3 py-2 text-gray-700 font-medium text-xs">
                     {program.currency} $
                     {program.tuition_fee_amount.toLocaleString()}/year
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-2">
                     <span
-                      className={`inline-block px-3 py-1 text-sm rounded-full font-medium ${
+                      className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
                         program.exam_required
                           ? "bg-yellow-100 text-yellow-800"
                           : "bg-green-100 text-green-800"
@@ -141,8 +141,10 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                       {program.exam_required ? "Yes" : "No"}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 max-w-xs">
-                    <p className="line-clamp-2">{program.description}</p>
+                  <td className="px-3 py-2 text-gray-600 max-w-xs">
+                    <p className="line-clamp-2 text-xs">
+                      {program.description}
+                    </p>
                   </td>
                 </tr>
               ))}

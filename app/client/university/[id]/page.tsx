@@ -86,42 +86,9 @@ export default function UniversityDetailPage() {
       fetchData();
     }
   }, [id]);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100">
-        <div className="text-center">
-          <div className="inline-block mb-4">
-            <div className="w-12 h-12 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
-          </div>
-          <p className="text-gray-600 font-medium">
-            Loading university details...
-          </p>
-        </div>
-      </main>
-    );
-  }
-
   if (error || !university) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 p-4">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-xl shadow-lg p-8 border-l-4 border-red-500">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="text-3xl">⚠️</div>
-              <h3 className="text-lg font-bold text-gray-900">Error</h3>
-            </div>
-            <p className="text-gray-600 mb-6">
-              {error || "University not found"}
-            </p>
-            <button
-              onClick={() => router.back()}
-              className="w-full px-6 py-3 bg-linear-to-r from-teal-600 to-teal-500 text-white rounded-lg hover:shadow-lg transition-all duration-200 font-semibold"
-            >
-              ← Go Back
-            </button>
-          </div>
-        </div>
       </main>
     );
   }
@@ -142,20 +109,25 @@ export default function UniversityDetailPage() {
       />
 
       {/* Sticky Navigation */}
-      <DetailNavigation />
+      {/* <DetailNavigation /> */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-gray-50">
+        <div className="lg:col-span-2 *:px-4 md:px-5 lg:px-5 py-6">
+          <DetailFaculty
+            universityId={university.id}
+            universityName={university.name}
+          />
+          <DetailPrograms programs={programs} />
+        </div>
 
-      {/* Main Content */}
-      {/* <DetailAbout description={university.description} /> */}
-      <DetailFaculty
-        universityId={university.id}
-        universityName={university.name}
-      />
-      <DetailPrograms programs={programs} />
-      <DetailContact
-        universityId={university.id}
-        officialWebsite={university.official_website}
-        location={`${university.city}, ${university.country}`}
-      />
+        {/* Right Side - Sticky Contact */}
+        <div className="lg:sticky lg:top-24 lg:h-fit lg:col-span-1 scale-90 lg:scale-100 origin-top-right">
+          <DetailContact
+            universityId={university.id}
+            officialWebsite={university.official_website}
+            location={`${university.city}, ${university.country}`}
+          />
+        </div>
+      </div>
 
       {/* Back to Top Button */}
       {showBackToTop && (

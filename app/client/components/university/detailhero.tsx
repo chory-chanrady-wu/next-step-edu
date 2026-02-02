@@ -38,7 +38,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
         </button>
       </div>
       {/* Background Cover Image */}
-      <div className="relative w-full h-96 overflow-hidden">
+      <div className="relative w-full h-48 overflow-hidden">
         <Image
           src={university.cover_image}
           alt={university.name}
@@ -46,17 +46,17 @@ export default function DetailHero({ university }: DetailHeroProps) {
           className="object-cover brightness-50"
           priority
         />
-        <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent"></div>
+        {/* <div className="absolute inset-0 bg-linear-to-t from-slate-900 to-transparent"></div> */}
       </div>
 
       {/* Content Container */}
-      <div className="relative px-4 md:px-8 lg:px-16 py-5 backdrop:blur-sm">
-        <div className="max-w-6xl mx-auto">
+      <div className="relative px-4 md:px-5 lg:px-5 py-3 backdrop:blur-sm">
+        <div className=" mx-auto">
           {/* Logo and Name Section */}
-          <div className="flex flex-col md:flex-row items-start md:items-end gap-6 mb-8">
+          <div className="flex flex-col md:flex-row items-start md:items-end gap-4 mb-4">
             {/* Logo */}
             <div
-              className="relative w-24 h-24 md:w-32 md:h-32 bg-white rounded-lg shadow-lg overflow-hidden border-4 border-white"
+              className="relative w-16 h-16 md:w-24 md:h-24 bg-white rounded-lg shadow-lg overflow-hidden border-4 border-white"
               data-aos="fade-up"
               data-aos-delay="0"
             >
@@ -70,10 +70,10 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
             {/* Title and Location */}
             <div data-aos="fade-up" data-aos-delay="100">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-0.5">
                 {university.name}
               </h1>
-              <p className="text-xl text-teal-200 flex items-center gap-2">
+              <p className="text-sm text-teal-200 flex items-center gap-1">
                 <span>📍</span>
                 {university.location}
               </p>
@@ -82,28 +82,28 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
           {/* Description */}
           <div
-            className="mb-8 max-w-3xl"
+            className="mb-4 max-w-3xl"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            <p className="text-lg text-gray-100 leading-relaxed">
+            <p className="text-sm text-gray-100 leading-relaxed">
               {university.description}
             </p>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {/* Programs Count */}
             <div
-              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all"
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all"
               data-aos="zoom-in"
               data-aos-delay="300"
             >
-              <div className="flex items-center gap-4">
-                <div className="text-4xl">📚</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl">📚</div>
                 <div>
-                  <p className="text-gray-300 text-sm">Programs Available</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-gray-300 text-xs">Programs Available</p>
+                  <p className="text-2xl font-bold text-white">
                     {university.programs_count}
                   </p>
                 </div>
@@ -112,15 +112,15 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
             {/* Tuition Rank */}
             <div
-              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all"
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all"
               data-aos="zoom-in"
               data-aos-delay="400"
             >
-              <div className="flex items-center gap-4">
-                <div className="text-4xl">⭐</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl">⭐</div>
                 <div>
-                  <p className="text-gray-300 text-sm">Ranking</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-gray-300 text-xs">Ranking</p>
+                  <p className="text-2xl font-bold text-white">
                     #{university.tuition_rank}
                   </p>
                 </div>
@@ -129,13 +129,13 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
             {/* Quick Action */}
             <div
-              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all"
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-3 hover:bg-white/15 transition-all"
               data-aos="zoom-in"
               data-aos-delay="500"
             >
               <div className="text-center">
-                <p className="text-gray-300 text-sm">Get Started</p>
-                <a href="#programs" className="text-3xl font-bold text-white">
+                <p className="text-gray-300 text-xs">Get Started</p>
+                <a href="#programs" className="text-lg font-bold text-white">
                   Explore Programs ↓
                 </a>
               </div>
@@ -144,7 +144,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
 
           {/* Divider */}
           <div
-            className="mt-8 h-1 bg-linear-to-r from-transparent via-teal-400 to-transparent"
+            className="mt-6 h-1 bg-linear-to-r from-transparent via-teal-400 to-transparent"
             data-aos="fade-in"
             data-aos-delay="600"
           ></div>

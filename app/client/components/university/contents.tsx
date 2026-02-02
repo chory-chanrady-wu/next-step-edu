@@ -54,7 +54,6 @@ export default function Contents({
 
         {loading ? (
           <div className="text-center text-gray-500 py-12">
-            Loading universities...
           </div>
         ) : universities.length === 0 ? (
           <div className="text-center text-gray-500 py-12">
