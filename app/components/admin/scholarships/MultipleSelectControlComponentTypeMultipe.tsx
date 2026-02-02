@@ -10,7 +10,6 @@ interface MultipleSelectProps {
     control: Control<ScholarshipTask>; // You can narrow this to your form type
     name: keyof ScholarshipTask;
     mode?: "tags" | "multiple";
-    id?: string;
     options: { value: string; label: string }[];
     placeholder?: string;
     defaultValue?: string[];
@@ -18,10 +17,9 @@ interface MultipleSelectProps {
     size?: "small" | "middle" | "large";
 }
 
-const MultipleSelectControlComponent: React.FC<MultipleSelectProps> = ({
+const MultipleSelectControlComponentTypeMultiple: React.FC<MultipleSelectProps> = ({
     control,
     name,
-    id,
     label = "Label",
     mode = "multiple",
     options,
@@ -34,16 +32,14 @@ const MultipleSelectControlComponent: React.FC<MultipleSelectProps> = ({
             name={name}
             control={control}
             defaultValue={defaultValue}
-            render={({ field, fieldState }) => (
+            render={({ field,fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor={id} className="flex items-center">
-                        {label}<span className="text-red-500">*</span>
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                       {label}
                     </FieldLabel>
                     <Select
                         {...field}
-                        mode={mode}
-                        id={id}
-                        status={fieldState.invalid ? "error" : "success"}
+                        mode="tags"
                         size={size}
                         placeholder={placeholder}
                         style={{ width: "100%", borderRadius: 4 }}
@@ -57,4 +53,4 @@ const MultipleSelectControlComponent: React.FC<MultipleSelectProps> = ({
     );
 };
 
-export default MultipleSelectControlComponent;
+export default MultipleSelectControlComponentTypeMultiple;

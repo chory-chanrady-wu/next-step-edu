@@ -11,6 +11,7 @@ const onChange: CheckboxProps['onChange'] = (e) => {
 
 interface CheckboxScholarshipProps {
     title: string;
+    id?: string;
     name: keyof ScholarshipTask;
     control: Control<ScholarshipTask>;
     onChange?: (checked: boolean) => void;
@@ -18,6 +19,7 @@ interface CheckboxScholarshipProps {
 
 const CheckboxScholarship: React.FC<CheckboxScholarshipProps> = ({
     title,
+    id,
     name,
     control,
     onChange
@@ -26,7 +28,7 @@ const CheckboxScholarship: React.FC<CheckboxScholarshipProps> = ({
         control={control}
         render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} className="gap-1">
-                <FieldLabel htmlFor="form-rhf-input-username">
+                <FieldLabel htmlFor={id}>
                     {title}
                 </FieldLabel>
                 <Checkbox
@@ -36,6 +38,7 @@ const CheckboxScholarship: React.FC<CheckboxScholarshipProps> = ({
                         field.onChange(e.target.checked);
                         onChange?.(e.target.checked);
                     }}
+                    id={id}
                     className="border shadow-xs flex items-center"
                     style={{ padding: "8px 10px", borderRadius: "5px" }}
                 >

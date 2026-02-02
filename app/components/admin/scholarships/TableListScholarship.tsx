@@ -49,7 +49,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { useScholarships } from "@/hooks/scholarships";
+import { useScholarships } from "@/hooks/admin-custom-hook";
 import { ScholarshipTask } from "@/app/lib/schema/scholarship";
 
 // ========== COLUMNS DEFINITION ==========

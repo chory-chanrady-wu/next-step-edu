@@ -9,12 +9,11 @@ export const scholarshipSchema = z.object({
   provider: z.string().min(1, "Provider is required"),
 
   // Accept a single image file
-  providerLogo: z.custom<UploadFile[]>((val) => Array.isArray(val), {
-    message: "Provider Logo is required",
-  }),
-  coverImage: z.custom<UploadFile[]>((val) => Array.isArray(val), {
-    message: "Cover Image is required",
-  }),
+  providerLogo: z
+    .array(z.custom<UploadFile>())
+    .min(1, "Provider Logo is required"),
+
+  coverImage: z.array(z.custom<UploadFile>()).min(1, "Cover Image is required"),
 
   amount: z.number().nonnegative(),
 
@@ -43,11 +42,11 @@ export const scholarshipSchema = z.object({
 
   applicants: z.number().int().nonnegative(),
 
-  maxApplicants: z.number().int().positive().optional(),
+  maxApplicants: z.number(),
 
-  eligibility: z.array(z.string()),
+  eligibility: z.array(z.string()).min(1, "Select at least one eligibility requirement"),
 
-  slug: z.array(z.string()),
+  slug: z.array(z.string()).min(1, "Select at least one slug requirement"),
 
   awardType: z.enum(["full", "partial", "tuition", "stipend"]),
 
@@ -61,7 +60,8 @@ export const scholarshipSchema = z.object({
 
   renewable: z.boolean(),
 
-  program: z.string(),
+  program: z.string().uuid(),
+
   description: z.string(),
 
   website: z.string().url(),
@@ -72,11 +72,11 @@ export const scholarshipSchema = z.object({
 
   lastUpdated: z.string(),
 
-  tags: z.array(z.string()),
+  tags: z.array(z.string()).min(1, "Select at least one tag requirement"),
 
   applicationFee: z.boolean(),
 
-  documentsRequired: z.array(z.string()),
+  documentsRequired: z.array(z.string()).min(1, "Select at least one document requirement"),
 
   location: z.string(),
 

@@ -7,6 +7,7 @@ import "../styles/globals.css"
 // import "antd/dist/reset.css";
 import { Roboto } from 'next/font/google';
 import ReactQueryProvider from './providers';
+import { Toaster } from 'sonner';
 
 const inter = Roboto({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
             </div>
           </main>
+          <Toaster />
         </div>
       </ReactQueryProvider>
     </div>

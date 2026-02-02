@@ -41,6 +41,8 @@ import { UploadFile } from "antd"
 import CheckboxScholarship from "./CheckboxScholarship"
 import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
 import UploadImageControl from "./UploadImage"
+import { usePrograms } from "@/hooks/admin-custom-hook"
+import { programsToOptions } from "@/app/lib/formatters"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -75,16 +77,50 @@ const categories = [
   { label: "Community", value: "community" },
 ] as const
 
+
 export function FormCreateScholarship() {
-  const [files, setFiles] = useState<UploadFile[]>([]);
+
+  const { isLoading, data, error } = usePrograms();
+
+
+
   const form = useForm<ScholarshipTask>({
-    // resolver: zodResolver(scholarshipSchema),
-    // defaultValues: {
-    //   username: "",
-    // },
+    resolver: zodResolver(scholarshipSchema),
+    defaultValues: {
+      id: "",
+      title: "",
+      provider: "",
+      providerLogo: [] as UploadFile[], // empty array for file list
+      coverImage: [] as UploadFile[],
+      amount: 0,
+      currency: "",
+      status: "open",
+      category: "academic",
+      deadline: "", // you can set a default date string if needed
+      applicants: 0,
+      maxApplicants: 0, // optional
+      eligibility: [],
+      slug: [],
+      awardType: "full",
+      educationLevel: "undergraduate",
+      renewable: false,
+      program: "",
+      description: "",
+      website: "",
+      featured: false,
+      rating: 0,
+      lastUpdated: "", // could default to new Date().toISOString() if you want
+      tags: [],
+      applicationFee: false,
+      documentsRequired: [],
+      location: "",
+      international: false,
+    },
   })
 
   function onSubmit(data: ScholarshipTask) {
+    console.log('Data', data);
+
     toast("You submitted the following values:", {
       description: (
         <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
@@ -122,15 +158,15 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Title
+                    <FieldLabel htmlFor="form-rhf-input-username" className="flex items-center">
+                      Title<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-rhf-input-username"
                       aria-invalid={fieldState.invalid}
                       placeholder="Title"
-                      autoComplete="username"
+                      autoComplete="title"
                       className="rounded"
                     />
                     {fieldState.invalid && (
@@ -150,12 +186,12 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Provider
+                    <FieldLabel htmlFor="form-rhf-input-provider" className="flex items-center">
+                      Provider<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-input-username"
+                      id="form-rhf-input-provider"
                       aria-invalid={fieldState.invalid}
                       placeholder="Provider"
                       autoComplete="username"
@@ -173,14 +209,14 @@ export function FormCreateScholarship() {
               ** @File Provider Logo
               */}
             <FieldGroup className="col-span-1">
-              <UploadImageControl name="providerLogo" label="Provider Logo" control={form.control} multiple={false} />
+              <UploadImageControl name="providerLogo" id="form-rhf-input-provider-logo" label="Provider Logo" control={form.control} multiple={false} />
             </FieldGroup>
 
             {/*
               ** @File Cover Image
               */}
             <FieldGroup className="col-span-1">
-              <UploadImageControl name="coverImage" label="Cover Image" control={form.control} multiple={false} />
+              <UploadImageControl name="coverImage" id="form-rhf-input-cover-image" label="Cover Image" control={form.control} multiple={false} />
             </FieldGroup>
 
             {/*
@@ -192,12 +228,12 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
+                    <FieldLabel htmlFor="form-rhf-input-amount">
                       Amount
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-input-username"
+                      id="form-rhf-input-amount"
                       aria-invalid={fieldState.invalid}
                       placeholder="Amount"
                       autoComplete="username"
@@ -225,8 +261,8 @@ export function FormCreateScholarship() {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
-                        Currency
+                      <FieldLabel htmlFor="form-rhf-select-currency" className="flex items-center">
+                        Currency<span className="text-red-500">*</span>
                       </FieldLabel>
                       <Select
                         name={field.name}
@@ -234,7 +270,7 @@ export function FormCreateScholarship() {
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
-                          id="form-rhf-select-language"
+                          id="form-rhf-select-currency"
                           aria-invalid={fieldState.invalid}
                           className="w-[34.1rem] rounded"
                         >
@@ -271,7 +307,7 @@ export function FormCreateScholarship() {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
+                      <FieldLabel htmlFor="form-rhf-select-status">
                         Status
                       </FieldLabel>
                       <Select
@@ -280,7 +316,7 @@ export function FormCreateScholarship() {
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
-                          id="form-rhf-select-language"
+                          id="form-rhf-select-status"
                           aria-invalid={fieldState.invalid}
                           className="w-[34.1rem] rounded"
                         >
@@ -317,7 +353,7 @@ export function FormCreateScholarship() {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
+                      <FieldLabel htmlFor="form-rhf-select-category">
                         Category
                       </FieldLabel>
                       <Select
@@ -326,7 +362,7 @@ export function FormCreateScholarship() {
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
-                          id="form-rhf-select-language"
+                          id="form-rhf-select-category"
                           aria-invalid={fieldState.invalid}
                           className="w-[34.1rem] rounded"
                         >
@@ -353,7 +389,7 @@ export function FormCreateScholarship() {
               ** @Date Field Deadline
               */}
             <FieldGroup className="col-span-1">
-              <DatePickerScholarship placeholder="Pick a date" name="deadline" control={form.control} />
+              <DatePickerScholarship id="form-rhf-select-deadline" placeholder="Pick a date" name="deadline" control={form.control} />
             </FieldGroup>
 
             {/*
@@ -365,16 +401,17 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username" className="flex items-center">
+                    <FieldLabel htmlFor="form-rhf-input-total-accept" className="flex items-center">
                       Total Accept Applicants<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-input-username"
+                      id="form-rhf-input-total-accept"
                       aria-invalid={fieldState.invalid}
                       placeholder="applicants(etc. 200, 300"
                       autoComplete="username"
                       className="rounded"
+                      type="number"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -388,14 +425,14 @@ export function FormCreateScholarship() {
               ** @Selects control component Eligibility field
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-eligibility" control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
 
             {/*
               ** @Selects control component Slugs field
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-slugs" control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
 
             {/*
@@ -412,7 +449,7 @@ export function FormCreateScholarship() {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
+                      <FieldLabel htmlFor="form-rhf-select-award">
                         Award Type
                       </FieldLabel>
                       <Select
@@ -421,7 +458,7 @@ export function FormCreateScholarship() {
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
-                          id="form-rhf-select-language"
+                          id="form-rhf-select-award"
                           aria-invalid={fieldState.invalid}
                           className="w-[34.1rem] rounded"
                         >
@@ -458,7 +495,7 @@ export function FormCreateScholarship() {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
+                      <FieldLabel htmlFor="form-rhf-select-education-level">
                         Education Level
                       </FieldLabel>
                       <Select
@@ -467,7 +504,7 @@ export function FormCreateScholarship() {
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
-                          id="form-rhf-select-language"
+                          id="form-rhf-select-education-level"
                           aria-invalid={fieldState.invalid}
                           className="w-[34.1rem] rounded"
                         >
@@ -491,10 +528,10 @@ export function FormCreateScholarship() {
             </FieldGroup>
 
             {/*
-              ** @Checkbox control component Scholarship
+              ** @Checkbox Renewable control component Scholarship
               */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship title="Rewable" name="renewable" control={form.control} />
+              <CheckboxScholarship id="form-rhf-checkbox-renewable" title="Renewable"  name="renewable" control={form.control} />
             </FieldGroup>
 
             {/*
@@ -505,28 +542,46 @@ export function FormCreateScholarship() {
                 name="program"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Program
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Program"
-                      autoComplete="username"
-                      className="rounded"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                  <Field
+                    orientation="responsive"
+                    data-invalid={fieldState.invalid}
+                    className="w-full"
+                  >
+                    <div className="w-full flex flex-col gap-1">
+                      <FieldLabel id="form-rhf-select-program" className="flex items-center">
+                        Program<span className="text-red-500">*</span>
+                      </FieldLabel>
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id="form-rhf-select-program"
+                          aria-invalid={fieldState.invalid}
+                          className="w-[34.1rem] rounded"
+                        >
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+
+                        <SelectContent position="item-aligned">
+                          <SelectItem value="auto">Auto</SelectItem>
+                          <SelectSeparator />
+                          {programsToOptions(data).map((award) => (
+                            <SelectItem key={award.value} value={award.value}>
+                              {award.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </Field>
                 )}
               />
             </FieldGroup>
 
             {/*
-              ** @ Website Field
+              ** @Field Website
               */}
             <FieldGroup className="col-span-1">
               <Controller
@@ -534,12 +589,12 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
-                      Website URL
+                    <FieldLabel htmlFor="form-rhf-input-web-url" className="flex items-center">
+                      Website URL<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-input-username"
+                      id="form-rhf-input-web-url"
                       aria-invalid={fieldState.invalid}
                       placeholder="Website URL"
                       autoComplete="username"
@@ -564,26 +619,26 @@ export function FormCreateScholarship() {
               ** @Checkbox control component Application Fee
               */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship title="Application Fee" name="applicationFee" control={form.control} />
+              <CheckboxScholarship title="Application Fee" id="form-rhf-checkbox-application-fee" name="applicationFee" control={form.control} />
             </FieldGroup>
             {/*
               ** @Multiple Select control component Tags fields
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent control={form.control} label="Tags" name="tags" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-tags" control={form.control} label="Tags" mode="tags" name="tags" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
             {/*
-              ** @Checkbox control component
+              ** @Checkbox control component International
               */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship title="International Scholarship" name="international" control={form.control} />
+              <CheckboxScholarship id="form-rhf-checkbox-international" title="International Scholarship" name="international" control={form.control} />
             </FieldGroup>
 
             {/*
-              ** @Multiple Select control component fields
+              ** @Multiple Select control component Document fields
               */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent control={form.control} label="Document Required" name="documentsRequired" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent id="form-rhf-select-document" control={form.control} label="Document Required" name="documentsRequired" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
             </FieldGroup>
 
             {/*
@@ -595,12 +650,12 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username">
+                    <FieldLabel htmlFor="form-rhf-input-location">
                       Location
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-input-username"
+                      id="form-rhf-input-location"
                       aria-invalid={fieldState.invalid}
                       placeholder="Location"
                       autoComplete="username"
@@ -623,26 +678,28 @@ export function FormCreateScholarship() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel htmlFor="textarea-message">Description</FieldLabel>
+                    <FieldLabel htmlFor="textarea-description">Description</FieldLabel>
                     <FieldDescription>Enter your description below.</FieldDescription>
-                    <Textarea {...field} aria-invalid={fieldState.invalid} id="textarea-message" placeholder="Type your message here." />
+                    <Textarea {...field} aria-invalid={fieldState.invalid} id="textarea-description" placeholder="Type your message here." />
                   </Field>
                 )}
               />
             </FieldGroup>
+
+            {/*
+            ** @Action Save and Reset
+            */}
+            <Field orientation="horizontal">
+              <Button type="button" variant="outline" onClick={() => form.reset()}>
+                Reset
+              </Button>
+              <Button type="submit" form="form-rhf-input">
+                Save
+              </Button>
+            </Field>
           </div>
         </form>
       </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button>
-          <Button type="submit" form="form-rhf-input">
-            Save
-          </Button>
-        </Field>
-      </CardFooter>
     </Card>
   )
 }

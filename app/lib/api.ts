@@ -5,3 +5,9 @@ export async function fetchScholarships(){
     if(!response.ok) throw new Error("Failed to fetch projects")
         return response.json()
 }
+
+export async function fetchProgram(){
+    const response = await fetch(`${API_BASE_URL}/programs`)
+    if(!response.ok) throw new Error("Failed to fetch programs")
+        return response.json();
+}

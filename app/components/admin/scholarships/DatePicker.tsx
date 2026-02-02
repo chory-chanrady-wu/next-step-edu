@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
     Popover,
     PopoverContent,
@@ -19,12 +19,14 @@ type DateFieldKeys = "deadline" | "lastUpdated";
 
 type DatePickerScholarshipProps = {
     placeholder?: string;
+    id?: string;
     name: DateFieldKeys;
     control: Control<ScholarshipTask>;
 };
 
 export function DatePickerScholarship({
     placeholder,
+    id,
     name,
     control,
 }: DatePickerScholarshipProps) {
@@ -34,10 +36,10 @@ export function DatePickerScholarship({
 
             name={name}
             control={control}
-            render={({ field }) => (
-                <Field className="w-full gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username" className="flex  items-center">
-                        Total Accept Applicants<span className="text-red-500">*</span>
+            render={({ field,fieldState }) => (
+                <Field data-invalid={fieldState.invalid} className="w-full gap-1">
+                    <FieldLabel htmlFor={id} className="flex  items-center">
+                        Deadline<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Popover >
                         <PopoverTrigger asChild className="rounded">
@@ -55,6 +57,7 @@ export function DatePickerScholarship({
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
+                                id={id}
                                 mode="single"
                                 selected={field.value ? new Date(field.value) : undefined}
                                 onSelect={(selectedDate: Date | undefined) => {
@@ -70,6 +73,9 @@ export function DatePickerScholarship({
 
                         </PopoverContent>
                     </Popover>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                 </Field>
             )}
         />
