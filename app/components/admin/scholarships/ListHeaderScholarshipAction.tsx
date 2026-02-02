@@ -3,7 +3,6 @@ import React from 'react'
 import { Download, Plus, RefreshCcw } from 'lucide-react'
 import Link from 'next/link'
 
-// type Props = {}
 
 export const ListHeaderTopScolarshipsAction = () => {
   return (

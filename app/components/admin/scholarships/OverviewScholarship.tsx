@@ -1,4 +1,4 @@
-import { BookText, CheckCircle, Clock, FilePenLine, List, PlayCircle, SquareCheck } from 'lucide-react'
+import {  Clock, FilePenLine, List, SquareCheck } from 'lucide-react'
 import React from 'react'
 
 

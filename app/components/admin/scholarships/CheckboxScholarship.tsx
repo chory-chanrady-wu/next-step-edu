@@ -1,13 +1,9 @@
 import React from 'react';
 import { Checkbox } from 'antd';
-import type { CheckboxProps } from 'antd';
 import { Control, Controller } from 'react-hook-form';
 import { ScholarshipTask } from '@/app/lib/schema/scholarship';
 import { Field, FieldLabel } from '@/components/ui/field';
 
-const onChange: CheckboxProps['onChange'] = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-};
 
 interface CheckboxScholarshipProps {
     title: string;

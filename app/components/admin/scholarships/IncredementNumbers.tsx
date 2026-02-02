@@ -28,7 +28,6 @@ const IncrementNumbers: React.FC<IncrementNumbersProps> = ({ control,label, name
                         <InputNumber
                             {...field}
                             mode='spinner'
-                            // {...sharedProps}
                             min={min}
                             max={max}
                             style={{ height: 35 }}

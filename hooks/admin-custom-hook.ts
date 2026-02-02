@@ -1,14 +1,14 @@
 import { fetchProgram, fetchScholarships } from "@/app/lib/api";
 import { ProgramSchemaType } from "@/app/lib/schema/program";
-import { ScholarshipTask } from "@/app/lib/schema/scholarship";
+import { ScholarshipType } from "@/app/lib/types";
 import { useQuery } from "@tanstack/react-query";
 
 export function useScholarships(){
     const {
-        data = [] as ScholarshipTask[],
+        data = [] as ScholarshipType[],
         isLoading,
         error
-    } = useQuery<ScholarshipTask[]>({
+    } = useQuery<ScholarshipType[]>({
         queryKey: ['scholarships'],
         queryFn: fetchScholarships
     })
