@@ -1,13 +1,23 @@
+import { UploadFile } from "antd";
 import { z } from "zod";
 
 export const scholarshipSchema = z.object({
-  name: z.string().min(1),
+  id: z.string(),
 
-  provider: z.string(),
-  providerLogo: z.array(z.any()).min(1, "Provider logo is required"),
-  coverImage: z.array(z.any()).min(1, "Cover Image is required"),
+  title: z.string().min(1, "Title is required"),
 
-  amount: z.number(),
+  provider: z.string().min(1, "Provider is required"),
+
+  // Accept a single image file
+  providerLogo: z.custom<UploadFile[]>((val) => Array.isArray(val), {
+    message: "Provider Logo is required",
+  }),
+  coverImage: z.custom<UploadFile[]>((val) => Array.isArray(val), {
+    message: "Cover Image is required",
+  }),
+
+  amount: z.number().nonnegative(),
+
   currency: z
     .string()
     .min(1, "Please select your currency.")
@@ -16,21 +26,43 @@ export const scholarshipSchema = z.object({
         "Auto-detection is not allowed. Please select a specific currency.",
     }),
 
-  status: z.enum(["open", "closed", "upcoming"]),
+  status: z.enum(["open", "closed", "upcoming", "extended"]),
 
-  category: z.string(),
+  category: z.enum([
+    "academic",
+    "sports",
+    "arts",
+    "stem",
+    "need-based",
+    "merit",
+    "minority",
+    "community",
+  ]),
 
-  deadline: z.string(), // or z.coerce.date()
+  deadline: z.string(),
 
   applicants: z.number().int().nonnegative(),
-  maxApplicants: z.number().int().positive(),
+
+  maxApplicants: z.number().int().positive().optional(),
 
   eligibility: z.array(z.string()),
 
-  awardType: z.enum(["full", "partial"]),
-  educationLevel: z.enum(["undergraduate", "graduate", "phd", "diploma"]),
+  slug: z.array(z.string()),
+
+  awardType: z.enum(["full", "partial", "tuition", "stipend"]),
+
+  educationLevel: z.enum([
+    "undergraduate",
+    "graduate",
+    "phd",
+    "high-school",
+    "all",
+  ]),
 
   renewable: z.boolean(),
+
+  program: z.string(),
+  description: z.string(),
 
   website: z.string().url(),
 
@@ -38,7 +70,7 @@ export const scholarshipSchema = z.object({
 
   rating: z.number().min(0).max(5),
 
-  lastUpdated: z.string(), // or z.coerce.date()
+  lastUpdated: z.string(),
 
   tags: z.array(z.string()),
 
@@ -50,4 +82,6 @@ export const scholarshipSchema = z.object({
 
   international: z.boolean(),
 });
+
+// Infer TypeScript type
 export type ScholarshipTask = z.infer<typeof scholarshipSchema>;

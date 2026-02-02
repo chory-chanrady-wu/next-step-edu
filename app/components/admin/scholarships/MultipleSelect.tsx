@@ -6,7 +6,7 @@ const MultipleSelect: React.FC = () => (
     <Flex gap={9}>
 
       <Select
-        mode="multiple"
+        mode="tags"
         defaultValue={['lucy']}
         placeholder="Outlined"
         size='large'

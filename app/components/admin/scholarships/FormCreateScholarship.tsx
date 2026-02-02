@@ -38,6 +38,8 @@ import { Textarea } from "@/components/ui/textarea"
 import UploadImage from "./UploadImage"
 import { useState } from "react"
 import { UploadFile } from "antd"
+import CheckboxScholarship from "./CheckboxScholarship"
+import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -98,7 +100,7 @@ export function FormCreateScholarship() {
           <div className="grid grid-cols-2 gap-3">
             <FieldGroup className="col-span-1">
               <Controller
-                name="name"
+                name="title"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
@@ -188,6 +190,7 @@ export function FormCreateScholarship() {
                 )}
               />
             </FieldGroup>
+
             <FieldGroup className="col-span-1">
               <Controller
                 name="amount"
@@ -299,7 +302,7 @@ export function FormCreateScholarship() {
 
             <FieldGroup className="col-span-1">
               <Controller
-                name="status"
+                name="category"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field
@@ -428,7 +431,7 @@ export function FormCreateScholarship() {
             </FieldGroup>
             <FieldGroup className="col-span-1">
               <Controller
-                name="eligibility"
+                name="slug"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
@@ -436,14 +439,6 @@ export function FormCreateScholarship() {
                       Slug
                     </FieldLabel>
                     <MultipleSelect />
-                    {/* <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Eligibility"
-                      autoComplete="username"
-                      className="rounded"
-                    /> */}
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -536,104 +531,144 @@ export function FormCreateScholarship() {
               />
             </FieldGroup>
             <FieldGroup className="col-span-1">
+              {/*
+              ** @Checkbox control component
+              */}
+              <CheckboxScholarship title="Rewable" name="renewable" control={form.control} />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
               <Controller
-                name="renewable"
+                name="program"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    orientation="responsive"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
-                        Renew
-                      </FieldLabel>
-
-                      <Select
-                        // name={field.name}
-                        // value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger
-                          id="form-rhf-select-language"
-                          aria-invalid={fieldState.invalid}
-                          className="w-[34.1rem] rounded"
-                        >
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-
-                        <SelectContent position="item-aligned">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectSeparator />
-                          {educationLevel.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
-                              {language.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Program
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="form-rhf-input-username"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Program"
+                      autoComplete="username"
+                      className="rounded"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
             </FieldGroup>
             <FieldGroup className="col-span-1">
               <Controller
-                name="renewable"
+                name="website"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field
-                    orientation="responsive"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-input-username">
-                        Program
-                      </FieldLabel>
-
-                      <Select
-                        // name={field.name}
-                        // value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger
-                          id="form-rhf-select-language"
-                          aria-invalid={fieldState.invalid}
-                          className="w-[34.1rem] rounded"
-                        >
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-
-                        <SelectContent position="item-aligned">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectSeparator />
-                          {educationLevel.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
-                              {language.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Website URL
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="form-rhf-input-username"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Website URL"
+                      autoComplete="username"
+                      className="rounded"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
             </FieldGroup>
+            <FieldGroup className="col-span-1">
+              {/*
+              ** @Checkbox control component
+              */}
+              <CheckboxScholarship title="Featured" name="featured" control={form.control} />
+            </FieldGroup>
+
+            <FieldGroup className="col-span-1">
+              {/*
+              ** @Checkbox control component
+              */}
+              <CheckboxScholarship title="Application Fee" name="applicationFee" control={form.control} />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
+              <Controller
+                name="tags"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Tags
+                    </FieldLabel>
+                    <MultipleSelect />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+            <FieldGroup className="col-span-1">
+              {/*
+              ** @Checkbox control component
+              */}
+              <CheckboxScholarship title="International Scholarship" name="international" control={form.control} />
+            </FieldGroup>
+
+            <FieldGroup className="col-span-1">
+              {/*
+              ** @Multiple Select control component
+              */}
+              <MultipleSelectControlComponent control={form.control} label="Document Required" name="documentsRequired" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+            </FieldGroup>
+
+            <FieldGroup className="col-span-1">
+              <Controller
+                name="location"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid} className="gap-1">
+                    <FieldLabel htmlFor="form-rhf-input-username">
+                      Location
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="form-rhf-input-username"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Location"
+                      autoComplete="username"
+                      className="rounded"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+
+
+
             <FieldGroup className="col-span-2">
               <Controller
-                name="name"
+                name="description"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
                     <FieldLabel htmlFor="textarea-message">Description</FieldLabel>
                     <FieldDescription>Enter your description below.</FieldDescription>
-                    <Textarea aria-invalid={fieldState.invalid} id="textarea-message" placeholder="Type your message here." />
+                    <Textarea {...field} aria-invalid={fieldState.invalid} id="textarea-message" placeholder="Type your message here." />
                   </Field>
                 )}
               />
             </FieldGroup>
+
 
           </div>
         </form>
