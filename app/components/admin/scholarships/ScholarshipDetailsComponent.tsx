@@ -235,14 +235,13 @@ export function ScholarshipDetailAdmin({
                                     </Avatar>
                                 </div>
                                 <div className="flex">
-                                    <div className=" gap-2 flex flex-col items-center justify-center">
+                                    <div className="  flex flex-col items-center justify-center">
                                         {scholarship.featured && (
-                                           <Sparkles size={18}/>
+                                            <Sparkles size={18} />
                                         )}
                                         <Tag  color={getStatusColor(scholarship.status)}>
                                             {scholarship.status.toUpperCase()}
                                         </Tag>
-
                                     </div>
                                     <div>
                                         <h4 className="text-lg md:text-2xl font-bold text-foreground">
