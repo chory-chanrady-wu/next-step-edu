@@ -212,16 +212,16 @@ export function ScholarshipDetailAdmin({
             {renderStats()}
 
             <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-flex">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="applications">Applications</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                <TabsList className="grid rounded w-full grid-cols-3 lg:w-auto lg:inline-flex">
+                    <TabsTrigger value="overview" className="rounded">Overview</TabsTrigger>
+                    <TabsTrigger value="applications" className="rounded">Applications</TabsTrigger>
+                    <TabsTrigger value="analytics" className="rounded">Analytics</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="overview" className="space-y-6">
                     {/* Main Card */}
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between">
+                    <Card className="rounded shadow-none">
+                        <CardHeader className="flex flex-row   items-center justify-between">
                             <div className="flex items-center ">
                                 <div className=" rounded-lg bg-card flex items-center justify-center overflow-hidden">
                                     <Avatar className="h-16 w-16 rounded-lg border">
@@ -258,7 +258,7 @@ export function ScholarshipDetailAdmin({
                                 </p>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-6">
+                        <CardContent className="space-y-6 " >
                             {/* Quick Info */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="space-y-1">
@@ -320,9 +320,9 @@ export function ScholarshipDetailAdmin({
                             <Separator />
 
                             {/* Details Grid */}
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-2 gap-6 divide-x">
                                 {/* Eligibility */}
-                                <div>
+                                <div className="flex flex-col items-center">
                                     <h3 className="font-semibold mb-3 flex items-center gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-primary" />
                                         Eligibility Requirements
@@ -338,7 +338,7 @@ export function ScholarshipDetailAdmin({
                                 </div>
 
                                 {/* Required Documents */}
-                                <div>
+                                <div className="flex flex-col items-center">
                                     <h3 className="font-semibold mb-3 flex items-center gap-2">
                                         <FileText className="w-4 h-4 text-primary" />
                                         Required Documents
@@ -400,7 +400,7 @@ export function ScholarshipDetailAdmin({
                 </TabsContent>
 
                 <TabsContent value="applications">
-                    <Card>
+                    <Card className="rounded shadow-none">
                         <CardHeader>
                             <h2 className="text-xl font-semibold">Recent Applications</h2>
                             <p className="text-sm text-muted-foreground">
@@ -442,7 +442,7 @@ export function ScholarshipDetailAdmin({
                 </TabsContent>
 
                 <TabsContent value="analytics">
-                    <Card>
+                    <Card className="rounded shadow-none">
                         <CardHeader>
                             <h2 className="text-xl font-semibold flex items-center gap-2">
                                 <BarChart3 className="w-5 h-5" />
