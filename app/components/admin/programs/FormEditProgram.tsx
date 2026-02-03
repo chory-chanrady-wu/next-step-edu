@@ -60,9 +60,9 @@ export const eligibilityOptions = [
   { value: "student-leader", label: "Student Leader" }
 ];
 
-export function FormCreateProgram() {
+export function FormEditProgram() {
 
-  const { isLoading, data, error } = usePrograms();
+  const { isLoading, error } = usePrograms();
   const { data: universities, } = useUniversities();
   const { data: faculties, } = useFaculties();
 
