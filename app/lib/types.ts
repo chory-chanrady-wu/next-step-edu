@@ -3,6 +3,7 @@ export type ScholarshipType = {
   name: string;
   provider: string;
   providerLogo?: string;
+  coverImage?: string;
 
   amount: number;
   currency: string;
@@ -26,7 +27,11 @@ export type ScholarshipType = {
 
   eligibility: string[];
 
+  slugs: string[];
+
   awardType: "full" | "partial" | "tuition" | "stipend";
+
+  program: string;
 
   educationLevel:
     | "undergraduate"
@@ -54,4 +59,6 @@ export type ScholarshipType = {
   location: string;
 
   international: boolean;
+
+  description: string;
 };

@@ -26,6 +26,7 @@ import {
     Eye,
     BarChart3,
     UserCheck,
+    Loader2,
 } from "lucide-react";
 import {
     Table,
@@ -43,43 +44,12 @@ import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { OverviewScholarship } from "./OverviewScholarship";
 import ScholarshipStats from "./ScholarshipStats";
-
-interface ScholarshipData {
-    id: string;
-    name: string;
-    provider: string;
-    providerLogo: string;
-    amount: number;
-    currency: string;
-    status: "open" | "closed" | "upcoming";
-    category: string;
-    deadline: string;
-    applicants: number;
-    maxApplicants: number;
-    eligibility: string[];
-    awardType: "full" | "partial" | "merit";
-    educationLevel: string;
-    renewable: boolean;
-    website: string;
-    featured: boolean;
-    rating: number;
-    lastUpdated: string;
-    tags: string[];
-    applicationFee: boolean;
-    documentsRequired: string[];
-    location: string;
-    international: boolean;
-    createdBy: string;
-    createdAt: string;
-    views: number;
-    saves: number;
-    applications: number;
-    shortlisted: number;
-    awarded: number;
-}
+import Link from "next/link";
+import { useScholarship } from "@/hooks/admin-custom-hook";
+import { ScholarshipType } from "@/app/lib/types";
 
 interface ScholarshipDetailProps {
-    scholarship: ScholarshipData;
+    id: string;
     onEdit?: (id: string) => void;
     onDelete?: (id: string) => void;
     onStatusChange?: (id: string, status: string) => void;
@@ -95,7 +65,9 @@ const formatCurrency = (amount: number, currency: string) => {
 };
 
 const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Invalid date";
+    return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -129,26 +101,40 @@ const getAwardTypeLabel = (type: string) => {
 };
 
 export function ScholarshipDetailAdmin({
-    scholarship,
     onEdit,
     onDelete,
+    id,
     onStatusChange,
     onExport,
 }: ScholarshipDetailProps) {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [exportModalOpen, setExportModalOpen] = useState(false);
-    const applicantProgress = (scholarship.applicants / scholarship.maxApplicants) * 100;
-    const daysUntilDeadline = Math.ceil(
-        (new Date(scholarship.deadline).getTime() - new Date().getTime()) /
-        (1000 * 60 * 60 * 24)
-    );
+
+    const { isLoading, data: scholarship, error } = useScholarship(id);
+
+    // Calculate days until deadline safely
+    const calculateDaysUntilDeadline = () => {
+        if (!scholarship?.deadline) return 0;
+        const deadlineDate = new Date(scholarship.deadline);
+        if (isNaN(deadlineDate.getTime())) return 0;
+
+        const today = new Date();
+        const timeDiff = deadlineDate.getTime() - today.getTime();
+        return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    };
+
+    const applicantProgress = scholarship
+        ? (scholarship.applicants / (scholarship.maxApplicants || 1)) * 100
+        : 0;
+
+    const daysUntilDeadline = calculateDaysUntilDeadline();
 
     const handleDelete = () => {
         setDeleteModalOpen(true);
     };
 
     const confirmDelete = () => {
-        onDelete?.(scholarship.id);
+        onDelete?.(scholarship?.id || "");
         setDeleteModalOpen(false);
     };
 
@@ -157,21 +143,54 @@ export function ScholarshipDetailAdmin({
     };
 
     const confirmExport = () => {
-        onExport?.(scholarship.id);
+        onExport?.(scholarship?.id || "");
         setExportModalOpen(false);
     };
 
     const renderStats = () => (
-        <div className="grid  gap-4 mb-6">
-            <ScholarshipStats totalApplications={500}
+        <div className="grid gap-4 mb-6">
+            <ScholarshipStats
+                totalApplications={500}
                 shortlisted={75}
                 awarded={25}
-                saved={120} />
+                saved={120}
+            />
         </div>
     );
 
+    // Handle loading state
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                    <p className="text-muted-foreground">Loading scholarship details...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle error state
+    if (error || !scholarship) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center space-y-4">
+                    <Alert
+                        message="Error"
+                        description={error?.message || "Scholarship not found"}
+                        type="error"
+                        showIcon
+                    />
+                    <Button onClick={() => window.location.reload()}>
+                        Try Again
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="min-h-screen ">
+        <div className="min-h-screen">
             {/* Admin Actions Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
@@ -181,22 +200,16 @@ export function ScholarshipDetailAdmin({
                     <p className="text-muted-foreground">Manage and view scholarship details</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onEdit?.(scholarship.id)}
-                    >
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleExport}
-                    >
-                        <Download className="w-4 h-4 mr-2" />
-                        Export Data
-                    </Button>
+                    <Link href={`/admin/scholarships/edit/${scholarship.id}`}>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onEdit?.(scholarship.id)}
+                        >
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit
+                        </Button>
+                    </Link>
                     <Button
                         variant="destructive"
                         size="sm"
@@ -221,33 +234,27 @@ export function ScholarshipDetailAdmin({
                 <TabsContent value="overview" className="space-y-6">
                     {/* Main Card */}
                     <Card className="rounded shadow-none">
-                        <CardHeader className="flex flex-row   items-center justify-between">
-                            <div className="flex items-center ">
-                                <div className=" rounded-lg bg-card flex items-center justify-center overflow-hidden">
-                                    <Avatar className="h-16 w-16 rounded-lg border">
-                                        <AvatarImage
-                                            src={scholarship.providerLogo}
-                                            alt={scholarship.provider}
-                                        />
-                                        <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-semibold">
-                                            {scholarship.name.substring(0, 2).toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </div>
-                                <div className="flex">
-                                    <div className="  flex flex-col items-center justify-center">
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div className="flex items-start gap-3 py-1">
+                                <Avatar className="h-16 w-16 rounded-lg border">
+                                    <AvatarImage
+                                        src={scholarship.providerLogo}
+                                        alt={scholarship.provider}
+                                    />
+                                    <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-semibold">
+                                        {scholarship.name?.substring(0, 2).toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="flex flex-col min-w-0">
+                                    <div className="font-semibold text-sm flex items-center gap-2 text-gray-900">
                                         {scholarship.featured && (
-                                            <Sparkles size={18} />
+                                            <Sparkles className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
                                         )}
-                                        <Tag  color={getStatusColor(scholarship.status)}>
-                                            {scholarship.status.toUpperCase()}
-                                        </Tag>
+                                        <span className="truncate">{scholarship.name}</span>
                                     </div>
-                                    <div>
-                                        <h4 className="text-lg md:text-2xl font-bold text-foreground">
-                                            {scholarship.name}
-                                        </h4>
-                                        <p className="text-muted-foreground">{scholarship.provider}</p>
+                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-0.5">
+                                        <GraduationCap className="h-3 w-3 flex-shrink-0" />
+                                        <span className="truncate">{scholarship.provider}</span>
                                     </div>
                                 </div>
                             </div>
@@ -258,7 +265,7 @@ export function ScholarshipDetailAdmin({
                                 </p>
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-6 " >
+                        <CardContent className="space-y-6">
                             {/* Quick Info */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="space-y-1">
@@ -320,15 +327,15 @@ export function ScholarshipDetailAdmin({
                             <Separator />
 
                             {/* Details Grid */}
-                            <div className="grid md:grid-cols-2 gap-6 divide-x">
+                            <div className="grid md:grid-cols-2 gap-6">
                                 {/* Eligibility */}
-                                <div className="flex flex-col items-center">
+                                <div className="space-y-3 flex flex-col items-center justify-center">
                                     <h3 className="font-semibold mb-3 flex items-center gap-2">
                                         <CheckCircle2 className="w-4 h-4 text-primary" />
                                         Eligibility Requirements
                                     </h3>
                                     <ul className="space-y-2">
-                                        {scholarship.eligibility.map((req, index) => (
+                                        {scholarship.eligibility?.map((req, index) => (
                                             <li key={index} className="flex items-start gap-2">
                                                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                                                 <span className="text-sm">{req}</span>
@@ -338,13 +345,13 @@ export function ScholarshipDetailAdmin({
                                 </div>
 
                                 {/* Required Documents */}
-                                <div className="flex flex-col items-center">
+                                <div className="space-y-3 flex flex-col items-center justify-center">
                                     <h3 className="font-semibold mb-3 flex items-center gap-2">
                                         <FileText className="w-4 h-4 text-primary" />
                                         Required Documents
                                     </h3>
                                     <ul className="space-y-2">
-                                        {scholarship.documentsRequired.map((doc, index) => (
+                                        {scholarship.documentsRequired?.map((doc, index) => (
                                             <li key={index} className="flex items-start gap-2">
                                                 <div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 text-xs font-medium">
                                                     {index + 1}
@@ -358,10 +365,10 @@ export function ScholarshipDetailAdmin({
 
                             {/* Tags and Metadata */}
                             <div className="space-y-4">
-                                <div>
+                                <div className="px-5">
                                     <h3 className="font-semibold mb-2">Tags</h3>
                                     <div className="flex flex-wrap gap-2">
-                                        {scholarship.tags.map((tag) => (
+                                        {scholarship.tags?.map((tag) => (
                                             <Badge key={tag} variant="secondary">
                                                 {tag}
                                             </Badge>
@@ -370,19 +377,20 @@ export function ScholarshipDetailAdmin({
                                 </div>
 
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                                    <div>
+                                    <h3 className="col-span-4 px-5 font-semibold">Tags</h3>
+                                    <div className="flex flex-col items-center">
                                         <p className="text-muted-foreground">Created By</p>
-                                        <p className="font-medium">{scholarship.createdBy}</p>
+                                        <p className="font-medium">Bora</p>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col items-center">
                                         <p className="text-muted-foreground">Created At</p>
-                                        <p className="font-medium">{formatDate(scholarship.createdAt)}</p>
+                                        <p className="font-medium">10/12/2025</p>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col items-center">
                                         <p className="text-muted-foreground">Last Updated</p>
                                         <p className="font-medium">{formatDate(scholarship.lastUpdated)}</p>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-col items-center">
                                         <p className="text-muted-foreground">Website</p>
                                         <a
                                             href={scholarship.website}
@@ -404,7 +412,7 @@ export function ScholarshipDetailAdmin({
                         <CardHeader>
                             <h2 className="text-xl font-semibold">Recent Applications</h2>
                             <p className="text-sm text-muted-foreground">
-                                Total: {scholarship.applications} applications
+                                Total: {scholarship.applicants} applications
                             </p>
                         </CardHeader>
                         <CardContent>
@@ -456,18 +464,18 @@ export function ScholarshipDetailAdmin({
                                     <div className="space-y-3">
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Views</span>
-                                            <span className="font-medium">{scholarship.views}</span>
+                                            <span className="font-medium">17</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Save Rate</span>
                                             <span className="font-medium">
-                                                {((scholarship.saves / scholarship.views) * 100).toFixed(1)}%
+                                                10%
                                             </span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Application Rate</span>
                                             <span className="font-medium">
-                                                {((scholarship.applications / scholarship.views) * 100).toFixed(1)}%
+                                                20%
                                             </span>
                                         </div>
                                     </div>
@@ -478,7 +486,7 @@ export function ScholarshipDetailAdmin({
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Created</span>
                                             <span className="font-medium">
-                                                {formatDistanceToNow(new Date(scholarship.createdAt), { addSuffix: true })}
+                                                10/29/2024
                                             </span>
                                         </div>
                                         <div className="flex justify-between">
@@ -514,33 +522,6 @@ export function ScholarshipDetailAdmin({
                     type="warning"
                     showIcon
                 />
-            </Modal>
-
-            {/* Export Modal */}
-
-            <Modal
-                title="Export Scholarship Data"
-                open={exportModalOpen}
-                onOk={confirmExport}
-                onCancel={() => setExportModalOpen(false)}
-                okText="Export"
-                cancelText="Cancel"
-            >
-                <p>Select the data you want to export:</p>
-                <div className="space-y-2 mt-4">
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" defaultChecked />
-                        Scholarship Details
-                    </label>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" defaultChecked />
-                        Application Data
-                    </label>
-                    <label className="flex items-center">
-                        <input type="checkbox" className="mr-2" />
-                        Analytics Data
-                    </label>
-                </div>
             </Modal>
         </div>
     );

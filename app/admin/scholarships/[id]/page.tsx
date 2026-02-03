@@ -44,10 +44,15 @@ const mockScholarship = {
   awarded: 10,
 };
 
-export default function ScholarshipDetailsPage({ params }: { params: { id: string } }) {
-    return (
+type ChildProps = {
+  params: Promise<{id: string}>
+}
+
+export default async function ScholarshipDetailsPage( {params} : ChildProps) {
+    const {id} = await params;
+  return (
         <div className="p-6">
-            <ScholarshipDetailAdmin scholarship={mockScholarship} />
+            <ScholarshipDetailAdmin id={id} />
         </div>
     );
 }

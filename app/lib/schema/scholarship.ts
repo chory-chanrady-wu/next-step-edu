@@ -60,7 +60,7 @@ export const scholarshipSchema = z.object({
 
   renewable: z.boolean(),
 
-  program: z.string().uuid(),
+  program: z.string(),
 
   description: z.string(),
 

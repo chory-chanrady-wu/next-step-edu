@@ -810,7 +810,6 @@
             "currency": "USD",
             "study_period_months": 36
         }
-
     ],
     "university_contacts": [
         {
@@ -897,9 +896,15 @@
     "scholarships": [
         {
             "id": "sch-001",
+            "slugs": [
+                "asian-scholarship-fund"
+            ],
             "name": "Asian Scholarship Fund",
+            "description": "A merit-based scholarship supporting students of Asian descent pursuing undergraduate studies in the United States. Focuses on academic excellence, leadership potential, and community involvement.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "provider": "Asian Scholarship Foundation",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=ASF",
+            "coverImage": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
             "amount": 10000,
             "currency": "USD",
             "status": "open",
@@ -935,9 +940,15 @@
         },
         {
             "id": "sch-002",
+            "slugs": [
+                "stem-innovation-award"
+            ],
             "name": "STEM Innovation Award",
+            "description": "A competitive grant for graduate students pursuing innovative STEM research projects. Supports groundbreaking research with potential for technological advancement and real-world impact.",
+            "program": "c3000001-0000-4000-8000-000000000013",
             "provider": "TechCorp International",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=TechCorp",
+            "coverImage": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
             "amount": 25000,
             "currency": "USD",
             "status": "open",
@@ -973,9 +984,15 @@
         },
         {
             "id": "sch-003",
+            "slugs": [
+                "women-in-engineering"
+            ],
             "name": "Women in Engineering",
+            "description": "Dedicated to increasing gender diversity in engineering fields by supporting female undergraduate students. Encourages women to pursue and excel in engineering careers through financial support and mentorship.",
+            "program": "c3000001-0000-4000-8000-000000000007",
             "provider": "Women Tech Council",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=WTC",
+            "coverImage": "https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?q=80&w=2070&auto=format&fit=crop",
             "amount": 15000,
             "currency": "USD",
             "status": "upcoming",
@@ -1011,8 +1028,14 @@
         },
         {
             "id": "sch-004",
+            "slugs": [
+                "community-service-grant"
+            ],
             "name": "Community Service Grant",
+            "description": "Rewards students who demonstrate exceptional commitment to community service. Supports those who balance academic pursuits with meaningful local engagement and volunteer work.",
+            "program": "c3000001-0000-4000-8000-000000000010",
             "provider": "Local Community Foundation",
+            "coverImage": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop",
             "amount": 5000,
             "currency": "USD",
             "status": "open",
@@ -1046,9 +1069,15 @@
         },
         {
             "id": "sch-005",
+            "slugs": [
+                "international-arts-fellowship"
+            ],
             "name": "International Arts Fellowship",
+            "description": "Prestigious fellowship for graduate-level arts students pursuing international study and creative work. Supports emerging artists in developing their craft on a global stage.",
+            "program": "c3000001-0000-4000-8000-000000000013",
             "provider": "Global Arts Initiative",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Arts",
+            "coverImage": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=2080&auto=format&fit=crop",
             "amount": 20000,
             "currency": "EUR",
             "status": "closed",
@@ -1083,9 +1112,15 @@
         },
         {
             "id": "sch-006",
+            "slugs": [
+                "football-excellence-scholarship"
+            ],
             "name": "Football Excellence Scholarship",
+            "description": "Supports student-athletes who excel both on the football field and in the classroom. Recognizes athletic achievement combined with academic dedication.",
+            "program": "c3000001-0000-4000-8000-000000000004",
             "provider": "Sports Development Association",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Football",
+            "coverImage": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=2070&auto=format&fit=crop",
             "amount": 15000,
             "currency": "USD",
             "status": "open",
@@ -1120,8 +1155,14 @@
         },
         {
             "id": "sch-007",
+            "slugs": [
+                "low-income-family-support"
+            ],
             "name": "Low-Income Family Support",
+            "description": "Provides financial assistance to students from low-income families, particularly first-generation college students. Aims to increase accessibility to higher education for economically disadvantaged backgrounds.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "provider": "Education for All Foundation",
+            "coverImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
             "amount": 8000,
             "currency": "USD",
             "status": "open",
@@ -1157,9 +1198,15 @@
         },
         {
             "id": "sch-008",
+            "slugs": [
+                "academic-excellence-award"
+            ],
             "name": "Academic Excellence Award",
+            "description": "Recognizes exceptional high school students with outstanding academic achievements, test scores, and demonstrated leadership capabilities. For students transitioning to undergraduate studies.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "provider": "National Honor Society",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=NHS",
+            "coverImage": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop",
             "amount": 10000,
             "currency": "USD",
             "status": "open",
@@ -1195,9 +1242,15 @@
         },
         {
             "id": "sch-009",
+            "slugs": [
+                "african-american-stem-scholars"
+            ],
             "name": "African American STEM Scholars",
+            "description": "Initiative to increase diversity in STEM fields by supporting African American undergraduate students. Focuses on creating pathways to success in science, technology, engineering, and mathematics.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "provider": "Diversity in STEM Initiative",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=STEMDiversity",
+            "coverImage": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop",
             "amount": 20000,
             "currency": "USD",
             "status": "open",
@@ -1233,8 +1286,14 @@
         },
         {
             "id": "sch-010",
+            "slugs": [
+                "phd-research-fellowship"
+            ],
             "name": "PhD Research Fellowship",
+            "description": "Comprehensive fellowship for doctoral candidates engaged in advanced research. Supports groundbreaking PhD research across various disciplines with potential for significant academic contribution.",
+            "program": "c3000001-0000-4000-8000-000000000015",
             "provider": "Advanced Studies Institute",
+            "coverImage": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop",
             "amount": 35000,
             "currency": "USD",
             "status": "open",
@@ -1270,9 +1329,15 @@
         },
         {
             "id": "sch-011",
+            "slugs": [
+                "basketball-athletic-scholarship"
+            ],
             "name": "Basketball Athletic Scholarship",
+            "description": "Supports student-athletes excelling in basketball while maintaining academic standards. Recognizes athletic talent combined with commitment to educational pursuits.",
+            "program": "c3000001-0000-4000-8000-000000000004",
             "provider": "College Sports Association",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Basketball",
+            "coverImage": "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=2090&auto=format&fit=crop",
             "amount": 18000,
             "currency": "USD",
             "status": "open",
@@ -1308,9 +1373,15 @@
         },
         {
             "id": "sch-012",
+            "slugs": [
+                "music-composition-award"
+            ],
             "name": "Music Composition Award",
+            "description": "Award for graduate students specializing in music composition. Supports the creation of original musical works and development of compositional techniques.",
+            "program": "c3000001-0000-4000-8000-000000000013",
             "provider": "National Arts Council",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=MusicComp",
+            "coverImage": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop",
             "amount": 12000,
             "currency": "USD",
             "status": "upcoming",
@@ -1345,8 +1416,14 @@
         },
         {
             "id": "sch-013",
+            "slugs": [
+                "computer-science-merit-scholarship"
+            ],
+            "description": "Merit-based scholarship recognizing outstanding undergraduate students in computer science. Rewards academic excellence, technical projects, and innovation in computing.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "name": "Computer Science Merit Scholarship",
             "provider": "Tech Education Foundation",
+            "coverImage": "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=2069&auto=format&fit=crop",
             "amount": 15000,
             "currency": "USD",
             "status": "open",
@@ -1382,8 +1459,14 @@
         },
         {
             "id": "sch-014",
+            "slugs": [
+                "rural-community-scholarship"
+            ],
             "name": "Rural Community Scholarship",
+            "description": "Supports students from rural areas who demonstrate commitment to their communities. Aims to increase educational access for rural populations while encouraging community engagement.",
+            "program": "c3000001-0000-4000-8000-000000000010",
             "provider": "Rural Education Fund",
+            "coverImage": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop",
             "amount": 6000,
             "currency": "USD",
             "status": "open",
@@ -1417,9 +1500,15 @@
         },
         {
             "id": "sch-015",
+            "slugs": [
+                "physics-research-grant-extended"
+            ],
             "name": "Physics Research Grant (Extended)",
+            "description": "Extended deadline for physics research grant supporting PhD candidates engaged in advanced physics research. Focuses on experimental or theoretical physics with potential for scientific advancement.",
+            "program": "c3000001-0000-4000-8000-000000000015",
             "provider": "Physics Association",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Physics",
+            "coverImage": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop",
             "amount": 22000,
             "currency": "USD",
             "status": "extended",
@@ -1455,8 +1544,14 @@
         },
         {
             "id": "sch-016",
+            "slugs": [
+                "indigenous-peoples-scholarship"
+            ],
             "name": "Indigenous Peoples Scholarship",
+            "description": "Supports Indigenous students across all education levels, recognizing cultural heritage and community involvement. Aims to increase educational access and success for Indigenous populations.",
+            "program": "c3000001-0000-4000-8000-000000000010",
             "provider": "Native American Education Fund",
+            "coverImage": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=2070&auto=format&fit=crop",
             "amount": 7500,
             "currency": "USD",
             "status": "open",
@@ -1491,9 +1586,15 @@
         },
         {
             "id": "sch-017",
+            "slugs": [
+                "mathematics-olympiad-scholarship"
+            ],
             "name": "Mathematics Olympiad Scholarship",
+            "description": "Recognizes exceptional mathematical talent demonstrated through Math Olympiad participation. Supports high school students with outstanding mathematical abilities transitioning to undergraduate studies.",
+            "program": "c3000001-0000-4000-8000-000000000001",
             "provider": "International Math Society",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=MathOlympiad",
+            "coverImage": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop",
             "amount": 10000,
             "currency": "USD",
             "status": "closed",
@@ -1528,8 +1629,14 @@
         },
         {
             "id": "sch-018",
+            "slugs": [
+                "visual-arts-scholarship"
+            ],
             "name": "Visual Arts Scholarship",
+            "description": "Supports undergraduate students specializing in visual arts, including painting, sculpture, and digital media. Recognizes artistic talent and potential for creative development.",
+            "program": "c3000001-0000-4000-8000-000000000010",
             "provider": "Contemporary Arts Foundation",
+            "coverImage": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=2058&auto=format&fit=crop",
             "amount": 14000,
             "currency": "USD",
             "status": "open",
@@ -1564,9 +1671,15 @@
         },
         {
             "id": "sch-019",
+            "slugs": [
+                "engineering-merit-award"
+            ],
             "name": "Engineering Merit Award",
+            "description": "Merit-based award for graduate engineering students demonstrating exceptional academic achievement and project work. Supports advanced studies in various engineering disciplines.",
+            "program": "c3000001-0000-4000-8000-000000000013",
             "provider": "Engineering Society",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Engineering",
+            "coverImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
             "amount": 18000,
             "currency": "USD",
             "status": "open",
@@ -1602,9 +1715,15 @@
         },
         {
             "id": "sch-020",
+            "slugs": [
+                "swimming-sports-scholarship"
+            ],
             "name": "Swimming Sports Scholarship",
+            "description": "Supports competitive swimmers balancing athletic excellence with academic pursuits. Recognizes achievement in swimming while maintaining educational standards.",
+            "program": "c3000001-0000-4000-8000-000000000004",
             "provider": "Aquatic Sports Association",
             "providerLogo": "https://api.dicebear.com/7.x/shapes/svg?seed=Swimming",
+            "coverImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop",
             "amount": 12000,
             "currency": "USD",
             "status": "upcoming",

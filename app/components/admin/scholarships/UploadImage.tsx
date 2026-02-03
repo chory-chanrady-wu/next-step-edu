@@ -13,6 +13,7 @@ interface UploadImageProps {
   id?: string;
   control: Control<ScholarshipTask>;
   multiple?: boolean;
+  url?: string;
   listType?: UploadProps["listType"];
   label: string
 }
@@ -22,6 +23,7 @@ const UploadImageControl: React.FC<UploadImageProps> = ({
   control,
   id,
   multiple = false,
+  url,
   listType = "picture",
   label
 }) => {

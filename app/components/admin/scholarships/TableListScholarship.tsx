@@ -339,7 +339,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       };
 
       return (
-        <div className="flex items-center justify-center">
+        <div className="flex  items-center justify-center">
           <Badge
             variant="outline"
             className={`capitalize text-xs px-2.5 font-medium ${categoryColors[category] || "bg-gray-50 text-gray-700"}`}
@@ -375,7 +375,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
                   <DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </Link>
-              <Link href={`/admin/scholarships/${scholarship.id}/edit`}>
+              <Link href={`/admin/scholarships/edit/${scholarship.id}`}>
                 <DropdownMenuItem>
                   Edit
                   <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
