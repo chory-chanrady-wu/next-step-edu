@@ -223,8 +223,11 @@ export default function AdminFacultiesPage() {
     }, 500);
   }, []);
 
+  // In your useEffect for filtering, replace the let declaration with const:
+
   useEffect(() => {
-    let result = faculties.filter(faculty => {
+    // Change from 'let result' to 'const result'
+    const result = faculties.filter(faculty => {
       const matchesSearch =
         faculty.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         faculty.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -237,7 +240,7 @@ export default function AdminFacultiesPage() {
 
     // Sorting
     result.sort((a, b) => {
-      let aValue: any, bValue: any;
+      let aValue: string | number, bValue: string | number;
 
       switch (sortBy) {
         case 'name':
@@ -272,8 +275,8 @@ export default function AdminFacultiesPage() {
       }
     });
 
-    setFilteredFaculties(result);
-    setCurrentPage(1); // Reset to first page when filters change
+    // setFilteredFaculties(result);
+    // setCurrentPage(1); // Reset to first page when filters change
   }, [searchQuery, statusFilter, sortBy, sortOrder, faculties]);
 
   // Pagination
@@ -673,8 +676,8 @@ export default function AdminFacultiesPage() {
                             <button
                               onClick={() => toggleStatus(faculty.id)}
                               className={`p-1 rounded ${faculty.status === 'active'
-                                  ? 'text-green-600 hover:bg-green-50'
-                                  : 'text-red-600 hover:bg-red-50'
+                                ? 'text-green-600 hover:bg-green-50'
+                                : 'text-red-600 hover:bg-red-50'
                                 }`}
                             >
                               {faculty.status === 'active' ? (
