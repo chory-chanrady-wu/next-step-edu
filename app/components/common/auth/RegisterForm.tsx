@@ -1,59 +1,84 @@
+import { Lock, Mail, User } from "lucide-react";
+import { Label, PrimaryButton, TextInput } from "./ui";
+
 type Props = {
   onSubmit: () => void;
+  onSwitch: () => void;
 };
 
-export default function AuthRegisterForm({ onSubmit }: Props) {
+export default function RegisterForm({ onSubmit, onSwitch }: Props) {
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
-      className="space-y-6"
+      className="space-y-3.5"
     >
-      <Field label="Full Name">
-        <Input type="text" placeholder="John Doe" required />
-      </Field>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <Label>First name</Label>
+          <TextInput
+            type="text"
+            placeholder="First name"
+            required
+            icon={<User className="h-4 w-4" />}
+          />
+        </div>
 
-      <Field label="Email">
-        <Input type="email" placeholder="you@example.com" required />
-      </Field>
+        <div>
+          <Label>Last name</Label>
+          <TextInput
+            type="text"
+            placeholder="Last name"
+            required
+            icon={<User className="h-4 w-4" />}
+          />
+        </div>
+      </div>
 
-      <Field label="Password">
-        <Input type="password" placeholder="••••••••" required />
-      </Field>
+      <div>
+        <Label>Email</Label>
+        <TextInput
+          type="email"
+          placeholder="Email address"
+          required
+          icon={<Mail className="h-4 w-4" />}
+        />
+      </div>
 
-      <SubmitButton text="Create Account" />
+      <div>
+        <Label>Password</Label>
+        <TextInput
+          type="password"
+          placeholder="Input password"
+          required
+          icon={<Lock className="h-4 w-4" />}
+        />
+      </div>
+
+      <div>
+        <Label>Confirm Password</Label>
+        <TextInput
+          type="password"
+          placeholder="Input password"
+          required
+          icon={<Lock className="h-4 w-4" />}
+        />
+      </div>
+
+      <PrimaryButton>Register</PrimaryButton>
+
+      <p className="pt-2 text-center text-sm text-slate-500">
+        Already have an account?{" "}
+        <button
+          type="button"
+          onClick={onSwitch}
+          className="font-semibold text-blue-600 hover:underline"
+        >
+          Log in
+        </button>
+      </p>
     </form>
-  );
-}
-
-/** small reusable UI */
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="block text-lg font-semibold text-slate-800">{label}</label>
-      <div className="mt-3">{children}</div>
-    </div>
-  );
-}
-
-function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className="h-14 w-full rounded-xl border border-slate-200 px-4 text-base outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100"
-    />
-  );
-}
-
-function SubmitButton({ text }: { text: string }) {
-  return (
-    <button
-      type="submit"
-      className="mt-2 h-14 w-full rounded-xl bg-emerald-500 text-lg font-bold text-white shadow-md hover:bg-emerald-600 transition"
-    >
-      {text}
-    </button>
   );
 }

@@ -1,10 +1,12 @@
 import { X } from "lucide-react";
 
 type Props = {
+  title: string;
+  subtitle: React.ReactNode;
   onClose: () => void;
 };
 
-export default function AuthHeader({ onClose }: Props) {
+export default function AuthHeader({ title, subtitle, onClose }: Props) {
   return (
     <div className="relative px-8 pt-8">
       <button
@@ -15,12 +17,8 @@ export default function AuthHeader({ onClose }: Props) {
         <X className="h-5 w-5" />
       </button>
 
-      <h2 className="text-center text-4xl font-extrabold text-slate-900">
-        Welcome Back
-      </h2>
-      <p className="mt-2 text-center text-slate-500">
-        Sign in to your account or create a new one
-      </p>
+      <h2 className="text-2xl font-extrabold text-teal-600">{title}</h2>
+      <p className="mt-2 text-sm text-slate-500">{subtitle}</p>
     </div>
   );
 }

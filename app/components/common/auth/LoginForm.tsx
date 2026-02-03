@@ -1,55 +1,78 @@
+import { Lock, Mail } from "lucide-react";
+import { Divider, Label, OutlineButton, PrimaryButton, TextInput } from "./ui";
+import { FcGoogle } from "react-icons/fc";
+
 type Props = {
   onSubmit: () => void;
+  onSwitch: () => void;
 };
 
-export default function AuthLoginForm({ onSubmit }: Props) {
+export default function LoginForm({ onSubmit, onSwitch }: Props) {
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
-      className="space-y-6"
+      className="space-y-5"
     >
-      <Field label="Email">
-        <Input type="email" placeholder="you@example.com" required />
-      </Field>
+      <div>
+        <Label>Email</Label>
+        <TextInput
+          type="email"
+          placeholder="Email"
+          required
+          icon={<Mail className="h-4 w-4" />}
+        />
+      </div>
 
-      <Field label="Password">
-        <Input type="password" placeholder="••••••••" required />
-      </Field>
+      <div>
+        <Label>Password</Label>
+        <TextInput
+          type="password"
+          placeholder="Password"
+          required
+          icon={<Lock className="h-4 w-4" />}
+        />
+      </div>
 
-      <SubmitButton text="Sign In" />
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 text-sm text-slate-600">
+          <input
+            type="checkbox"
+            className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-200"
+          />
+          Remember me
+        </label>
+
+        <button
+          type="button"
+          className="text-sm font-semibold text-red-500 hover:underline"
+          onClick={() => alert("Forgot password")}
+        >
+          Forgot password?
+        </button>
+      </div>
+
+      <PrimaryButton>Login</PrimaryButton>
+
+      <p className="pt-2 text-center text-sm text-slate-500">
+        Don&apos;t have an account?{" "}
+        <button
+          type="button"
+          onClick={onSwitch}
+          className="font-semibold text-blue-600 hover:underline"
+        >
+          Register
+        </button>
+      </p>
+
+      <Divider />
+
+      <OutlineButton onClick={() => alert("Google login")}>
+        <FcGoogle className="h-4 w-4" />
+        Login with Google
+      </OutlineButton>
     </form>
-  );
-}
-
-/** small reusable UI */
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="block text-lg font-semibold text-slate-800">{label}</label>
-      <div className="mt-3">{children}</div>
-    </div>
-  );
-}
-
-function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className="h-14 w-full rounded-xl border border-slate-200 px-4 text-base outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100"
-    />
-  );
-}
-
-function SubmitButton({ text }: { text: string }) {
-  return (
-    <button
-      type="submit"
-      className="mt-2 h-14 w-full rounded-xl bg-emerald-500 text-lg font-bold text-white shadow-md hover:bg-emerald-600 transition"
-    >
-      {text}
-    </button>
   );
 }

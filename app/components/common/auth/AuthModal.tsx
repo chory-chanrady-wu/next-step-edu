@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import ModalBackdrop from "../auth/ModalBackDrop";
 import AuthHeader from "./AuthHeader";
 import AuthTabs from "../auth/AuthTaps";
-import AuthLoginForm from "../auth/LoginForm";
-import AuthRegisterForm from "../auth/RegisterForm";
-import ModalBackdrop from "../auth/ModalBackDrop";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 
 type Tab = "login" | "register";
 
@@ -19,20 +19,40 @@ export default function AuthModal({ open, onClose }: Props) {
 
   if (!open) return null;
 
+  const title = tab === "login" ? "Login" : "Registration";
+  const subtitle =
+    tab === "login" ? (
+      <>
+        Welcome to back to{" "}
+        <span className="font-semibold text-teal-600">NextStepEdu</span>.
+      </>
+    ) : (
+      <>
+        Create an account and get start with{" "}
+        <span className="font-semibold text-teal-600">NextStepEdu</span>
+      </>
+    );
+
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className="fixed inset-0 z-[100] overflow-auto">
       <ModalBackdrop onClose={onClose} />
 
       <div className="relative z-[101] flex min-h-full items-center justify-center p-4">
-        <div className="w-full max-w-xl rounded-2xl bg-white shadow-2xl">
-          <AuthHeader onClose={onClose} />
+        <div className="w-full max-w-[520px] overflow-hidden rounded-[28px] bg-white shadow-2xl">
+          <AuthHeader title={title} subtitle={subtitle} onClose={onClose} />
           <AuthTabs tab={tab} onChange={setTab} />
 
           <div className="px-8 pb-10 pt-8">
             {tab === "login" ? (
-              <AuthLoginForm onSubmit={() => alert("Login submit")} />
+              <LoginForm
+                onSubmit={() => alert("Login submit")}
+                onSwitch={() => setTab("register")}
+              />
             ) : (
-              <AuthRegisterForm onSubmit={() => alert("Register submit")} />
+              <RegisterForm
+                onSubmit={() => alert("Register submit")}
+                onSwitch={() => setTab("login")}
+              />
             )}
           </div>
         </div>
