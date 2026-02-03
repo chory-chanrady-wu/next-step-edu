@@ -6,7 +6,7 @@ export const ProgramSchema = z.object({
   faculty_id: z.string().uuid(),
   name: z.string().min(1),
   description: z.string().optional(),
-  degree_level: z.number().int(),
+  eligibility: z.array(z.string()).min(1, "Select at least one eligibility requirement"),
   exam_required: z.boolean(),
   tuition_fee_amount: z.number().nonnegative(),
   currency: z.string().length(3),  // ISO currency code

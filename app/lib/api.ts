@@ -20,4 +20,15 @@ export async function fetchProgram(){
         return response.json();
 }
 
+export async function fetchUniversities(){
+    const response = await fetch(`${API_BASE_URL}/universities`)
+    if(!response.ok) throw new Error("Failed to fetch programs")
+        return response.json()
+}
+export async function fetchFaculties(){
+    const response = await fetch(`${API_BASE_URL}/faculties`)
+    if(!response.ok) throw new Error("Failed to fetch Faculties")
+        return response.json()
+}
+
 
