@@ -99,9 +99,9 @@ export default function DetailHero({ university }: DetailHeroProps) {
               data-aos="zoom-in"
               data-aos-delay="300"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <div className="text-2xl">📚</div>
-                <div>
+                <div className="text-center">
                   <p className="text-gray-300 text-xs">Programs Available</p>
                   <p className="text-2xl font-bold text-white">
                     {university.programs_count}
@@ -116,9 +116,9 @@ export default function DetailHero({ university }: DetailHeroProps) {
               data-aos="zoom-in"
               data-aos-delay="400"
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <div className="text-2xl">⭐</div>
-                <div>
+                <div className="text-center">
                   <p className="text-gray-300 text-xs">Ranking</p>
                   <p className="text-2xl font-bold text-white">
                     #{university.tuition_rank}
