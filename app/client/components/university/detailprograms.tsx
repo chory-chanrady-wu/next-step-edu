@@ -6,6 +6,8 @@ import "aos/dist/aos.css";
 
 interface Program {
   id: string;
+  university_id: string;
+  faculty_id: string;
   name: string;
   description: string;
   degree_level: number;
@@ -128,7 +130,7 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                   </td>
                   <td className="px-3 py-2 text-gray-700 font-medium text-xs">
                     {program.currency} $
-                    {program.tuition_fee_amount.toLocaleString()}/year
+                    {program.tuition_fee_amount.toLocaleString()}
                   </td>
                   <td className="px-3 py-2">
                     <span

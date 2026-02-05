@@ -10,14 +10,20 @@ import Footer from "@/app/components/common/Footer";
 interface University {
   id: string;
   name: string;
-  city: string;
-  country: string;
+  slug: string;
+  logo_url: string;
+  cover_image_url: string;
   short_description: string;
   description: string;
-  official_website?: string;
-  logo_url?: string;
-  cover_image_url?: string;
-  tuition_rank?: number;
+  tuition_rank: number;
+  country: string;
+  region_code: string;
+  city: string;
+  official_website: string;
+  status: string;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
   programs_count?: number;
 }
 
