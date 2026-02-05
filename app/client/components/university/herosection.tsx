@@ -77,7 +77,7 @@ export default function HeroSection() {
 
   if (loading || universities.length === 0) {
     return (
-      <p className="text-xl text-blue-100">Loading featured universities...</p>
+      <p className="text-xl text-blue-100"></p>
     );
   }
 
