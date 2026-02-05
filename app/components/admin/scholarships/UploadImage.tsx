@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { UploadOutlined } from "@ant-design/icons";
 import { Upload, Button } from "antd";
 import type { UploadFile, UploadProps } from "antd";
 import { Control, Controller } from "react-hook-form";
@@ -49,7 +48,7 @@ const UploadImageControl: React.FC<UploadImageProps> = ({
               listType={listType}
 
             >
-              <Button icon={<UploadOutlined />}>
+              <Button icon={<Upload />}>
                 {multiple ? "Select Files" : "Select File"}
               </Button>
             </Upload>

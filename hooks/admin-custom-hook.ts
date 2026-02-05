@@ -1,7 +1,7 @@
 import {
   fetchFaculties,
-  fetchProgram,
-  fetchScholarship,
+  fetchAllPrograms,
+  fetchScholarshipById,
   fetchScholarships,
   fetchUniversities,
 } from "@/app/lib/api";
@@ -26,7 +26,7 @@ export function useScholarships() {
 export function useScholarship(id: string) {
   const { data, isLoading, error } = useQuery<ScholarshipType>({
     queryKey: ["scholarship"],
-    queryFn: () => fetchScholarship(id),
+    queryFn: () => fetchScholarshipById(id),
     enabled: !!id.trim(),
   });
   return { data, isLoading, error };
@@ -39,7 +39,7 @@ export function usePrograms() {
     error,
   } = useQuery<ProgramSchemaType[]>({
     queryKey: ["programs"],
-    queryFn: fetchProgram,
+    queryFn: fetchAllPrograms,
   });
   return { data, isLoading, error };
 }
