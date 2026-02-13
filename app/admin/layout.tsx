@@ -22,28 +22,28 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/admin/login" || pathname === "/admin";
-  if (isLoginPage) {
-    return <>{children}</>;
-  }
-
   return (
-    <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
-        <ReactQueryProvider>
-          <SideBar />
-          <div className="md:pl-66 p-2  transition-all duration-300">
-            <Header />
-            <main className={`py-2 ${inter.className}`}>
-              <div className="mx-auto ">
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {children}
+    <ReactQueryProvider>
+      {isLoginPage ? (
+        children
+      ) : (
+        <AuthGuard>
+          <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
+            <SideBar />
+            <div className="md:pl-66 p-2 transition-all duration-300">
+              <Header />
+              <main className={`py-2 ${inter.className}`}>
+                <div className="mx-auto">
+                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    {children}
+                  </div>
                 </div>
-              </div>
-            </main>
-            <Toaster />
+              </main>
+              <Toaster />
+            </div>
           </div>
-        </ReactQueryProvider>
-      </div>
-    </AuthGuard>
+        </AuthGuard>
+      )}
+    </ReactQueryProvider>
   );
 }

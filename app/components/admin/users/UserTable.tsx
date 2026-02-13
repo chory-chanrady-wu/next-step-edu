@@ -41,81 +41,33 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import DeleteConfirmationModal from "../universities/DeleteConfirmationModal";
 
-// Mock data based on schema
-const MOCK_USERS = [
-    {
-        id: "u1",
-        email: "chory.chan@example.com",
-        full_name: "Chory Chanrady",
-        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Chory",
-        role: "admin",
-        status: "active",
-        phone: "+855 12 345 678",
-        created_at: "2023-10-15T08:30:00Z",
-    },
-    {
-        id: "u2",
-        email: "sok.pheap@example.com",
-        full_name: "Sok Pheap",
-        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sok",
-        role: "student",
-        status: "active",
-        phone: "+855 99 888 777",
-        created_at: "2023-11-20T10:15:00Z",
-    },
-    {
-        id: "u3",
-        email: "davith.rek@example.com",
-        full_name: "Davith Rek",
-        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Davith",
-        role: "recruiter",
-        status: "active",
-        phone: "+855 10 555 444",
-        created_at: "2023-12-05T14:50:00Z",
-    },
-    {
-        id: "u4",
-        email: "leakhena.som@example.com",
-        full_name: "Leakhena Som",
-        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leakhena",
-        role: "student",
-        status: "Inactive",
-        phone: "+855 88 111 222",
-        created_at: "2024-01-10T09:00:00Z",
-    },
-    {
-        id: "u5",
-        email: "vibol.pen@example.com",
-        full_name: "Vibol Pen",
-        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Vibol",
-        role: "admin",
-        status: "Inactive",
-        phone: "+855 77 333 444",
-        created_at: "2024-02-14T11:20:00Z",
-    },
-];
+import { useAllProfiles, useDeleteProfile } from "@/hooks/use-queries-hook";
+import { UserProfileResponse } from "@/types/nextstepedu";
 
 const UserTable = () => {
+    const { data: profiles = [], isLoading } = useAllProfiles();
+    const { mutate: deleteProfile, isPending: isDeleting } = useDeleteProfile();
+
     const [searchQuery, setSearchQuery] = useState("");
     const [roleFilter, setRoleFilter] = useState("all");
     const [statusFilter, setStatusFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [userToDelete, setUserToDelete] = useState<{ id: string, name: string } | null>(null);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<{ id: number, name: string } | null>(null);
 
     const itemsPerPage = 5;
 
     // Filter logic
     const filteredUsers = useMemo(() => {
-        return MOCK_USERS.filter((user) => {
-            const matchesSearch = user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesRole = roleFilter === "all" || user.role === roleFilter;
-            const matchesStatus = statusFilter === "all" || user.status === statusFilter;
+        return profiles.filter((user) => {
+            const fullName = `${user.firstname} ${user.lastname}`;
+            const matchesSearch = fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (user.email && user.email.toLowerCase().includes(searchQuery.toLowerCase()));
+            const matchesRole = roleFilter === "all" || (user.role && user.role.toLowerCase() === roleFilter);
+            const matchesStatus = statusFilter === "all" || (user.status && user.status.toLowerCase() === statusFilter);
             return matchesSearch && matchesRole && matchesStatus;
         });
-    }, [searchQuery, roleFilter, statusFilter]);
+    }, [searchQuery, roleFilter, statusFilter, profiles]);
 
     // Pagination logic
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
@@ -124,19 +76,19 @@ const UserTable = () => {
         currentPage * itemsPerPage
     );
 
-    const handleDeleteClick = (id: string, name: string) => {
+    const handleDeleteClick = (id: number, name: string) => {
         setUserToDelete({ id, name });
         setIsDeleteModalOpen(true);
     };
 
-    const handleConfirmDelete = async () => {
+    const handleConfirmDelete = () => {
         if (!userToDelete) return;
-        setIsDeleting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log(`Deleted user: ${userToDelete.id}`);
-        setIsDeleting(false);
-        setIsDeleteModalOpen(false);
-        setUserToDelete(null);
+        deleteProfile(userToDelete.id, {
+            onSuccess: () => {
+                setIsDeleteModalOpen(false);
+                setUserToDelete(null);
+            }
+        });
     };
 
     return (
@@ -218,15 +170,17 @@ const UserTable = () => {
                                     <TableCell className="py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="w-11 h-11 rounded-2xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm shrink-0">
-                                                {user.avatar_url ? (
-                                                    <img src={user.avatar_url} alt={user.full_name} className="w-full h-full object-cover" />
+                                                {user.imageUrl || user.image ? (
+                                                    <img src={user.imageUrl || user.image} alt={user.firstname} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <UserCircle className="w-6 h-6 text-gray-400" />
                                                 )}
                                             </div>
                                             <div className="flex flex-col min-w-0">
-                                                <span className="text-sm font-bold text-gray-900 truncate font-outfit">{user.full_name}</span>
-                                                <span className="text-xs text-gray-500 truncate">{user.email}</span>
+                                                <span className="text-sm font-bold text-gray-900 truncate font-outfit">
+                                                    {user.firstname} {user.lastname}
+                                                </span>
+                                                <span className="text-xs text-gray-500 truncate">{user.email || "No email"}</span>
                                             </div>
                                         </div>
                                     </TableCell>
@@ -234,39 +188,40 @@ const UserTable = () => {
                                         <Badge
                                             className={cn(
                                                 "font-bold text-[10px] uppercase tracking-widest px-2.5 py-0.5 border-none rounded-lg",
-                                                user.status === "active" && "bg-green-100 text-green-700",
-                                                user.status === "Inactive" && "bg-amber-100 text-amber-700",
+                                                (user.status || "active").toLowerCase() === "active" && "bg-green-100 text-green-700",
+                                                (user.status || "").toLowerCase() === "inactive" && "bg-amber-100 text-amber-700",
+                                                !(user.status) && "bg-green-100 text-green-700" // Default to active if missing
                                             )}
                                         >
-                                            {user.status}
+                                            {user.status || "ACTIVE"}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
                                             <div className={cn(
                                                 "p-1.5 rounded-lg shrink-0",
-                                                user.role === "admin" ? "bg-purple-50" : user.role === "recruiter" ? "bg-indigo-50" : "bg-blue-50"
+                                                (user.role || "student").toLowerCase() === "admin" ? "bg-purple-50" : (user.role || "").toLowerCase() === "recruiter" ? "bg-indigo-50" : "bg-blue-50"
                                             )}>
-                                                {user.role === "admin" ? <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> : <UserCircle className="w-3.5 h-3.5 text-blue-600" />}
+                                                {(user.role || "student").toLowerCase() === "admin" ? <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> : <UserCircle className="w-3.5 h-3.5 text-blue-600" />}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-700 capitalize font-outfit">{user.role}</span>
+                                            <span className="text-sm font-bold text-gray-700 capitalize font-outfit">{user.role || "Student"}</span>
                                         </div>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-2 text-xs text-gray-600">
                                                 <Phone className="w-3 h-3 text-gray-400" />
-                                                {user.phone}
+                                                {user.phone || "N/A"}
                                             </div>
-            
+
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-sm text-gray-500 font-medium">
-                                        {new Date(user.created_at).toLocaleDateString(undefined, {
+                                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, {
                                             year: 'numeric',
                                             month: 'short',
                                             day: 'numeric'
-                                        })}
+                                        }) : "N/A"}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
@@ -286,12 +241,12 @@ const UserTable = () => {
                                                     <Edit className="h-4 w-4 text-amber-500" />
                                                     <span className="font-bold text-gray-700 text-xs">Edit Account</span>
                                                 </DropdownMenuItem>
-                                              
-                                              
+
+
                                                 <DropdownMenuSeparator className="my-1 border-gray-50" />
                                                 <DropdownMenuItem
                                                     className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600 py-2.5 rounded-lg font-black"
-                                                    onClick={() => handleDeleteClick(user.id, user.full_name)}
+                                                    onClick={() => handleDeleteClick(user.id, user.firstname + " " + user.lastname)}
                                                 >
                                                     <Trash2 className="h-4 w-4" />
                                                     <span className="text-xs">Delete </span>

@@ -1,15 +1,29 @@
-import { StatsCard } from "@/./app/components/admin/dashboard/StatsCard";
-import { RevenueChart } from "@/./app/components/admin/dashboard/RevenueChart";
-import { UserChart } from "@/./app/components/admin/dashboard/UserChart";
+"use client";
+
+import { StatsCard } from "@/app/components/admin/dashboard/StatsCard";
+import { RevenueChart } from "@/app/components/admin/dashboard/RevenueChart";
+import { UserChart } from "@/app/components/admin/dashboard/UserChart";
 import {
   Building2,
   GraduationCap,
   BookOpen,
   Users,
-  TrendingUp,
 } from "lucide-react";
+import {
+  useAllUniversities,
+  useAllScholarships,
+  useAllPrograms,
+  useAllProfiles,
+} from "@/hooks/use-queries-hook";
+import { RecentUsersTable } from "@/app/components/admin/dashboard/RecentUsersTable";
 
 export default function Dashboard() {
+  const { data: universities } = useAllUniversities();
+  const { data: scholarships } = useAllScholarships({ size: 1 }); // Just need count
+  const { data: programs } = useAllPrograms();
+  const { data: profiles } = useAllProfiles();
+  console.log("Dashboard Data:", { universities, scholarships, programs, profiles });
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -21,7 +35,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
           title="Total Universities"
-          value={48}
+          value={universities?.length || 0}
           change="+3 this month"
           changeType="positive"
           icon={Building2}
@@ -29,7 +43,7 @@ export default function Dashboard() {
         />
         <StatsCard
           title="Total Scholarships"
-          value={156}
+          value={scholarships?.totalElements || 0}
           change="+12 this month"
           changeType="positive"
           icon={GraduationCap}
@@ -37,7 +51,7 @@ export default function Dashboard() {
         />
         <StatsCard
           title="Programs"
-          value={324}
+          value={programs?.length || 0}
           change="+8 this month"
           changeType="positive"
           icon={BookOpen}
@@ -45,7 +59,7 @@ export default function Dashboard() {
         />
         <StatsCard
           title="Registered Users"
-          value="2,847"
+          value={profiles?.length || 0}
           change="+127 this month"
           changeType="positive"
           icon={Users}
@@ -57,6 +71,11 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RevenueChart />
         <UserChart />
+      </div>
+
+      {/* Recent Users Table */}
+      <div className="mt-8">
+        <RecentUsersTable />
       </div>
     </div>
   );

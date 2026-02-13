@@ -12,7 +12,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('accessToken') || localStorage.getItem('authToken') || localStorage.getItem('token');
         const user = localStorage.getItem('user');
 
         if (!token || !user) {

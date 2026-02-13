@@ -11,7 +11,6 @@ import {
     CheckCircle2,
     ChevronLeft,
     Loader2,
-    Star,
     X,
     CloudUpload,
     Info,
@@ -21,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useCreateUniversity, useUpdateUniversity } from "@/hooks/use-queries-hook";
+import { UniversityResponse } from "@/types/nextstepedu";
 
 // --- Sub-components ---
 
@@ -78,22 +79,28 @@ const TextInput = ({ error, icon: Icon, className, ...props }: TextInputProps) =
 
 interface ImageUploadProps {
     label: string;
-    value: string;
-    onChange: (url: string) => void;
+    previewUrl: string;
+    onFileSelect: (file: File | null) => void;
     required?: boolean;
     aspectRatio?: "square" | "video";
 }
 
-const ImageUpload = ({ label, value, onChange, required, aspectRatio = "square" }: ImageUploadProps) => {
+const ImageUpload = ({ label, previewUrl, onFileSelect, required, aspectRatio = "square" }: ImageUploadProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const url = URL.createObjectURL(file);
-            onChange(url);
+            onFileSelect(file);
         }
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files?.[0];
+        if (file) onFileSelect(file);
     };
 
     return (
@@ -103,20 +110,28 @@ const ImageUpload = ({ label, value, onChange, required, aspectRatio = "square" 
                 onClick={() => fileInputRef.current?.click()}
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => { e.preventDefault(); setIsDragging(false); const file = e.dataTransfer.files?.[0]; if (file) onChange(URL.createObjectURL(file)); }}
+                onDrop={handleDrop}
                 className={cn(
                     "relative border-2 border-dashed rounded-2xl transition-all cursor-pointer flex flex-col items-center justify-center overflow-hidden group",
                     aspectRatio === "square" ? "aspect-square" : "aspect-[16/7]",
-                    value ? "border-blue-500 bg-blue-50/5 shadow-inner" : "border-gray-200 hover:border-blue-400 hover:bg-gray-50",
+                    previewUrl ? "border-blue-500 bg-blue-50/5 shadow-inner" : "border-gray-200 hover:border-blue-400 hover:bg-gray-50",
                     isDragging && "border-blue-500 bg-blue-50/50 ring-4 ring-blue-500/5 scale-[0.98]"
                 )}
             >
-                {value ? (
+                {previewUrl ? (
                     <>
-                        <img src={value} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500" />
+                        <img src={previewUrl} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500" />
                         <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-2 backdrop-blur-[2px]">
                             <Button type="button" variant="secondary" size="sm" className="rounded-full shadow-lg h-8">Change</Button>
-                            <Button type="button" variant="destructive" size="icon" className="rounded-full h-8 w-8 shadow-lg" onClick={(e) => { e.stopPropagation(); onChange(""); }}><X className="w-4 h-4" /></Button>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                size="icon"
+                                className="rounded-full h-8 w-8 shadow-lg"
+                                onClick={(e) => { e.stopPropagation(); onFileSelect(null); }}
+                            >
+                                <X className="w-4 h-4" />
+                            </Button>
                         </div>
                     </>
                 ) : (
@@ -135,31 +150,39 @@ const ImageUpload = ({ label, value, onChange, required, aspectRatio = "square" 
 };
 
 interface UniversityFormProps {
-    initialData?: any;
+    initialData?: UniversityResponse;
     mode?: "create" | "edit";
 }
 
 const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+    const { mutate: createUniversity, isPending: isCreating } = useCreateUniversity();
+    const { mutate: updateUniversity, isPending: isUpdating } = useUpdateUniversity();
+
+    const isLoading = isCreating || isUpdating;
     const [isSuccess, setIsSuccess] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    // Form State
     const [formData, setFormData] = useState({
         name: initialData?.name || "",
         slug: initialData?.slug || "",
-        logo_url: initialData?.logo_url || "",
-        cover_image_url: initialData?.cover_image_url || "",
-        short_description: initialData?.short_description || "",
         description: initialData?.description || "",
-        tuition_rank: initialData?.tuition_rank || 1,
         country: initialData?.country || "",
         city: initialData?.city || "",
-        official_website: initialData?.official_website || "",
+        officialWebsite: initialData?.officialWebsite || "",
         status: initialData?.status || "active",
     });
 
-    // Auto-generate slug from name (only in create mode or if slug is empty)
+    // File State
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [coverFile, setCoverFile] = useState<File | null>(null);
+
+    // Preview URLs (initialize with existing URLs if editing)
+    const [logoPreview, setLogoPreview] = useState<string>(initialData?.logoUrl || "");
+    const [coverPreview, setCoverPreview] = useState<string>(initialData?.coverImageUrl || "");
+
+    // Auto-generate slug from name
     useEffect(() => {
         if (mode === "create" && formData.name && !formData.slug) {
             setFormData(prev => ({
@@ -169,12 +192,26 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
         }
     }, [formData.name, mode]);
 
+    // Handle initial data changes (if data fetches late)
+    useEffect(() => {
+        if (initialData) {
+            setFormData({
+                name: initialData.name || "",
+                slug: initialData.slug || "",
+                description: initialData.description || "",
+                country: initialData.country || "",
+                city: initialData.city || "",
+                officialWebsite: initialData.officialWebsite || "",
+                status: initialData.status || "active",
+            });
+            setLogoPreview(initialData.logoUrl || "");
+            setCoverPreview(initialData.coverImageUrl || "");
+        }
+    }, [initialData]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: name === "tuition_rank" ? parseInt(value) : value,
-        }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
         if (errors[name]) {
             setErrors(prev => {
                 const next = { ...prev };
@@ -184,33 +221,75 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
         }
     };
 
+    const handleFileSelect = (type: 'logo' | 'cover', file: File | null) => {
+        if (type === 'logo') {
+            setLogoFile(file);
+            if (file) {
+                setLogoPreview(URL.createObjectURL(file));
+            } else {
+                setLogoPreview(initialData?.logoUrl || "");
+            }
+        } else {
+            setCoverFile(file);
+            if (file) {
+                setCoverPreview(URL.createObjectURL(file));
+            } else {
+                setCoverPreview(initialData?.coverImageUrl || "");
+            }
+        }
+    };
+
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
         if (!formData.name) newErrors.name = "University name is required";
         if (!formData.slug) newErrors.slug = "URL identifier is required";
         if (!formData.country) newErrors.country = "Country is required";
         if (!formData.city) newErrors.city = "City is required";
-        if (formData.official_website && !formData.official_website.startsWith("http")) {
-            newErrors.official_website = "Must be a valid URL starting with http:// or https://";
+        if (formData.officialWebsite && !formData.officialWebsite.startsWith("http")) {
+            newErrors.officialWebsite = "Must be a valid URL starting with http:// or https://";
         }
+
+        // For Create mode, validation of files might be strict if required by backend, 
+        // but User didn't specify distinct requirement, Assuming optional in backend as typically seen ("required=false").
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!validateForm()) return;
 
-        setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const payload = {
+            data: {
+                name: formData.name,
+                slug: formData.slug,
+                description: formData.description,
+                country: formData.country,
+                city: formData.city,
+                officialWebsite: formData.officialWebsite,
+                status: formData.status,
+            },
+            files: {
+                logoUrl: logoFile,
+                coverImageUrl: coverFile,
+            }
+        };
 
-        setIsLoading(false);
-        setIsSuccess(true);
+        const onSuccess = () => {
+            setIsSuccess(true);
+            setTimeout(() => {
+                router.push("/admin/universities");
+            }, 2000);
+        };
 
-        setTimeout(() => {
-            router.push("/admin/universities");
-        }, 2000);
+        if (mode === "create") {
+            createUniversity(payload, { onSuccess });
+        } else {
+            if (initialData?.id) {
+                updateUniversity({ id: initialData.id, payload }, { onSuccess });
+            }
+        }
     };
 
     if (isSuccess) {
@@ -298,19 +377,7 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                             </div>
 
                             <div className="space-y-1">
-                                <FormLabel info="A one-sentence summary for previews.">Catchy Short Description</FormLabel>
-                                <textarea
-                                    name="short_description"
-                                    value={formData.short_description}
-                                    onChange={handleChange}
-                                    rows={2}
-                                    placeholder="The leading institution for global innovation..."
-                                    className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all outline-none bg-white font-outfit text-sm placeholder:text-gray-400 resize-none"
-                                />
-                            </div>
-
-                            <div className="space-y-1">
-                                <FormLabel info="Comprehensive overview including history and achievements.">About the University</FormLabel>
+                                <FormLabel info="Comprehensive overview including history and achievements.">Description</FormLabel>
                                 <textarea
                                     name="description"
                                     value={formData.description}
@@ -358,11 +425,11 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                                 <div className="md:col-span-2 space-y-1">
                                     <FormLabel info="Complete website address.">Official University Website</FormLabel>
                                     <TextInput
-                                        name="official_website"
-                                        value={formData.official_website}
+                                        name="officialWebsite"
+                                        value={formData.officialWebsite}
                                         onChange={handleChange}
                                         placeholder="https://www.stanford.edu"
-                                        error={errors.official_website}
+                                        error={errors.officialWebsite}
                                         icon={LinkIcon}
                                     />
                                 </div>
@@ -382,14 +449,14 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                         <CardContent className="p-6 space-y-8 pb-8">
                             <ImageUpload
                                 label="Official Logo"
-                                value={formData.logo_url}
-                                onChange={(url) => setFormData(p => ({ ...p, logo_url: url }))}
-                                required
+                                previewUrl={logoPreview}
+                                onFileSelect={(file) => handleFileSelect('logo', file)}
+                                required={mode === "create"}
                             />
                             <ImageUpload
                                 label="Background Cover"
-                                value={formData.cover_image_url}
-                                onChange={(url) => setFormData(p => ({ ...p, cover_image_url: url }))}
+                                previewUrl={coverPreview}
+                                onFileSelect={(file) => handleFileSelect('cover', file)}
                                 aspectRatio="video"
                             />
                         </CardContent>
@@ -398,34 +465,11 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                     <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-3xl overflow-hidden">
                         <div className="p-6 border-b border-gray-50 flex items-center gap-3 bg-gray-50/30">
                             <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center">
-                                <Star className="w-4 h-4 text-white" />
+                                <AlertCircle className="w-4 h-4 text-white" />
                             </div>
-                            <h2 className="font-bold text-lg text-gray-900 font-outfit">Classification</h2>
+                            <h2 className="font-bold text-lg text-gray-900 font-outfit">Status</h2>
                         </div>
                         <CardContent className="p-6 space-y-10 py-8">
-                            <div className="space-y-5">
-                                <FormLabel info="Relative cost of education.">Tuition Rank Index</FormLabel>
-                                <div className="flex items-center justify-between bg-gray-50/50 p-5 rounded-3xl border border-gray-50 px-8">
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <button
-                                            key={star}
-                                            type="button"
-                                            onClick={() => setFormData(p => ({ ...p, tuition_rank: star }))}
-                                            className="transition-all hover:scale-125 active:scale-95 group relative"
-                                        >
-                                            <Star
-                                                className={cn(
-                                                    "w-10 h-10 transition-all duration-300",
-                                                    star <= formData.tuition_rank
-                                                        ? "fill-amber-400 text-amber-400 drop-shadow-[0_0_12px_rgba(251,191,36,0.6)]"
-                                                        : "text-gray-200 group-hover:text-gray-300"
-                                                )}
-                                            />
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
                             <div className="space-y-4">
                                 <FormLabel>Publication Status</FormLabel>
                                 <div className="flex p-1.5 bg-gray-100/80 rounded-2xl gap-2">
@@ -444,7 +488,9 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                                                 formData.status === status
                                                     ? "bg-white text-blue-600 shadow-sm shadow-gray-200"
                                                     : "text-gray-400 hover:text-gray-600"
-                                            )}>
+                                            )}
+                                                onClick={() => setFormData(p => ({ ...p, status }))}
+                                            >
                                                 {status}
                                             </div>
                                         </label>

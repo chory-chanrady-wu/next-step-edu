@@ -1,21 +1,39 @@
 'use client';
 
+import { useAllScholarships, useAllUniversities } from "@/hooks/use-queries-hook";
+import { format, subMonths, isSameMonth, isSameYear, parseISO } from "date-fns";
 import { useState } from 'react';
 import { TrendingUp } from "lucide-react";
 
-const DATA = [
-    { day: "Jan 16", value: 4500, scholarships: 10 },
-    { day: "Jan 17", value: 5200, scholarships: 15 },
-    { day: "Jan 18", value: 3800, scholarships: 8 },
-    { day: "Jan 19", value: 6100, scholarships: 20 },
-    { day: "Jan 20", value: 4200, scholarships: 12 },
-    { day: "Jan 21", value: 7200, scholarships: 25 },
-    { day: "Jan 22", value: 5500, scholarships: 18 },
-];
-
 export function RevenueChart() {
+    const { data: scholarships = { content: [] } } = useAllScholarships({ size: 1000 }); // Get enough to count
+    const { data: universities = [] } = useAllUniversities();
+
+    // Generate data for the last 7 months including current month
+    const DATA = Array.from({ length: 7 }).map((_, i) => {
+        const date = subMonths(new Date(), 6 - i);
+
+        const scholarshipCount = (scholarships.content || []).filter(item => {
+            if (!item.createdAt) return false;
+            const itemDate = typeof item.createdAt === 'string' ? parseISO(item.createdAt) : new Date(item.createdAt);
+            return isSameMonth(itemDate, date) && isSameYear(itemDate, date);
+        }).length;
+
+        const universityCount = universities.filter(item => {
+            if (!item.createdAt) return false;
+            const itemDate = typeof item.createdAt === 'string' ? parseISO(item.createdAt) : new Date(item.createdAt);
+            return isSameMonth(itemDate, date) && isSameYear(itemDate, date);
+        }).length;
+
+        return {
+            day: format(date, "MMM"),
+            value: universityCount, // Mapping universities to "value"
+            scholarships: scholarshipCount
+        };
+    }).reverse();
+
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const max = 8000;
+    const max = Math.max(...DATA.map(d => Math.max(d.value, d.scholarships))) + 5; // Dynamic max scale
     const height = 200;
     const width = 400;
     const padding = 40;
@@ -36,8 +54,8 @@ export function RevenueChart() {
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex-1 relative overflow-hidden group">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">Revenue Trend</h3>
-                    <p className="text-sm text-gray-500">Last 7 days performance</p>
+                    <h3 className="text-lg font-bold text-gray-900">Growth Trend</h3>
+                    <p className="text-sm text-gray-500">Last 7 months performance</p>
                 </div>
                 <div className="text-orange-500">
                     <TrendingUp className="w-5 h-5" />

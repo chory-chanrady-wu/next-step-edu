@@ -23,9 +23,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { UniversityResponse } from "@/types/nextstepedu";
 
 interface UniversityDetailsProps {
-    university: any;
+    university: UniversityResponse;
 }
 
 const UniversityDetails = ({ university }: UniversityDetailsProps) => {
@@ -37,11 +38,28 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
 
     const handleConfirmDelete = async () => {
         setIsDeleting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log(`Deleted: ${university.id}`);
-        setIsDeleting(false);
-        setIsDeleteModalOpen(false);
-        router.push("/admin/universities");
+    };
+
+
+    return <UniversityDetailsContent university={university} />;
+};
+
+// Split into sub-component to use hooks cleanly if needed, or just inline.
+import { useDeleteUniversity } from "@/hooks/use-queries-hook";
+
+const UniversityDetailsContent = ({ university }: { university: UniversityResponse }) => {
+    const router = useRouter();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const { mutate: deleteUniversity, isPending: isDeleting } = useDeleteUniversity();
+
+    const handleConfirmDelete = () => {
+        if (!university.id) return;
+        deleteUniversity(university.id, {
+            onSuccess: () => {
+                setIsDeleteModalOpen(false);
+                router.push("/admin/universities");
+            }
+        });
     };
 
     return (
@@ -87,9 +105,9 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-3xl overflow-hidden">
                 {/* Cover Image Placeholder */}
                 <div className="relative h-64 md:h-80 w-full bg-gradient-to-r from-blue-600 to-indigo-700">
-                    {university.cover_image_url ? (
+                    {university.coverImageUrl ? (
                         <img
-                            src={university.cover_image_url}
+                            src={university.coverImageUrl}
                             alt="Cover"
                             className="w-full h-full object-cover opacity-60 mix-blend-overlay"
                         />
@@ -103,8 +121,8 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
 
                     {/* Logo positioning */}
                     <div className="absolute -bottom-10 left-8 h-32 w-32 rounded-3xl bg-white p-2 shadow-2xl border-4 border-white flex items-center justify-center overflow-hidden">
-                        {university.logo_url ? (
-                            <img src={university.logo_url} alt={university.name} className="w-full h-full object-contain p-2" />
+                        {university.logoUrl ? (
+                            <img src={university.logoUrl} alt={university.name} className="w-full h-full object-contain p-2" />
                         ) : (
                             <Building2 className="w-12 h-12 text-gray-300" />
                         )}
@@ -116,42 +134,40 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
                         <div className="space-y-3">
                             <div className="flex flex-wrap items-center gap-3">
                                 <h1 className="text-3xl md:text-4xl font-black text-gray-900 font-outfit leading-none">{university.name}</h1>
+                                <Badge
+                                    className={cn(
+                                        "capitalize",
+                                        university.status === 'active' ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+                                    )}
+                                    variant="secondary"
+                                >
+                                    {university.status}
+                                </Badge>
                             </div>
 
                             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-500 font-medium font-outfit">
                                 <div className="flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-blue-500" />
-                                    {university.city}, {university.country}
+                                    {university.city || "Unknown City"}, {university.country || "Unknown Country"}
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <Globe className="w-4 h-4 text-indigo-500" />
-                                    <a href={university.official_website} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 hover:underline flex items-center gap-1 transition-all">
-                                        {university.slug}.edu <ExternalLink className="w-3 h-3" />
-                                    </a>
-                                </div>
+                                {university.officialWebsite && (
+                                    <div className="flex items-center gap-2">
+                                        <Globe className="w-4 h-4 text-indigo-500" />
+                                        <a href={university.officialWebsite} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 hover:underline flex items-center gap-1 transition-all">
+                                            {university.officialWebsite.replace(/^https?:\/\//, '')} <ExternalLink className="w-3 h-3" />
+                                        </a>
+                                    </div>
+                                )}
                                 <div className="flex items-center gap-2">
                                     <Calendar className="w-4 h-4 text-emerald-500" />
-                                    Founded 1960
+                                    Founded {university.createdAt ? new Date(university.createdAt).getFullYear() : 'N/A'}
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="flex gap-2 bg-gray-50/80 p-3 rounded-2xl border border-gray-100">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                    key={i}
-                                    className={cn(
-                                        "w-6 h-6",
-                                        i < university.tuition_rank ? "fill-amber-400 text-amber-400 drop-shadow-sm" : "text-gray-200"
-                                    )}
-                                />
-                            ))}
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
-            {/* Analytics/Summary Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                     { icon: GraduationCap, label: "Total Scholarships", value: "24 Active", color: "blue" },
@@ -186,13 +202,14 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
                             <h2 className="text-xl font-bold text-gray-900 font-outfit">Institutional Overview</h2>
                         </div>
                         <CardContent className="p-8 space-y-6 border-none">
+                            {/* Keep the quote block even without short_description, maybe duplicate start of desc */}
                             <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50">
                                 <p className="text-blue-900 font-semibold italic text-lg leading-relaxed">
-                                    "{university.short_description || "No short description provided for this university."}"
+                                    "{university.description ? university.description.slice(0, 150) + (university.description.length > 150 ? "..." : "") : "No description provided."}"
                                 </p>
                             </div>
                             <div className="prose prose-blue max-w-none">
-                                <p className="text-gray-600 leading-relaxed text-base font-medium">
+                                <p className="text-gray-600 leading-relaxed text-base font-medium whitespace-pre-wrap">
                                     {university.description || "Detailed institution background and information is not yet available for this record."}
                                 </p>
                             </div>
@@ -207,11 +224,11 @@ const UniversityDetails = ({ university }: UniversityDetailsProps) => {
                         </div>
                         <CardContent className="p-6 space-y-4 border-none">
                             {[
-                                { label: "Founded", value: "1960" },
-                                { label: "Type", value: "Public Research" },
-                                { label: "Campus Size", value: "240 Acres" },
-                                { label: "Faculty Count", value: "1,240" },
-                                { label: "Acceptance Rate", value: "12%" }
+                                { label: "Founded", value: university.createdAt ? new Date(university.createdAt).getFullYear().toString() : 'N/A' },
+                                { label: "Type", value: "Public Research" }, // Hardcoded for now
+                                { label: "Campus Size", value: "240 Acres" }, // Hardcoded
+                                { label: "Faculty Count", value: "1,240" },  // Hardcoded
+                                { label: "State/Province", value: university.city || 'N/A' }
                             ].map((fact, i) => (
                                 <div key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                                     <span className="text-sm font-bold text-gray-400">{fact.label}</span>

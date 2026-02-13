@@ -25,7 +25,7 @@ import {
     ChevronRight,
     ArrowUpDown,
     Download,
-    Star
+    Loader2
 } from "lucide-react";
 import {
     DropdownMenu,
@@ -37,107 +37,60 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
-
-const MOCK_UNIVERSITIES = [
-    {
-        id: "1",
-        name: "Royal University of Phnom Penh",
-        slug: "rupp",
-        logo_url: "http://rupp.edu.kh/images/rupp-logo.png",
-        country: "Cambodia",
-        city: "Phnom Penh",
-        status: "active",
-        tuition_rank: 1,
-        official_website: "http://www.rupp.edu.kh",
-        created_at: "2024-01-01",
-    },
-    {
-        id: "2",
-        name: "Zaman University",
-        slug: "zaman",
-        logo_url: "https://www.paragoniu.edu.kh/wp-content/uploads/2022/01/paragon-logo-2@2x.png",
-        country: "Cambodia",
-        city: "Phnom Penh",
-        status: "active",
-        tuition_rank: 2,
-        official_website: "https://paragoniu.edu.kh",
-        created_at: "2024-01-05",
-    },
-    {
-        id: "3",
-        name: "National University of Singapore",
-        slug: "nus",
-        logo_url: "https://static.wixstatic.com/media/da9e74_568fe84a19b243ffbed35849f4ca9216~mv2.png/v1/fill/w_384,h_160,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/da9e74_568fe84a19b243ffbed35849f4ca9216~mv2.png",
-        country: "Singapore",
-        city: "Singapore",
-        status: "inactive",
-        tuition_rank: 3,
-        official_website: "https://www.nus.edu.sg",
-        created_at: "2024-02-10",
-    },
-    {
-        id: "4",
-        name: "Institute of Technology of Cambodia",
-        slug: "itc",
-        logo_url: "https://itc.edu.kh/wp-content/uploads/2021/02/cropped-Logo-ITC.png",
-        country: "Cambodia",
-        city: "Phnom Penh",
-        status: "active",
-        tuition_rank: 1,
-        official_website: "http://www.itc.edu.kh",
-        created_at: "2024-03-15",
-    },
-    {
-        id: "5",
-        name: "American University of Phnom Penh",
-        slug: "aupp",
-        logo_url: "https://www.aupp.edu.kh/wp-content/uploads/2023/05/AUPP-Logo.png",
-        country: "Cambodia",
-        city: "Phnom Penh",
-        status: "active",
-        tuition_rank: 4,
-        official_website: "https://www.aupp.edu.kh",
-        created_at: "2024-04-20",
-    },
-];
+import { useAllUniversities, useDeleteUniversity } from "@/hooks/use-queries-hook";
 
 const UniversityTable = () => {
+    const { data: universities = [], isLoading } = useAllUniversities();
+    const { mutate: deleteUniversity, isPending: isDeletingUniversity } = useDeleteUniversity();
+
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [universityToDelete, setUniversityToDelete] = useState<{ id: string, name: string } | null>(null);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [universityToDelete, setUniversityToDelete] = useState<{ id: number, name: string } | null>(null);
 
     const itemsPerPage = 5;
+
+    // Filter logic
     const filteredUniversities = useMemo(() => {
-        return MOCK_UNIVERSITIES.filter((uni) => {
+        return universities.filter((uni) => {
             const matchesSearch = uni.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                uni.city.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesStatus = statusFilter === "all" || uni.status === statusFilter;
+                (uni.city && uni.city.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                (uni.country && uni.country.toLowerCase().includes(searchQuery.toLowerCase()));
+            const matchesStatus = statusFilter === "all" || (uni.status && uni.status.toLowerCase() === statusFilter.toLowerCase());
             return matchesSearch && matchesStatus;
         });
-    }, [searchQuery, statusFilter]);
+    }, [searchQuery, statusFilter, universities]);
+
     const totalPages = Math.ceil(filteredUniversities.length / itemsPerPage);
     const paginatedData = filteredUniversities.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
 
-    const handleDeleteClick = (id: string, name: string) => {
+    const handleDeleteClick = (id: number, name: string) => {
         setUniversityToDelete({ id, name });
         setIsDeleteModalOpen(true);
     };
 
-    const handleConfirmDelete = async () => {
+    const handleConfirmDelete = () => {
         if (!universityToDelete) return;
-        setIsDeleting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log(`Deleted university: ${universityToDelete.id}`);
-        setIsDeleting(false);
-        setIsDeleteModalOpen(false);
-        setUniversityToDelete(null);
+        deleteUniversity(universityToDelete.id, {
+            onSuccess: () => {
+                setIsDeleteModalOpen(false);
+                setUniversityToDelete(null);
+            }
+        });
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center p-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                <span className="ml-3 text-gray-500 font-medium font-outfit">Loading universities...</span>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-4">
@@ -148,7 +101,7 @@ const UniversityTable = () => {
                 onConfirm={handleConfirmDelete}
                 title="Delete University"
                 description={`Are you sure you want to delete "${universityToDelete?.name}"? This will permanently remove the record and all associated data from the system.`}
-                isLoading={isDeleting}
+                isLoading={isDeletingUniversity}
             />
 
             {/* Filters & Actions Bar */}
@@ -192,7 +145,7 @@ const UniversityTable = () => {
                                 </div>
                             </TableHead>
                             <TableHead>Location</TableHead>
-                            <TableHead>Tuition Rank</TableHead>
+                            {/* Tuition Rank removed as it's not in backend response */}
                             <TableHead>Status</TableHead>
                             <TableHead>
                                 <div className="flex items-center gap-2 cursor-pointer group">
@@ -210,22 +163,24 @@ const UniversityTable = () => {
                                     <TableCell className="py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
-                                                {uni.logo_url ? (
-                                                    <img src={uni.logo_url} alt={uni.name} className="w-full h-full object-contain p-2" />
+                                                {uni.logoUrl || uni.logoUrl ? (
+                                                    <img src={uni.logoUrl} alt={uni.name} className="w-full h-full object-contain p-2" />
                                                 ) : (
                                                     <Globe className="w-6 h-6 text-gray-400" />
                                                 )}
                                             </div>
                                             <div className="flex flex-col min-w-0">
                                                 <span className="text-sm font-bold text-gray-900 truncate font-outfit">{uni.name}</span>
-                                                <a
-                                                    href={uni.official_website}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-xs text-blue-500 flex items-center gap-1 hover:underline group w-fit"
-                                                >
-                                                    {uni.slug}.edu <ExternalLink className="w-3 h-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                                                </a>
+                                                {uni.officialWebsite && (
+                                                    <a
+                                                        href={uni.officialWebsite}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-xs text-blue-500 flex items-center gap-1 hover:underline group w-fit"
+                                                    >
+                                                        {uni.slug || "website"} <ExternalLink className="w-3 h-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                     </TableCell>
@@ -234,43 +189,28 @@ const UniversityTable = () => {
                                             <div className="p-1.5 bg-green-50 rounded-lg shrink-0">
                                                 <MapPin className="w-3.5 h-3.5 text-green-600" />
                                             </div>
-                                            <span className="truncate">{uni.city}, {uni.country}</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex gap-0.5 group">
-                                            {Array.from({ length: 5 }).map((_, i) => (
-                                                <Star
-                                                    key={i}
-                                                    className={cn(
-                                                        "w-3.5 h-3.5 transition-colors duration-200",
-                                                        i < uni.tuition_rank
-                                                            ? 'fill-amber-400 text-amber-400'
-                                                            : 'text-gray-200'
-                                                    )}
-                                                />
-                                            ))}
+                                            <span className="truncate">{uni.city || "N/A"}, {uni.country || "N/A"}</span>
                                         </div>
                                     </TableCell>
                                     <TableCell>
                                         <Badge
-                                            variant={uni.status === "active" ? "default" : "secondary"}
+                                            variant={(uni.status || "active").toLowerCase() === "active" ? "default" : "secondary"}
                                             className={cn(
                                                 "font-semibold text-[10px] uppercase tracking-wider px-2 py-0.5 border-none",
-                                                uni.status === "active"
+                                                (uni.status || "active").toLowerCase() === "active"
                                                     ? "bg-green-100 text-green-700 hover:bg-green-100"
                                                     : "bg-gray-100 text-gray-600 hover:bg-gray-100"
                                             )}
                                         >
-                                            {uni.status}
+                                            {uni.status || "Active"}
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-sm text-gray-500 font-medium">
-                                        {new Date(uni.created_at).toLocaleDateString(undefined, {
+                                        {uni.createdAt ? new Date(uni.createdAt).toLocaleDateString(undefined, {
                                             year: 'numeric',
                                             month: 'short',
                                             day: 'numeric'
-                                        })}
+                                        }) : "N/A"}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
@@ -326,7 +266,7 @@ const UniversityTable = () => {
                 {/* Pagination Section */}
                 <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex items-center justify-between font-outfit">
                     <p className="text-xs text-gray-500 font-medium tracking-tight">
-                        Showing <span className="text-gray-900 font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="text-gray-900 font-bold">{Math.min(currentPage * itemsPerPage, filteredUniversities.length)}</span> of <span className="text-gray-900 font-bold">{filteredUniversities.length}</span> entries
+                        Showing <span className="text-gray-900 font-bold">{filteredUniversities.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0}</span> to <span className="text-gray-900 font-bold">{Math.min(currentPage * itemsPerPage, filteredUniversities.length)}</span> of <span className="text-gray-900 font-bold">{filteredUniversities.length}</span> entries
                     </p>
                     <div className="flex items-center gap-2">
                         <Button

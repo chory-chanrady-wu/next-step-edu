@@ -4,62 +4,58 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle, Eye, EyeOff, Lock, Mail, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const DEMO_CREDENTIALS = {
-  email: "admin@nextstep.edu",
-  password: "admin123",
-};
+import { useLogin } from "@/hooks/use-queries-hook";
 
 export default function LoginForm() {
   const router = useRouter();
+  const loginMutation = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
-    await new Promise((resolve) => setTimeout(resolve, 800));
 
     try {
-      if (
-        email === DEMO_CREDENTIALS.email &&
-        password === DEMO_CREDENTIALS.password
-      ) {
-        const userData = {
-          id: "1",
-          name: "Admin User",
-          email: email,
-          role: "admin",
-        };
-        localStorage.setItem("authToken", "demo-token-" + Date.now());
-        localStorage.setItem("user", JSON.stringify(userData));
-        setShowToast(true);
+      const data = await loginMutation.mutateAsync({ email, password });
+
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("authToken", data.accessToken); 
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      const userData = {
+        id: data.id || "1",
+        name: data.email?.split('@')[0] || "Admin User",
+        email: data.email || email,
+        role: data.role || "admin",
+      };
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setShowToast(true);
+
+      setTimeout(() => {
         router.push("/admin/dashboard");
-      } else {
-        throw new Error("Invalid email or password");
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
-      setIsLoading(false);
+      }, 1500);
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message || "Login failed");
     }
   };
+
+  const isLoading = loginMutation.isPending;
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
       <div className="w-full max-w-md">
         {/* Toast Notification */}
         <div
-          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${
-            showToast
-              ? "translate-x-0 opacity-100"
-              : "translate-x-[500px] opacity-0"
-          }`}
+          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${showToast
+            ? "translate-x-0 opacity-100"
+            : "translate-x-[500px] opacity-0"
+            }`}
         >
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
             <CheckCircle className="w-6 h-6 text-white" />

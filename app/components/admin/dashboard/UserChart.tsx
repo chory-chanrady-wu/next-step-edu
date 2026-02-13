@@ -1,32 +1,48 @@
-'use client';
+// No change yet, just viewing api.ts to investigate 401
 
+import { useAllProfiles } from "@/hooks/use-queries-hook";
+import { format, subMonths, isSameMonth, isSameYear, parseISO } from "date-fns";
 import { useState } from 'react';
 import { Users } from "lucide-react";
 
-const DATA = [
-    { day: "Jan 16", value: 12 },
-    { day: "Jan 17", value: 15 },
-    { day: "Jan 18", value: 10 },
-    { day: "Jan 19", value: 18 },
-    { day: "Jan 20", value: 14 },
-    { day: "Jan 21", value: 20 },
-    { day: "Jan 22", value: 16 },
-];
-
 export function UserChart() {
+    const { data: profiles = [] } = useAllProfiles();
+
+    // Generate data for the last 7 months including current month
+    const DATA = Array.from({ length: 7 }).map((_, i) => {
+        const date = subMonths(new Date(), 6 - i);
+        const count = profiles.filter(user => {
+            if (!user.createdAt) return false;
+            // Handle both ISO strings and potential timestamps
+            const userDate = typeof user.createdAt === 'string' ? parseISO(user.createdAt) : new Date(user.createdAt);
+            return isSameMonth(userDate, date) && isSameYear(userDate, date);
+        }).length;
+
+        return {
+            day: format(date, "MMM"),
+            value: count
+        };
+    }).reverse();
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const max = 20;
+    console.log("UserChart Profiles:", profiles);
+    console.log("UserChart DATA:", DATA);
+
+    const max = Math.max(...DATA.map(d => d.value)) > 0 ? Math.max(...DATA.map(d => d.value)) + 2 : 10;
     const height = 200;
     const width = 400;
     const padding = 40;
     const barWidth = 30;
 
+    // Create 5 dynamic grid lines and deduplicate to avoid key collisions
+    const rawGridLines = Array.from({ length: 5 }).map((_, i) => Math.round((max / 4) * i));
+    const gridLines = Array.from(new Set(rawGridLines)).sort((a, b) => a - b);
+
     return (
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 flex-1 relative overflow-hidden group">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">Daily Registered Users</h3>
-                    <p className="text-sm text-gray-500">Users per day</p>
+                    <h3 className="text-lg font-bold text-gray-900">Monthly Registered Users</h3>
+                    <p className="text-sm text-gray-500">Users per month</p>
                 </div>
                 <div className="text-blue-500 transition-transform group-hover:scale-110">
                     <Users className="w-5 h-5" />
@@ -40,7 +56,7 @@ export function UserChart() {
                     onMouseLeave={() => setHoveredIndex(null)}
                 >
                     {/* Grid lines */}
-                    {[0, 5, 10, 15, 20].map((v) => {
+                    {gridLines.map((v) => {
                         const y = height - (v / max) * (height - padding * 2) - padding;
                         return (
                             <g key={v}>
