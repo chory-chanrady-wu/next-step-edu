@@ -18,6 +18,7 @@ interface ProgramViewModel {
   name: string;
   description: string;
   degree_level?: number;
+  degree_level_name?: string;
   exam_required?: boolean;
   tuition_fee_amount?: number;
   currency?: string;
@@ -31,6 +32,24 @@ export default function UniversityDetailPage() {
   const id = params.id as string;
 
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Helper function to convert degree level number to name
+  const getDegreeLevelName = (level?: number): string => {
+    switch (level) {
+      case 1:
+        return "Associate Degree";
+      case 2:
+        return "Bachelor's Degree";
+      case 3:
+        return "Master's Degree";
+      case 4:
+        return "Doctoral Degree";
+      case 5:
+        return "Certificate";
+      default:
+        return "N/A";
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,20 +79,37 @@ export default function UniversityDetailPage() {
   const isLoading = isUniversityLoading || isProgramsLoading;
   const hasError = isUniversityError || isProgramsError;
 
-  const mappedPrograms: ProgramViewModel[] = (programs as ProgramResponse[]).map(
-    (program) => ({
+  // Debug: Log the raw API response
+  console.log('Raw programs from API:', programs);
+
+  const mappedPrograms: ProgramViewModel[] = (
+    programs as ProgramResponse[]
+  ).map((program) => {
+    console.log('Program:', program.name, {
+      degreeLevel: program.degreeLevel || program.degree_level,
+      tuitionFee: program.tuitionFee || program.tuition_fee_amount,
+      currency: program.currency,
+      studyPeriodMonths: program.studyPeriodMonths || program.study_period_months,
+      examRequired: program.examRequired ?? program.exam_required,
+    });
+    return {
       id: String(program.id),
       name: program.name,
       description: program.description ?? "",
-      degree_level: program.degreeLevel,
-      exam_required: false,
-      tuition_fee_amount: program.tuitionFee ?? undefined,
-      currency: "USD",
-      study_period_months: undefined,
-      university_id: program.universityId ? String(program.universityId) : undefined,
-      faculty_id: program.facultyId ? String(program.facultyId) : undefined,
-    })
-  );
+      degree_level: program.degreeLevel ?? program.degree_level,
+      degree_level_name: getDegreeLevelName(program.degreeLevel ?? program.degree_level),
+      exam_required: program.examRequired ?? program.exam_required ?? false,
+      tuition_fee_amount: program.tuitionFee ?? program.tuition_fee_amount ?? undefined,
+      currency: program.currency ?? "USD",
+      study_period_months: program.studyPeriodMonths ?? program.study_period_months ?? undefined,
+      university_id: program.universityId ?? program.university_id
+        ? String(program.universityId ?? program.university_id)
+        : undefined,
+      faculty_id: program.facultyId ?? program.faculty_id
+        ? String(program.facultyId ?? program.faculty_id)
+        : undefined,
+    };
+  });
 
   const uniData = university as UniversityResponse | undefined;
   const fallbackCoverImage = "/window.svg";
@@ -103,7 +139,7 @@ export default function UniversityDetailPage() {
           name: uniData.name,
           location: `${uniData.city || ""}, ${uniData.country || ""}`.replace(
             /^,\s*|,\s*$/g,
-            ""
+            "",
           ),
           description: uniData.description ?? "",
           logo: uniData.logoUrl || fallbackLogoImage,
@@ -131,7 +167,7 @@ export default function UniversityDetailPage() {
             officialWebsite={uniData.officialWebsite}
             location={`${uniData.city || ""}, ${uniData.country || ""}`.replace(
               /^,\s*|,\s*$/g,
-              ""
+              "",
             )}
           />
         </div>

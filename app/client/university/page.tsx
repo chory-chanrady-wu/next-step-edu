@@ -82,30 +82,6 @@ export default function UniversityPage() {
                 </button>
               )}
             </div>
-
-            {/* View Mode Toggle */}
-            <div className="flex items-center gap-2 bg-white rounded-lg p-1 shadow-sm border border-gray-200">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  viewMode === "grid"
-                    ? "bg-teal-600 text-white shadow-sm"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <span className="mr-2">⊞</span> Grid
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  viewMode === "list"
-                    ? "bg-teal-600 text-white shadow-sm"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <span className="mr-2">☰</span> List
-              </button>
-            </div>
           </div>
         </section>
       )}

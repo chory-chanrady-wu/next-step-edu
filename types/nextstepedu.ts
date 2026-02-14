@@ -58,9 +58,18 @@ export interface ProgramResponse {
   name: string;
   description?: string;
   degreeLevel: number;
+  degree_level?: number; // snake_case from backend
   tuitionFee?: number;
+  tuition_fee_amount?: number; // snake_case from backend
+  currency?: string;
+  studyPeriodMonths?: number;
+  study_period_months?: number; // snake_case from backend
+  examRequired?: boolean;
+  exam_required?: boolean; // snake_case from backend
   facultyId?: number;
+  faculty_id?: number; // snake_case from backend
   universityId?: number;
+  university_id?: number; // snake_case from backend
   createdAt?: string;
   updatedAt?: string;
 }

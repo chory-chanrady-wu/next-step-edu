@@ -7,7 +7,8 @@ import Link from "next/link";
 import { useAllUniversities } from "@/hooks/use-queries-hook";
 
 export default function HeroSection() {
-  const { data: allUniversities = [], isLoading: loading } = useAllUniversities();
+  const { data: allUniversities = [], isLoading: loading } =
+    useAllUniversities();
   const universities = allUniversities.slice(0, 10); // Show first 10 universities
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -48,14 +49,12 @@ export default function HeroSection() {
   };
 
   if (loading || universities.length === 0) {
-    return (
-      <p className="text-xl text-blue-100"></p>
-    );
+    return <p className="text-xl text-blue-100"></p>;
   }
 
   return (
     <section
-      className="relative h-150 overflow-hidden"
+      className="relative h-100 overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -90,7 +89,7 @@ export default function HeroSection() {
             <div className="text-white max-w-3xl" data-aos="fade-right">
               {/* Logo */}
               {university.logoUrl && (
-                <div className="mb-6">
+                <div className="mb-2">
                   <img
                     src={university.logoUrl}
                     alt={`${university.name} logo`}
@@ -99,33 +98,33 @@ export default function HeroSection() {
                 </div>
               )}
 
-              <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+              <h1 className="text-2xl md:text-3xl font-bold mb-1 drop-shadow-lg">
                 {university.name}
               </h1>
 
-              <p className="text-xl text-blue-100 mb-2 flex items-center gap-2">
-                <span>📍</span> {university.city || 'N/A'}, {university.country || 'N/A'}
+              <p className="text-lg text-blue-100 mb-1 flex items-center">
+                <span>📍</span> {university.city || "N/A"},{" "}
+                {university.country || "N/A"}
               </p>
 
-              <p className="text-lg md:text-xl text-gray-200 mb-6 leading-relaxed">
-                {university.description || 'Discover world-class education opportunities'}
+              <p className="text-md md:text-lg text-gray-200 mb-2">
+                {university.description || "No description available"}
               </p>
 
               {/* Stats */}
               <div className="flex flex-wrap gap-6 mb-8">
-                <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                <div className="bg-green-600 backdrop-blur-sm px-4 py-2 rounded-lg items-center">
                   <span className="font-semibold">
-                    {university.status || 'Active'}
-                  </span>{" "}
-                  Status
+                    {university.status || "Active"}
+                  </span>
                 </div>
               </div>
 
               {/* Buttons */}
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-2">
                 <Link
                   href={`/client/university/${university.id}`}
-                  className="bg-teal-400 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="bg-teal-400 text-white px-4 py-3 rounded-lg font-semibold hover:bg-teal-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   Explore University
                 </Link>
@@ -134,7 +133,7 @@ export default function HeroSection() {
                     href={university.officialWebsite}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-all"
+                    className="border-2 border-white text-white px-4 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-all"
                   >
                     Official Website →
                   </a>

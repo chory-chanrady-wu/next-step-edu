@@ -10,6 +10,7 @@ interface Program {
   faculty_id?: string;
   name: string;
   description?: string;
+  degree_level?: number;
   degree_level_name?: string;
   degreeLevelName?: string;
   exam_required?: boolean;
@@ -135,25 +136,29 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                       {formatDuration(duration)}
                     </td>
                     <td className="px-3 py-2 text-gray-700 font-medium text-xs">
-                      {tuition == null ? "N/A" : `${currency} $${tuition.toLocaleString()}`}
+                      {tuition == null
+                        ? "N/A"
+                        : currency === "USD"
+                          ? `$${tuition.toLocaleString()}`
+                          : `${tuition.toLocaleString()} ${currency}`}
                     </td>
-                  <td className="px-3 py-2">
-                    <span
-                      className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
-                        examRequired
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
-                    >
-                      {examRequired ? "Yes" : "No"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 text-gray-600 max-w-xs">
-                    <p className="line-clamp-2 text-xs">
-                      {program.description || "No description available"}
-                    </p>
-                  </td>
-                </tr>
+                    <td className="px-3 py-2">
+                      <span
+                        className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
+                          examRequired
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
+                        }`}
+                      >
+                        {examRequired ? "Yes" : "No"}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-gray-600 max-w-xs">
+                      <p className="line-clamp-2 text-xs">
+                        {program.description || "No description available"}
+                      </p>
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
