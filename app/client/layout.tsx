@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "../styles/globals.css";
 import Header from "../components/common/header";
+import ReactQueryProvider from "./providers";
+import "../styles/globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,19 +19,17 @@ export const metadata: Metadata = {
   description: "Your guide to universities and scholarships",
 };
 
-export default function RootLayout({
+export default function ClientLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased` }
-      >
+    <ReactQueryProvider>
+      <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
         {children}
-      </body>
-    </html>
+      </div>
+    </ReactQueryProvider>
   );
 }

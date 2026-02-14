@@ -1,0 +1,165 @@
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+interface Program {
+  id: string;
+  university_id?: string;
+  faculty_id?: string;
+  name: string;
+  description?: string;
+  degree_level_name?: string;
+  degreeLevelName?: string;
+  exam_required?: boolean;
+  examRequired?: boolean;
+  tuition_fee_amount?: number;
+  tuitionFee?: number;
+  currency?: string;
+  study_period_months?: number;
+  studyPeriodMonths?: number;
+}
+
+interface DetailProgramsProps {
+  programs: Program[];
+}
+
+export default function DetailPrograms({ programs }: DetailProgramsProps) {
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true, offset: 100 });
+  }, []);
+
+  const formatDuration = (months?: number) => {
+    if (!months) return "N/A";
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+    if (years > 0 && remainingMonths > 0) {
+      return `${years} year${years > 1 ? "s" : ""} ${remainingMonths} month${remainingMonths > 1 ? "s" : ""}`;
+    } else if (years > 0) {
+      return `${years} year${years > 1 ? "s" : ""}`;
+    } else {
+      return `${months} month${months > 1 ? "s" : ""}`;
+    }
+  };
+
+  const getDegreeLevelName = (program: Program) =>
+    program.degree_level_name ?? program.degreeLevelName;
+  const getTuition = (program: Program) =>
+    program.tuition_fee_amount ?? program.tuitionFee;
+  const getDuration = (program: Program) =>
+    program.study_period_months ?? program.studyPeriodMonths;
+  const getExamRequired = (program: Program) =>
+    program.exam_required ?? program.examRequired;
+  const getCurrency = (program: Program) => program.currency ?? "USD";
+
+  if (programs.length === 0) {
+    return (
+      <section className="py-3 md:py-3 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div data-aos="fade-up" className="text-center text-gray-500">
+            <p className="text-sm">No programs available at this time.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="programs" className="py-3 md:py-3 bg-gray-50">
+      <div className="px-4 max-w-7xl mx-auto">
+        {/* Section Title */}
+        <div data-aos="fade-up" className="mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center">
+            Available Programs
+          </h2>
+          <p className="text-sm text-gray-600 mb-2">
+            Explore {programs.length} programs offered by this university
+          </p>
+          <div className="w-full h-1 bg-linear-to-r from-teal-900 to-teal-700"></div>
+        </div>
+
+        {/* Programs Table */}
+        <div
+          data-aos="fade-up"
+          className="overflow-x-auto bg-white rounded-lg shadow-lg"
+        >
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-linear-to-r from-teal-900 to-teal-700 text-white">
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Program Name
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Degree Level
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Duration
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Tuition Fee
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Entrance Exam
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {programs.map((program, index) => {
+                const degreeLevelName = getDegreeLevelName(program);
+                const tuition = getTuition(program);
+                const duration = getDuration(program);
+                const examRequired = getExamRequired(program);
+                const currency = getCurrency(program);
+                return (
+                  <tr
+                    key={program.id}
+                    data-aos="fade-up"
+                    data-aos-delay={`${100 + index * 50}`}
+                    className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
+                  >
+                    <td className="px-3 py-2">
+                      <span className="font-semibold text-gray-900 text-xs">
+                        {program.name}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <span className="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded-full font-medium">
+                        {degreeLevelName || "N/A"}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-gray-700 text-xs">
+                      {formatDuration(duration)}
+                    </td>
+                    <td className="px-3 py-2 text-gray-700 font-medium text-xs">
+                      {tuition == null ? "N/A" : `${currency} $${tuition.toLocaleString()}`}
+                    </td>
+                  <td className="px-3 py-2">
+                    <span
+                      className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
+                        examRequired
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
+                      }`}
+                    >
+                      {examRequired ? "Yes" : "No"}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 text-gray-600 max-w-xs">
+                    <p className="line-clamp-2 text-xs">
+                      {program.description || "No description available"}
+                    </p>
+                  </td>
+                </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}

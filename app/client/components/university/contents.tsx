@@ -1,0 +1,189 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import type { UniversityResponse } from "@/types/nextstepedu";
+
+interface ContentsProps {
+  universities: UniversityResponse[];
+  loading: boolean;
+  error: string | null;
+  viewMode?: "grid" | "list";
+}
+
+export default function Contents({
+  universities,
+  loading,
+  error,
+  viewMode = "grid",
+}: ContentsProps) {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100,
+    });
+  }, []);
+
+  return (
+    <section id="universities" className="bg-gray-50 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        {error && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
+            data-aos="fade-up"
+          >
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="text-center text-gray-500 py-12">
+          </div>
+        ) : universities.length === 0 ? (
+          <div className="text-center text-gray-500 py-12">
+            No universities found.
+          </div>
+        ) : (
+          <>
+            {/* Universities Grid View */}
+            {viewMode === "grid" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {universities.map((university, index) => (
+                  <Link
+                    key={university.id}
+                    href={`/client/university/${university.id}`}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md transition-all duration-300 cursor-pointer"
+                    data-aos="fade-up"
+                    data-aos-delay={`${index * 10}`}
+                  >
+                    {/* Cover Image */}
+                    <div className="relative h-48 bg-gray-200 overflow-hidden">
+                      {university.coverImageUrl ? (
+                        <img
+                          src={university.coverImageUrl}
+                          alt={university.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
+                      )}
+                    </div>
+
+                    {/* Logo and Content */}
+                    <div className="p-4 relative">
+                      {/* Logo */}
+                      {university.logoUrl && (
+                        <div className="absolute -top-8 left-4 w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden border-2 border-white">
+                          <img
+                            src={university.logoUrl}
+                            alt={`${university.name} logo`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+
+                      <div className={university.logoUrl ? "pt-12" : ""}>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">
+                          {university.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3 flex items-center">
+                          📍 {university.city || 'N/A'}, {university.country || 'N/A'}
+                        </p>
+
+                        <p className="text-sm text-gray-700 mb-4">
+                          {university.description || 'No description available'}
+                        </p>
+
+                        {/* Rating and Programs */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-2">
+                            {/* Status Badge */}
+                            <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">
+                              {university.status || 'Active'}
+                            </span>
+                          </div>
+                          <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">
+                            View Details
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              /* Universities List View */
+              <div className="space-y-4">
+                {universities.map((university, index) => (
+                  <Link
+                    key={university.id}
+                    href={`/client/university/${university.id}`}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer block"
+                    data-aos="fade-up"
+                    data-aos-delay={`${index * 50}`}
+                  >
+                    <div className="flex flex-col md:flex-row">
+                      {/* Image Section */}
+                      <div className="relative w-full md:w-64 h-48 bg-gray-200 shrink-0">
+                        {university.coverImageUrl ? (
+                          <img
+                            src={university.coverImageUrl}
+                            alt={university.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
+                        )}
+                        {university.logoUrl && (
+                          <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-white">
+                            <img
+                              src={university.logoUrl}
+                              alt={`${university.name} logo`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content Section */}
+                      <div className="flex-1 p-6">
+                        <div className="flex flex-col h-full">
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                              {university.name}
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-3 flex items-center">
+                              📍 {university.city || 'N/A'}, {university.country || 'N/A'}
+                            </p>
+                            <p className="text-gray-700 mb-4">
+                              {university.description || 'No description available'}
+                            </p>
+
+                            {/* Stats */}
+                            <div className="flex items-center gap-6">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">
+                                  {university.status || 'Active'}
+                                </span>
+                              </div>
+                              <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">
+                                View Details
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
