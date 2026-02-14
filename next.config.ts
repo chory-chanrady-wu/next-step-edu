@@ -5,7 +5,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "picsum.photos",
+        hostname: "res.cloudinary.com",
+        port: '',
+        pathname: '/dkloakzs6/image/upload/**',
       },
     ],
   },

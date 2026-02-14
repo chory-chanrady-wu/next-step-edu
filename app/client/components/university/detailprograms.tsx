@@ -10,8 +10,8 @@ interface Program {
   faculty_id?: string;
   name: string;
   description?: string;
-  degree_level?: number;
-  degreeLevel?: number;
+  degree_level_name?: string;
+  degreeLevelName?: string;
   exam_required?: boolean;
   examRequired?: boolean;
   tuition_fee_amount?: number;
@@ -30,22 +30,6 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
     AOS.init({ duration: 1000, once: true, offset: 100 });
   }, []);
 
-  const getDegreeLabel = (level?: number) => {
-    if (!level) return "N/A";
-    switch (level) {
-      case 1:
-        return "Certificate";
-      case 2:
-        return "Bachelor's";
-      case 3:
-        return "Master's";
-      case 4:
-        return "PhD";
-      default:
-        return "Degree";
-    }
-  };
-
   const formatDuration = (months?: number) => {
     if (!months) return "N/A";
     const years = Math.floor(months / 12);
@@ -59,8 +43,8 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
     }
   };
 
-  const getDegreeLevel = (program: Program) =>
-    program.degree_level ?? program.degreeLevel;
+  const getDegreeLevelName = (program: Program) =>
+    program.degree_level_name ?? program.degreeLevelName;
   const getTuition = (program: Program) =>
     program.tuition_fee_amount ?? program.tuitionFee;
   const getDuration = (program: Program) =>
@@ -125,35 +109,34 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
             </thead>
             <tbody>
               {programs.map((program, index) => {
-                const degreeLevel = getDegreeLevel(program);
+                const degreeLevelName = getDegreeLevelName(program);
                 const tuition = getTuition(program);
                 const duration = getDuration(program);
                 const examRequired = getExamRequired(program);
                 const currency = getCurrency(program);
-
                 return (
-                <tr
-                  key={program.id}
-                  data-aos="fade-up"
-                  data-aos-delay={`${100 + index * 50}`}
-                  className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
-                >
-                  <td className="px-3 py-2">
-                    <span className="font-semibold text-gray-900 text-xs">
-                      {program.name}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2">
-                    <span className="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded-full font-medium">
-                      {getDegreeLabel(degreeLevel)}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 text-gray-700 text-xs">
-                    {formatDuration(duration)}
-                  </td>
-                  <td className="px-3 py-2 text-gray-700 font-medium text-xs">
-                    {tuition == null ? "N/A" : `${currency} $${tuition.toLocaleString()}`}
-                  </td>
+                  <tr
+                    key={program.id}
+                    data-aos="fade-up"
+                    data-aos-delay={`${100 + index * 50}`}
+                    className="border-b border-gray-200 hover:bg-teal-50 transition-colors"
+                  >
+                    <td className="px-3 py-2">
+                      <span className="font-semibold text-gray-900 text-xs">
+                        {program.name}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <span className="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded-full font-medium">
+                        {degreeLevelName || "N/A"}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-gray-700 text-xs">
+                      {formatDuration(duration)}
+                    </td>
+                    <td className="px-3 py-2 text-gray-700 font-medium text-xs">
+                      {tuition == null ? "N/A" : `${currency} $${tuition.toLocaleString()}`}
+                    </td>
                   <td className="px-3 py-2">
                     <span
                       className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
