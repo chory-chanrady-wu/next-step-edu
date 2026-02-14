@@ -4,26 +4,12 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
-import { fetchUniversities } from "../../../lib/api";
-
-interface University {
-  id: string;
-  name: string;
-  city: string;
-  country: string;
-  short_description: string;
-  description: string;
-  official_website?: string;
-  logo_url?: string;
-  cover_image_url?: string;
-  tuition_rank?: number;
-  programs_count?: number;
-}
+import { useAllUniversities } from "@/hooks/use-queries-hook";
 
 export default function HeroSection() {
-  const [universities, setUniversities] = useState<University[]>([]);
+  const { data: allUniversities = [], isLoading: loading } = useAllUniversities();
+  const universities = allUniversities.slice(0, 10); // Show first 10 universities
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
@@ -32,20 +18,6 @@ export default function HeroSection() {
       once: true,
       offset: 100,
     });
-  }, []);
-
-  useEffect(() => {
-    const loadUniversities = async () => {
-      try {
-        const data = await fetchUniversities();
-        setUniversities(data.slice(0, 10)); // Show first 10 universities
-      } catch (error) {
-        console.error("Failed to load universities:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadUniversities();
   }, []);
 
   useEffect(() => {
@@ -81,8 +53,6 @@ export default function HeroSection() {
     );
   }
 
-  const currentUniversity = universities[currentSlide];
-
   return (
     <section
       className="relative h-150 overflow-hidden"
@@ -103,9 +73,9 @@ export default function HeroSection() {
         >
           {/* Background Image with Overlay */}
           <div className="absolute inset-0">
-            {university.cover_image_url ? (
+            {university.coverImageUrl ? (
               <img
-                src={university.cover_image_url}
+                src={university.coverImageUrl}
                 alt={university.name}
                 className="w-full h-full object-cover"
               />
@@ -119,10 +89,10 @@ export default function HeroSection() {
           <div className="relative h-full max-w-7xl mx-auto px-4 flex items-center">
             <div className="text-white max-w-3xl" data-aos="fade-right">
               {/* Logo */}
-              {university.logo_url && (
+              {university.logoUrl && (
                 <div className="mb-6">
                   <img
-                    src={university.logo_url}
+                    src={university.logoUrl}
                     alt={`${university.name} logo`}
                     className="h-20 w-20 rounded-lg shadow-lg bg-white p-2"
                   />
@@ -134,37 +104,20 @@ export default function HeroSection() {
               </h1>
 
               <p className="text-xl text-blue-100 mb-2 flex items-center gap-2">
-                <span>📍</span> {university.city}, {university.country}
+                <span>📍</span> {university.city || 'N/A'}, {university.country || 'N/A'}
               </p>
 
               <p className="text-lg md:text-xl text-gray-200 mb-6 leading-relaxed">
-                {university.description}
+                {university.description || 'Discover world-class education opportunities'}
               </p>
 
               {/* Stats */}
               <div className="flex flex-wrap gap-6 mb-8">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`text-2xl ${
-                          i < (university.tuition_rank || 0)
-                            ? "text-yellow-400"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-sm text-gray-300">Tuition Rating</span>
-                </div>
                 <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                   <span className="font-semibold">
-                    {university.programs_count || 0}
+                    {university.status || 'Active'}
                   </span>{" "}
-                  Programs Available
+                  Status
                 </div>
               </div>
 
@@ -176,9 +129,9 @@ export default function HeroSection() {
                 >
                   Explore University
                 </Link>
-                {university.official_website && (
+                {university.officialWebsite && (
                   <a
-                    href={university.official_website}
+                    href={university.officialWebsite}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-all"

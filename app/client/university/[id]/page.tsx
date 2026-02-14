@@ -1,54 +1,35 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
-  fetchUniversityById,
-  fetchProgramsByUniversity,
-} from "../../../lib/api";
+  useProgramsByUniversity,
+  useUniversityById,
+} from "@/hooks/use-queries-hook";
 import DetailHero from "../../components/university/detailhero";
-import DetailAbout from "../../components/university/detailabout";
 import DetailFaculty from "../../components/university/detailfaculty";
 import DetailPrograms from "../../components/university/detailprograms";
 import DetailContact from "../../components/university/detailcontact";
-import DetailNavigation from "../../components/university/detailnavigation";
 import Footer from "@/app/components/common/Footer";
+import type { ProgramResponse, UniversityResponse } from "@/types/nextstepedu";
 
-interface University {
-  id: string;
-  name: string;
-  city: string;
-  country: string;
-  short_description: string;
-  description: string;
-  official_website?: string;
-  logo_url?: string;
-  cover_image_url?: string;
-  tuition_rank?: number;
-}
-
-interface Program {
+interface ProgramViewModel {
   id: string;
   name: string;
   description: string;
-  degree_level: number;
-  exam_required: boolean;
-  tuition_fee_amount: number;
-  currency: string;
-  study_period_months: number;
-  university_id: string;
-  faculty_id: string;
+  degree_level?: number;
+  exam_required?: boolean;
+  tuition_fee_amount?: number;
+  currency?: string;
+  study_period_months?: number;
+  university_id?: string;
+  faculty_id?: string;
 }
 
 export default function UniversityDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params.id as string;
 
-  const [university, setUniversity] = useState<University | null>(null);
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -64,31 +45,52 @@ export default function UniversityDetailPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const uniData = await fetchUniversityById(id);
-        setUniversity(uniData);
+  const {
+    data: university,
+    isLoading: isUniversityLoading,
+    isError: isUniversityError,
+    error: universityError,
+  } = useUniversityById(id);
+  const {
+    data: programs = [],
+    isLoading: isProgramsLoading,
+    isError: isProgramsError,
+    error: programsError,
+  } = useProgramsByUniversity(id);
+  const isLoading = isUniversityLoading || isProgramsLoading;
+  const hasError = isUniversityError || isProgramsError;
 
-        const progData = await fetchProgramsByUniversity(id);
-        setPrograms(progData);
+  const mappedPrograms: ProgramViewModel[] = (programs as ProgramResponse[]).map(
+    (program) => ({
+      id: String(program.id),
+      name: program.name,
+      description: program.description ?? "",
+      degree_level: program.degreeLevel,
+      exam_required: false,
+      tuition_fee_amount: program.tuitionFee ?? undefined,
+      currency: "USD",
+      study_period_months: undefined,
+      university_id: program.universityId ? String(program.universityId) : undefined,
+      faculty_id: program.facultyId ? String(program.facultyId) : undefined,
+    })
+  );
 
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const uniData = university as UniversityResponse | undefined;
+  const fallbackCoverImage = "/window.svg";
+  const fallbackLogoImage = "/globe.svg";
+  const errorMessage =
+    (universityError instanceof Error && universityError.message) ||
+    (programsError instanceof Error && programsError.message) ||
+    "Failed to load university details.";
 
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
-  if (error || !university) {
+  if (isLoading || hasError || !uniData) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 p-4">
+        {hasError && (
+          <div className="max-w-xl text-center text-sm text-gray-600">
+            {errorMessage}
+          </div>
+        )}
       </main>
     );
   }
@@ -97,14 +99,17 @@ export default function UniversityDetailPage() {
     <main>
       <DetailHero
         university={{
-          id: university.id,
-          name: university.name,
-          location: `${university.city}, ${university.country}`,
-          description: university.description,
-          logo: university.logo_url || "",
-          cover_image: university.cover_image_url || "",
-          tuition_rank: university.tuition_rank || 0,
-          programs_count: programs.length,
+          id: String(uniData.id),
+          name: uniData.name,
+          location: `${uniData.city || ""}, ${uniData.country || ""}`.replace(
+            /^,\s*|,\s*$/g,
+            ""
+          ),
+          description: uniData.description ?? "",
+          logo: uniData.logoUrl || fallbackLogoImage,
+          cover_image: uniData.coverImageUrl || fallbackCoverImage,
+          tuition_rank: 0,
+          programs_count: mappedPrograms.length,
         }}
       />
 
@@ -113,18 +118,21 @@ export default function UniversityDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-gray-50">
         <div className="lg:col-span-2 *:px-4 md:px-5 lg:px-5 py-6">
           <DetailFaculty
-            universityId={university.id}
-            universityName={university.name}
+            universityId={String(uniData.id)}
+            universityName={uniData.name}
           />
-          <DetailPrograms programs={programs} />
+          <DetailPrograms programs={mappedPrograms} />
         </div>
 
         {/* Right Side - Sticky Contact */}
         <div className="lg:sticky lg:top-24 lg:h-fit lg:col-span-1 scale-90 lg:scale-100 origin-top-right">
           <DetailContact
-            universityId={university.id}
-            officialWebsite={university.official_website}
-            location={`${university.city}, ${university.country}`}
+            universityId={String(uniData.id)}
+            officialWebsite={uniData.officialWebsite}
+            location={`${uniData.city || ""}, ${uniData.country || ""}`.replace(
+              /^,\s*|,\s*$/g,
+              ""
+            )}
           />
         </div>
       </div>

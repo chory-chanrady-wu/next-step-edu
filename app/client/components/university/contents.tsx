@@ -4,23 +4,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
-interface University {
-  id: string;
-  name: string;
-  city: string;
-  country: string;
-  short_description: string;
-  description: string;
-  official_website?: string;
-  logo_url?: string;
-  cover_image_url?: string;
-  tuition_rank?: number;
-  programs_count?: number;
-}
+import type { UniversityResponse } from "@/types/nextstepedu";
 
 interface ContentsProps {
-  universities: University[];
+  universities: UniversityResponse[];
   loading: boolean;
   error: string | null;
   viewMode?: "grid" | "list";
@@ -74,9 +61,9 @@ export default function Contents({
                   >
                     {/* Cover Image */}
                     <div className="relative h-48 bg-gray-200 overflow-hidden">
-                      {university.cover_image_url ? (
+                      {university.coverImageUrl ? (
                         <img
-                          src={university.cover_image_url}
+                          src={university.coverImageUrl}
                           alt={university.name}
                           className="w-full h-full object-cover"
                         />
@@ -88,52 +75,38 @@ export default function Contents({
                     {/* Logo and Content */}
                     <div className="p-4 relative">
                       {/* Logo */}
-                      {university.logo_url && (
+                      {university.logoUrl && (
                         <div className="absolute -top-8 left-4 w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden border-2 border-white">
                           <img
-                            src={university.logo_url}
+                            src={university.logoUrl}
                             alt={`${university.name} logo`}
                             className="w-full h-full object-cover"
                           />
                         </div>
                       )}
 
-                      <div className={university.logo_url ? "pt-12" : ""}>
+                      <div className={university.logoUrl ? "pt-12" : ""}>
                         <h3 className="text-lg font-bold text-gray-900 mb-1">
                           {university.name}
                         </h3>
                         <p className="text-sm text-gray-600 mb-3 flex items-center">
-                          📍 {university.city}, {university.country}
+                          📍 {university.city || 'N/A'}, {university.country || 'N/A'}
                         </p>
 
                         <p className="text-sm text-gray-700 mb-4">
-                          {university.short_description}
+                          {university.description || 'No description available'}
                         </p>
 
                         {/* Rating and Programs */}
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-2">
-                            {/* Star Rating */}
-                            <div className="flex gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <span
-                                  key={i}
-                                  className={`text-lg ${
-                                    i < (university.tuition_rank || 0)
-                                      ? "text-yellow-400"
-                                      : "text-gray-300"
-                                  }`}
-                                >
-                                  ★
-                                </span>
-                              ))}
-                            </div>
-                            <span className="text-xs text-gray-600">
-                              Tuition
+                            {/* Status Badge */}
+                            <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">
+                              {university.status || 'Active'}
                             </span>
                           </div>
                           <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">
-                            {university.programs_count || 0} Programs
+                            View Details
                           </span>
                         </div>
                       </div>
@@ -155,19 +128,19 @@ export default function Contents({
                     <div className="flex flex-col md:flex-row">
                       {/* Image Section */}
                       <div className="relative w-full md:w-64 h-48 bg-gray-200 shrink-0">
-                        {university.cover_image_url ? (
+                        {university.coverImageUrl ? (
                           <img
-                            src={university.cover_image_url}
+                            src={university.coverImageUrl}
                             alt={university.name}
                             className="w-full h-full object-cover"
                           />
                         ) : (
                           <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
                         )}
-                        {university.logo_url && (
+                        {university.logoUrl && (
                           <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-lg shadow-lg overflow-hidden border-2 border-white">
                             <img
-                              src={university.logo_url}
+                              src={university.logoUrl}
                               alt={`${university.name} logo`}
                               className="w-full h-full object-cover"
                             />
@@ -183,35 +156,21 @@ export default function Contents({
                               {university.name}
                             </h3>
                             <p className="text-sm text-gray-600 mb-3 flex items-center">
-                              📍 {university.city}, {university.country}
+                              📍 {university.city || 'N/A'}, {university.country || 'N/A'}
                             </p>
                             <p className="text-gray-700 mb-4">
-                              {university.short_description}
+                              {university.description || 'No description available'}
                             </p>
 
                             {/* Stats */}
                             <div className="flex items-center gap-6">
                               <div className="flex items-center gap-2">
-                                <div className="flex gap-1">
-                                  {[...Array(5)].map((_, i) => (
-                                    <span
-                                      key={i}
-                                      className={`text-lg ${
-                                        i < (university.tuition_rank || 0)
-                                          ? "text-yellow-400"
-                                          : "text-gray-300"
-                                      }`}
-                                    >
-                                      ★
-                                    </span>
-                                  ))}
-                                </div>
-                                <span className="text-xs text-gray-600">
-                                  Tuition
+                                <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">
+                                  {university.status || 'Active'}
                                 </span>
                               </div>
                               <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-700">
-                                {university.programs_count || 0} Programs
+                                View Details
                               </span>
                             </div>
                           </div>

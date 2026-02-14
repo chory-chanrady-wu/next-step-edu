@@ -1,18 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { fetchUniversityContact } from "../../../lib/api";
-
-interface UniversityContact {
-  id: string;
-  university_id: string;
-  email?: string;
-  phone?: string;
-  address?: string;
-  website?: string;
-}
+import { useUniversityContactsByUniversityId } from "@/hooks/use-queries-hook";
+import type { UniversityContactResponse } from "@/types/nextstepedu";
 
 interface DetailContactProps {
   universityId: string;
@@ -25,26 +17,12 @@ export default function DetailContact({
   officialWebsite,
   location,
 }: DetailContactProps) {
-  const [contact, setContact] = useState<UniversityContact | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: contacts = [], isLoading } = useUniversityContactsByUniversityId(universityId);
+  const contact = (contacts as UniversityContactResponse[])[0];
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true, offset: 100 });
   }, []);
-
-  useEffect(() => {
-    const loadContact = async () => {
-      try {
-        const data = await fetchUniversityContact(universityId);
-        setContact(data);
-      } catch (error) {
-        console.error("Failed to load contact:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadContact();
-  }, [universityId]);
 
   const contactInfo = [
     {
@@ -81,7 +59,7 @@ export default function DetailContact({
           <div className="w-24 h-1 bg-linear-to-r from-teal-600 to-teal-400 mx-auto"></div>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="text-center text-gray-500 py-8">
             Loading contact information...
           </div>

@@ -22,7 +22,7 @@ import type {
   AuthResponse,
 } from "@/types/nextstepedu";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://next-step-edu-deployment-devops-production.up.railway.app";
 
 const api = axios.create({
   baseURL: API_BASE_URL,

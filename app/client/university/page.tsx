@@ -1,62 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import HeroSection from "../components/university/herosection";
 import SearchSection from "../components/university/searchsection";
 import Contents from "../components/university/contents";
-import { fetchUniversities } from "../../lib/api";
+import { useAllUniversities } from "@/hooks/use-queries-hook";
 import Footer from "@/app/components/common/Footer";
 
-interface University {
-  id: string;
-  name: string;
-  slug: string;
-  logo_url: string;
-  cover_image_url: string;
-  short_description: string;
-  description: string;
-  tuition_rank: number;
-  country: string;
-  region_code: string;
-  city: string;
-  official_website: string;
-  status: string;
-  deleted_at: string | null;
-  created_at: string;
-  updated_at: string;
-  programs_count?: number;
-}
-
 export default function UniversityPage() {
-  const [universities, setUniversities] = useState<University[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: universities = [], isLoading: loading, error } = useAllUniversities();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("All Regions");
   const [sortBy, setSortBy] = useState("Name (A-Z)");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  useEffect(() => {
-    fetchUniversitiesData();
-  }, []);
-
-  const fetchUniversitiesData = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchUniversities();
-      setUniversities(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const filteredUniversities = universities.filter((uni) => {
     const matchesSearch =
       uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      uni.city.toLowerCase().includes(searchTerm.toLowerCase());
+      (uni.city?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false);
 
     const matchesRegion =
       selectedRegion === "All Regions" || uni.city === selectedRegion;
@@ -69,13 +30,11 @@ export default function UniversityPage() {
       return a.name.localeCompare(b.name);
     } else if (sortBy === "Name (Z-A)") {
       return b.name.localeCompare(a.name);
-    } else if (sortBy === "Rating") {
-      return (b.tuition_rank || 0) - (a.tuition_rank || 0);
     }
     return 0;
   });
 
-  const regions = ["All Regions", ...new Set(universities.map((u) => u.city))];
+  const regions = ["All Regions", ...new Set(universities.map((u) => u.city).filter((city): city is string => city !== undefined))];
 
   const hasActiveFilters =
     searchTerm !== "" ||
@@ -155,7 +114,7 @@ export default function UniversityPage() {
       <Contents
         universities={sortedUniversities}
         loading={loading}
-        error={error}
+        error={error ? (error as Error).message : null}
         viewMode={viewMode}
       />
 

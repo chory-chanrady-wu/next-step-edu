@@ -132,6 +132,14 @@ export function useDeleteProgram() {
   });
 }
 
+export function useProgramsByUniversity(universityId?: number | string) {
+  return useQuery<ProgramResponse[]>({
+    queryKey: ["programs", "university", universityId],
+    queryFn: () => api.getProgramsByUniversity(universityId as number | string),
+    enabled: !!universityId,
+  });
+}
+
 /* =======================
    SCHOLARSHIPS
 ======================= */
@@ -260,6 +268,14 @@ export function useAllUniversityContacts() {
   return useQuery<UniversityContactResponse[]>({
     queryKey: ["university-contacts"],
     queryFn: api.getAllUniversityContacts,
+  });
+}
+
+export function useUniversityContactsByUniversityId(universityId?: number | string) {
+  return useQuery<UniversityContactResponse[]>({
+    queryKey: ["university-contacts", "university", universityId],
+    queryFn: () => api.getUniversityContactsByUniversityId(universityId as number | string),
+    enabled: !!universityId,
   });
 }
 

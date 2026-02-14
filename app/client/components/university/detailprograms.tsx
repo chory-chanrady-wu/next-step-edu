@@ -6,15 +6,19 @@ import "aos/dist/aos.css";
 
 interface Program {
   id: string;
-  university_id: string;
-  faculty_id: string;
+  university_id?: string;
+  faculty_id?: string;
   name: string;
-  description: string;
-  degree_level: number;
-  exam_required: boolean;
-  tuition_fee_amount: number;
-  currency: string;
-  study_period_months: number;
+  description?: string;
+  degree_level?: number;
+  degreeLevel?: number;
+  exam_required?: boolean;
+  examRequired?: boolean;
+  tuition_fee_amount?: number;
+  tuitionFee?: number;
+  currency?: string;
+  study_period_months?: number;
+  studyPeriodMonths?: number;
 }
 
 interface DetailProgramsProps {
@@ -26,7 +30,8 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
     AOS.init({ duration: 1000, once: true, offset: 100 });
   }, []);
 
-  const getDegreeLabel = (level: number) => {
+  const getDegreeLabel = (level?: number) => {
+    if (!level) return "N/A";
     switch (level) {
       case 1:
         return "Certificate";
@@ -41,7 +46,8 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
     }
   };
 
-  const formatDuration = (months: number) => {
+  const formatDuration = (months?: number) => {
+    if (!months) return "N/A";
     const years = Math.floor(months / 12);
     const remainingMonths = months % 12;
     if (years > 0 && remainingMonths > 0) {
@@ -52,6 +58,16 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
       return `${months} month${months > 1 ? "s" : ""}`;
     }
   };
+
+  const getDegreeLevel = (program: Program) =>
+    program.degree_level ?? program.degreeLevel;
+  const getTuition = (program: Program) =>
+    program.tuition_fee_amount ?? program.tuitionFee;
+  const getDuration = (program: Program) =>
+    program.study_period_months ?? program.studyPeriodMonths;
+  const getExamRequired = (program: Program) =>
+    program.exam_required ?? program.examRequired;
+  const getCurrency = (program: Program) => program.currency ?? "USD";
 
   if (programs.length === 0) {
     return (
@@ -108,7 +124,14 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
               </tr>
             </thead>
             <tbody>
-              {programs.map((program, index) => (
+              {programs.map((program, index) => {
+                const degreeLevel = getDegreeLevel(program);
+                const tuition = getTuition(program);
+                const duration = getDuration(program);
+                const examRequired = getExamRequired(program);
+                const currency = getCurrency(program);
+
+                return (
                 <tr
                   key={program.id}
                   data-aos="fade-up"
@@ -122,34 +145,34 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                   </td>
                   <td className="px-3 py-2">
                     <span className="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded-full font-medium">
-                      {getDegreeLabel(program.degree_level)}
+                      {getDegreeLabel(degreeLevel)}
                     </span>
                   </td>
                   <td className="px-3 py-2 text-gray-700 text-xs">
-                    {formatDuration(program.study_period_months)}
+                    {formatDuration(duration)}
                   </td>
                   <td className="px-3 py-2 text-gray-700 font-medium text-xs">
-                    {program.currency} $
-                    {program.tuition_fee_amount.toLocaleString()}
+                    {tuition == null ? "N/A" : `${currency} $${tuition.toLocaleString()}`}
                   </td>
                   <td className="px-3 py-2">
                     <span
                       className={`inline-block px-2 py-0.5 text-xs rounded-full font-medium ${
-                        program.exam_required
+                        examRequired
                           ? "bg-yellow-100 text-yellow-800"
                           : "bg-green-100 text-green-800"
                       }`}
                     >
-                      {program.exam_required ? "Yes" : "No"}
+                      {examRequired ? "Yes" : "No"}
                     </span>
                   </td>
                   <td className="px-3 py-2 text-gray-600 max-w-xs">
                     <p className="line-clamp-2 text-xs">
-                      {program.description}
+                      {program.description || "No description available"}
                     </p>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
