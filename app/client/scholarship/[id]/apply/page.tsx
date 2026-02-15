@@ -9,10 +9,9 @@ export default async function ScholarshipApplyPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const scholarship = getScholarshipById(id);
+  const scholarship = await getScholarshipById(id);
 
   if (!scholarship) notFound();
 
   return <ScholarshipApplicationForm scholarship={scholarship} />;
 }
-
