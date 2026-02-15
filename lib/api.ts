@@ -25,7 +25,7 @@ import type {
 } from "@/types/nextstepedu";
 
 const API_BASE_URL =
-  "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
+  process.env.NEXT_PUBLIC_API_URL || "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
