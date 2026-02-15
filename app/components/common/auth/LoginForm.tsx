@@ -1,6 +1,10 @@
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Divider, Label, OutlineButton, PrimaryButton, TextInput } from "./ui";
 import { FcGoogle } from "react-icons/fc";
+import { useState } from "react";
+import { authenticate } from "@/lib/api";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
   onSubmit: () => void;
@@ -8,32 +12,117 @@ type Props = {
 };
 
 export default function LoginForm({ onSubmit, onSwitch }: Props) {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await authenticate({ email, password });
+
+      // Check if user is admin
+      if (response.role === "admin") {
+        toast.error("Admin accounts must login via the admin portal");
+        setIsLoading(false);
+        // Redirect to admin login
+        setTimeout(() => {
+          router.push("/admin/login");
+        }, 1000);
+        return;
+      }
+
+      // Store tokens and user info
+      if (response.accessToken) {
+        localStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem("authToken", response.accessToken);
+      }
+      if (response.refreshToken) {
+        localStorage.setItem("refreshToken", response.refreshToken);
+      }
+      if (response.id || response.email || response.role) {
+        // Handle image URL - prepend API base URL if needed
+        let imageUrl = response.image;
+        if (imageUrl && !imageUrl.startsWith("http")) {
+          // If it's a relative path, prepend the API base URL
+          imageUrl = `https://mid-term-wing-nextstepedu-backend-production.up.railway.app${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+        }
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: response.id,
+            email: response.email || email,
+            firstname: response.firstname,
+            lastname: response.lastname,
+            phone: response.phone,
+            image: imageUrl,
+            role: response.role,
+          }),
+        );
+      }
+
+      toast.success("Login successful!");
+
+      // Close modal immediately
+      onSubmit();
+
+      // Redirect to home page after a brief delay
+      setTimeout(() => {
+        router.push("/");
+      }, 300);
+    } catch (error: any) {
+      console.error("Login error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Login failed. Please check your credentials.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit();
-      }}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
         <Label>Email</Label>
         <TextInput
           type="email"
           placeholder="Email"
           required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           icon={<Mail className="h-4 w-4" />}
         />
       </div>
 
       <div>
         <Label>Password</Label>
-        <TextInput
-          type="password"
-          placeholder="Password"
-          required
-          icon={<Lock className="h-4 w-4" />}
-        />
+        <div className="relative">
+          <TextInput
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            icon={<Lock className="h-4 w-4" />}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center justify-between">
@@ -54,7 +143,7 @@ export default function LoginForm({ onSubmit, onSwitch }: Props) {
         </button>
       </div>
 
-      <PrimaryButton>Login</PrimaryButton>
+      <PrimaryButton>{isLoading ? "Logging in..." : "Login"}</PrimaryButton>
 
       <p className="pt-2 text-center text-sm text-slate-500">
         Don&apos;t have an account?{" "}

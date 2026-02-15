@@ -22,6 +22,10 @@ export interface AuthResponse {
   refreshToken: string;
   id?: number;
   email?: string;
+  firstname?: string;
+  lastname?: string;
+  phone?: string;
+  image?: string;
   role?: string;
 }
 

@@ -25,7 +25,7 @@ import type {
 } from "@/types/nextstepedu";
 
 const API_BASE_URL =
-  "https://next-step-edu-deployment-devops-production.up.railway.app";
+  "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -545,6 +545,23 @@ export async function deleteUniversityContact(
 /* =======================
    USER PROFILES
 ======================= */
+export async function getCurrentUserProfile(): Promise<UserProfileResponse> {
+  const { data } = await api.get<UserProfileResponse>("/api/v1/profile/me", {
+    headers: authHeader(),
+  });
+  return data;
+}
+
+export async function getUserProfileById(
+  userId: number | string,
+): Promise<UserProfileResponse> {
+  const { data } = await api.get<UserProfileResponse>(
+    `/api/v1/profile/users/${userId}`,
+    { headers: authHeader() },
+  );
+  return data;
+}
+
 export async function getAllProfiles(): Promise<UserProfileResponse[]> {
   const { data } = await api.get<UserProfileResponse[]>("/api/v1/profile", {
     headers: authHeader(),

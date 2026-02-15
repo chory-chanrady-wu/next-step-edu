@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "mid-term-wing-nextstepedu-backend-production.up.railway.app",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
