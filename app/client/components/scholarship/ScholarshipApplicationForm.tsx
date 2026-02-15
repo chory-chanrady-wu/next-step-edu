@@ -2,7 +2,15 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  CalendarDays,
+  GraduationCap,
+  Loader2,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 
 import { type Scholarship } from "@/app/client/scholarship/data";
 import { createApplicant } from "@/app/lib/api";
@@ -126,204 +134,284 @@ export default function ScholarshipApplicationForm({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
-      <div className="mx-auto w-full max-w-4xl px-4">
+    <div className="relative min-h-screen overflow-hidden bg-slate-100 py-10">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-28 left-[-8rem] h-80 w-80 rounded-full bg-cyan-300/45 blur-3xl" />
+        <div className="absolute right-[-6rem] top-24 h-72 w-72 rounded-full bg-emerald-300/35 blur-3xl" />
+        <div className="absolute bottom-[-7rem] left-1/3 h-72 w-72 rounded-full bg-amber-200/55 blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(2,132,199,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(2,132,199,0.08)_1px,transparent_1px)] bg-[size:32px_32px]" />
+      </div>
+
+      <div className="relative mx-auto w-full max-w-6xl px-4">
         <Link
           href={`/client/scholarship/${scholarship.id}`}
-          className="mb-4 inline-flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm"
+          className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Scholarship Detail
         </Link>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-          <h1 className="text-2xl font-bold text-slate-900">Scholarship Application</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Apply for <span className="font-semibold">{scholarship.title}</span>
-          </p>
+        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+          <aside className="rounded-3xl border border-slate-200/90 bg-gradient-to-br from-slate-900 via-cyan-900 to-emerald-800 p-6 text-white shadow-xl">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide">
+              <Sparkles className="h-3.5 w-3.5" />
+              Scholarship Application
+            </span>
+            <h1 className="mt-4 text-2xl font-bold leading-tight">{scholarship.title}</h1>
+            <p className="mt-3 text-sm text-cyan-100/90">
+              Complete the form carefully. Your details will be saved to the applicant
+              table for review.
+            </p>
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="first_name">First Name</Label>
-                <Input
-                  id="first_name"
-                  value={form.first_name}
-                  onChange={(e) => onChange("first_name", e.target.value)}
-                  required
-                />
+            <div className="mt-6 space-y-3 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm">
+              <div className="flex items-center gap-2 text-cyan-50">
+                <Award className="h-4 w-4" />
+                <span className="font-medium">{scholarship.level}</span>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="last_name">Last Name</Label>
-                <Input
-                  id="last_name"
-                  value={form.last_name}
-                  onChange={(e) => onChange("last_name", e.target.value)}
-                  required
-                />
+              <div className="flex items-center gap-2 text-cyan-50">
+                <CalendarDays className="h-4 w-4" />
+                <span>Deadline: {scholarship.deadline}</span>
+              </div>
+              <div className="flex items-center gap-2 text-cyan-50">
+                <GraduationCap className="h-4 w-4" />
+                <span>{scholarship.university}</span>
+              </div>
+              <div className="flex items-center gap-2 text-cyan-50">
+                <MapPin className="h-4 w-4" />
+                <span>{scholarship.location}</span>
               </div>
             </div>
+          </aside>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label>Gender</Label>
-                <Select
-                  value={form.gender}
-                  onValueChange={(value) => onChange("gender", value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Female">Female</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="date_of_birth">Date of Birth</Label>
-                <Input
-                  id="date_of_birth"
-                  type="date"
-                  value={form.date_of_birth}
-                  onChange={(e) => onChange("date_of_birth", e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+          <div className="rounded-3xl border border-slate-200/90 bg-white/85 p-6 shadow-xl backdrop-blur-xl sm:p-8">
+            <h2 className="text-2xl font-bold text-slate-900">Application Form</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Fill in all required information below.
+            </p>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => onChange("email", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone_number">Phone Number</Label>
-                <Input
-                  id="phone_number"
-                  value={form.phone_number}
-                  onChange={(e) => onChange("phone_number", e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+            <form onSubmit={onSubmit} className="mt-6 space-y-6">
+              <section className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5">
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-600">
+                  Personal Information
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="first_name">First Name</Label>
+                    <Input
+                      id="first_name"
+                      value={form.first_name}
+                      onChange={(e) => onChange("first_name", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="last_name">Last Name</Label>
+                    <Input
+                      id="last_name"
+                      value={form.last_name}
+                      onChange={(e) => onChange("last_name", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                value={form.address}
-                onChange={(e) => onChange("address", e.target.value)}
-                required
-              />
-            </div>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>Gender</Label>
+                    <Select
+                      value={form.gender}
+                      onValueChange={(value) => onChange("gender", value)}
+                    >
+                      <SelectTrigger className="w-full bg-white">
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="date_of_birth">Date of Birth</Label>
+                    <Input
+                      id="date_of_birth"
+                      type="date"
+                      value={form.date_of_birth}
+                      onChange={(e) => onChange("date_of_birth", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
+              </section>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="nationality">Nationality</Label>
-                <Input
-                  id="nationality"
-                  value={form.nationality}
-                  onChange={(e) => onChange("nationality", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="high_school_name">High School Name</Label>
-                <Input
-                  id="high_school_name"
-                  value={form.high_school_name}
-                  onChange={(e) => onChange("high_school_name", e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+              <section className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5">
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-600">
+                  Contact and Background
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => onChange("email", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone_number">Phone Number</Label>
+                    <Input
+                      id="phone_number"
+                      value={form.phone_number}
+                      onChange={(e) => onChange("phone_number", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="gpa">GPA</Label>
-                <Input
-                  id="gpa"
-                  type="number"
-                  min="0"
-                  max="4"
-                  step="0.01"
-                  value={form.gpa}
-                  onChange={(e) => onChange("gpa", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="family_income">Family Income (USD / year)</Label>
-                <Input
-                  id="family_income"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={form.family_income}
-                  onChange={(e) => onChange("family_income", e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+                <div className="mt-4 space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Textarea
+                    id="address"
+                    value={form.address}
+                    onChange={(e) => onChange("address", e.target.value)}
+                    className="bg-white"
+                    required
+                  />
+                </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="intended_major">Intended Major</Label>
-                <Input
-                  id="intended_major"
-                  value={form.intended_major}
-                  onChange={(e) => onChange("intended_major", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="scholarship_type">Scholarship Type</Label>
-                <Input
-                  id="scholarship_type"
-                  value={form.scholarship_type}
-                  onChange={(e) => onChange("scholarship_type", e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="nationality">Nationality</Label>
+                    <Input
+                      id="nationality"
+                      value={form.nationality}
+                      onChange={(e) => onChange("nationality", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="high_school_name">High School Name</Label>
+                    <Input
+                      id="high_school_name"
+                      value={form.high_school_name}
+                      onChange={(e) => onChange("high_school_name", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
+              </section>
 
-            <div className="space-y-2">
-              <Label htmlFor="motivation_letter">Motivation Letter</Label>
-              <Textarea
-                id="motivation_letter"
-                value={form.motivation_letter}
-                onChange={(e) => onChange("motivation_letter", e.target.value)}
-                className="min-h-40"
-                required
-              />
-            </div>
+              <section className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5">
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-600">
+                  Academic and Financial
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="gpa">GPA</Label>
+                    <Input
+                      id="gpa"
+                      type="number"
+                      min="0"
+                      max="4"
+                      step="0.01"
+                      value={form.gpa}
+                      onChange={(e) => onChange("gpa", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="family_income">Family Income (USD / year)</Label>
+                    <Input
+                      id="family_income"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={form.family_income}
+                      onChange={(e) => onChange("family_income", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
 
-            {errorMessage ? (
-              <p className="text-sm font-medium text-red-600">{errorMessage}</p>
-            ) : null}
-            {successMessage ? (
-              <p className="text-sm font-medium text-emerald-600">{successMessage}</p>
-            ) : null}
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="intended_major">Intended Major</Label>
+                    <Input
+                      id="intended_major"
+                      value={form.intended_major}
+                      onChange={(e) => onChange("intended_major", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="scholarship_type">Scholarship Type</Label>
+                    <Input
+                      id="scholarship_type"
+                      value={form.scholarship_type}
+                      onChange={(e) => onChange("scholarship_type", e.target.value)}
+                      className="bg-white"
+                      required
+                    />
+                  </div>
+                </div>
+              </section>
 
-            <Button type="submit" className="h-11 rounded-xl" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                "Submit Application"
-              )}
-            </Button>
-          </form>
+              <section className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5">
+                <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-600">
+                  Motivation
+                </h3>
+                <div className="space-y-2">
+                  <Label htmlFor="motivation_letter">Motivation Letter</Label>
+                  <Textarea
+                    id="motivation_letter"
+                    value={form.motivation_letter}
+                    onChange={(e) => onChange("motivation_letter", e.target.value)}
+                    className="min-h-40 bg-white"
+                    required
+                  />
+                </div>
+              </section>
+
+              {errorMessage ? (
+                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
+                  {errorMessage}
+                </p>
+              ) : null}
+              {successMessage ? (
+                <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
+                  {successMessage}
+                </p>
+              ) : null}
+
+              <Button
+                type="submit"
+                className="h-11 rounded-xl bg-gradient-to-r from-cyan-700 via-teal-700 to-emerald-600 text-white hover:opacity-95"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Application"
+                )}
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
