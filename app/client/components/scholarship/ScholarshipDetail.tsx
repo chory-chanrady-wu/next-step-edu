@@ -98,12 +98,12 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
               </div>
 
               <div className="w-full shrink-0 md:w-auto">
-                <a href={scholarship.howToApply.url} target="_blank" rel="noreferrer">
+                <Link href={`/client/scholarship/${scholarship.id}/apply`}>
                   <Button className="h-11 w-full gap-2 rounded-xl bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500 text-white hover:opacity-95 md:w-auto">
                     <ExternalLink className="h-4 w-4" />
                     Apply Now
                   </Button>
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -276,14 +276,14 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                   <p className="mb-4 text-sm text-white/80">
                     Don&apos;t miss this opportunity to fund your education
                   </p>
-                  <a href={scholarship.howToApply.url} target="_blank" rel="noreferrer">
+                  <Link href={`/client/scholarship/${scholarship.id}/apply`}>
                     <Button variant="secondary" className="h-11 w-full rounded-xl bg-white text-slate-900 hover:bg-white/90">
                       <span className="inline-flex items-center gap-2">
                         <ExternalLink className="h-4 w-4" />
                         Apply Now
                       </span>
                     </Button>
-                  </a>
+                  </Link>
                 </motion.div>
               </div>
             </div>

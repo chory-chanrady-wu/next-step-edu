@@ -1,6 +1,24 @@
 // API Configuration
 const API_BASE_URL = "http://localhost:3001";
 
+export type CreateApplicantPayload = {
+  first_name: string;
+  last_name: string;
+  gender: string;
+  date_of_birth: string;
+  email: string;
+  phone_number: string;
+  address: string;
+  nationality: string;
+  high_school_name: string;
+  gpa: number;
+  intended_major: string;
+  scholarship_type: string;
+  family_income: number;
+  motivation_letter: string;
+  status?: string;
+};
+
 // ==================== UNIVERSITIES ====================
 
 /**
@@ -126,6 +144,28 @@ export async function fetchScholarshipById(id: string) {
   if (!response.ok) {
     throw new Error("Failed to fetch scholarship");
   }
+  return response.json();
+}
+
+/**
+ * Create a scholarship applicant
+ */
+export async function createApplicant(payload: CreateApplicantPayload) {
+  const response = await fetch(`${API_BASE_URL}/applicants`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...payload,
+      status: payload.status ?? "pending",
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to submit application");
+  }
+
   return response.json();
 }
 
