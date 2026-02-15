@@ -22,8 +22,6 @@ import type {
   UpdateProfileRequest,
   LoginRequest,
   AuthResponse,
-  ApplicantRequest,
-  ApplicantResponse,
 } from "@/types/nextstepedu";
 
 const API_BASE_URL =
@@ -33,17 +31,11 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-const getStoredToken = () => {
-  if (typeof window === "undefined") return null;
-  return (
+export const authHeader = () => {
+  const token =
     localStorage.getItem("accessToken") ||
     localStorage.getItem("token") ||
-    localStorage.getItem("authToken")
-  );
-};
-
-export const authHeader = () => {
-  const token = getStoredToken();
+    localStorage.getItem("authToken");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
@@ -56,7 +48,10 @@ api.interceptors.request.use(
       config.url?.includes("/api/v1/auth/login");
 
     if (!isAuthEndpoint) {
-      const token = getStoredToken();
+      const token =
+        localStorage.getItem("accessToken") ||
+        localStorage.getItem("token") ||
+        localStorage.getItem("authToken");
       if (token) config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -397,16 +392,6 @@ export async function deleteScholarshipContact(
   await api.delete(`/api/v1/scholarship-contact/${id}`, {
     headers: authHeader(),
   });
-}
-
-/* =======================
-   APPLICANTS
-======================= */
-export async function createApplicant(
-  body: ApplicantRequest,
-): Promise<ApplicantResponse> {
-  const { data } = await api.post<ApplicantResponse>("/api/v1/applicants", body);
-  return data;
 }
 
 /* =======================

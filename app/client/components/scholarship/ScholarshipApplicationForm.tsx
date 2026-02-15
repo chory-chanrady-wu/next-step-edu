@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import { type Scholarship } from "@/app/client/scholarship/data";
-import { createApplicant } from "@/lib/api";
+import { createApplicant } from "@/app/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,20 +27,20 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 type ApplicationFormState = {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   gender: string;
-  dateOfBirth: string;
+  date_of_birth: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   address: string;
   nationality: string;
-  highSchoolName: string;
+  high_school_name: string;
   gpa: string;
-  intendedMajor: string;
-  scholarshipType: string;
-  familyIncome: string;
-  motivationLetter: string;
+  intended_major: string;
+  scholarship_type: string;
+  family_income: string;
+  motivation_letter: string;
 };
 
 type ScholarshipApplicationFormProps = {
@@ -48,20 +48,20 @@ type ScholarshipApplicationFormProps = {
 };
 
 const initialState = (scholarship: Scholarship): ApplicationFormState => ({
-  firstName: "",
-  lastName: "",
+  first_name: "",
+  last_name: "",
   gender: "",
-  dateOfBirth: "",
+  date_of_birth: "",
   email: "",
-  phoneNumber: "",
+  phone_number: "",
   address: "",
   nationality: "",
-  highSchoolName: "",
+  high_school_name: "",
   gpa: "",
-  intendedMajor: scholarship.field ?? "",
-  scholarshipType: scholarship.title,
-  familyIncome: "",
-  motivationLetter: "",
+  intended_major: scholarship.field ?? "",
+  scholarship_type: scholarship.title,
+  family_income: "",
+  motivation_letter: "",
 });
 
 export default function ScholarshipApplicationForm({
@@ -89,7 +89,7 @@ export default function ScholarshipApplicationForm({
     }
 
     const parsedGpa = Number(form.gpa);
-    const parsedFamilyIncome = Number(form.familyIncome);
+    const parsedFamilyIncome = Number(form.family_income);
 
     if (Number.isNaN(parsedGpa) || parsedGpa < 0 || parsedGpa > 4) {
       setErrorMessage("GPA must be a number between 0 and 4.");
@@ -105,20 +105,20 @@ export default function ScholarshipApplicationForm({
 
     try {
       await createApplicant({
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
+        first_name: form.first_name.trim(),
+        last_name: form.last_name.trim(),
         gender: form.gender,
-        dateOfBirth: form.dateOfBirth,
+        date_of_birth: form.date_of_birth,
         email: form.email.trim(),
-        phoneNumber: form.phoneNumber.trim(),
+        phone_number: form.phone_number.trim(),
         address: form.address.trim(),
         nationality: form.nationality.trim(),
-        highSchoolName: form.highSchoolName.trim(),
+        high_school_name: form.high_school_name.trim(),
         gpa: parsedGpa,
-        intendedMajor: form.intendedMajor.trim(),
-        scholarshipType: form.scholarshipType.trim(),
-        familyIncome: parsedFamilyIncome,
-        motivationLetter: form.motivationLetter.trim(),
+        intended_major: form.intended_major.trim(),
+        scholarship_type: form.scholarship_type.trim(),
+        family_income: parsedFamilyIncome,
+        motivation_letter: form.motivation_letter.trim(),
         status: "pending",
       });
 
@@ -199,8 +199,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="first_name">First Name</Label>
                     <Input
                       id="first_name"
-                      value={form.firstName}
-                      onChange={(e) => onChange("firstName", e.target.value)}
+                      value={form.first_name}
+                      onChange={(e) => onChange("first_name", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -209,8 +209,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="last_name">Last Name</Label>
                     <Input
                       id="last_name"
-                      value={form.lastName}
-                      onChange={(e) => onChange("lastName", e.target.value)}
+                      value={form.last_name}
+                      onChange={(e) => onChange("last_name", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -239,8 +239,8 @@ export default function ScholarshipApplicationForm({
                     <Input
                       id="date_of_birth"
                       type="date"
-                      value={form.dateOfBirth}
-                      onChange={(e) => onChange("dateOfBirth", e.target.value)}
+                      value={form.date_of_birth}
+                      onChange={(e) => onChange("date_of_birth", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -268,8 +268,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="phone_number">Phone Number</Label>
                     <Input
                       id="phone_number"
-                      value={form.phoneNumber}
-                      onChange={(e) => onChange("phoneNumber", e.target.value)}
+                      value={form.phone_number}
+                      onChange={(e) => onChange("phone_number", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -302,8 +302,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="high_school_name">High School Name</Label>
                     <Input
                       id="high_school_name"
-                      value={form.highSchoolName}
-                      onChange={(e) => onChange("highSchoolName", e.target.value)}
+                      value={form.high_school_name}
+                      onChange={(e) => onChange("high_school_name", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -337,8 +337,8 @@ export default function ScholarshipApplicationForm({
                       type="number"
                       min="0"
                       step="0.01"
-                      value={form.familyIncome}
-                      onChange={(e) => onChange("familyIncome", e.target.value)}
+                      value={form.family_income}
+                      onChange={(e) => onChange("family_income", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -350,8 +350,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="intended_major">Intended Major</Label>
                     <Input
                       id="intended_major"
-                      value={form.intendedMajor}
-                      onChange={(e) => onChange("intendedMajor", e.target.value)}
+                      value={form.intended_major}
+                      onChange={(e) => onChange("intended_major", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -360,8 +360,8 @@ export default function ScholarshipApplicationForm({
                     <Label htmlFor="scholarship_type">Scholarship Type</Label>
                     <Input
                       id="scholarship_type"
-                      value={form.scholarshipType}
-                      onChange={(e) => onChange("scholarshipType", e.target.value)}
+                      value={form.scholarship_type}
+                      onChange={(e) => onChange("scholarship_type", e.target.value)}
                       className="bg-white"
                       required
                     />
@@ -377,8 +377,8 @@ export default function ScholarshipApplicationForm({
                   <Label htmlFor="motivation_letter">Motivation Letter</Label>
                   <Textarea
                     id="motivation_letter"
-                    value={form.motivationLetter}
-                    onChange={(e) => onChange("motivationLetter", e.target.value)}
+                    value={form.motivation_letter}
+                    onChange={(e) => onChange("motivation_letter", e.target.value)}
                     className="min-h-40 bg-white"
                     required
                   />

@@ -1,8 +1,0 @@
-{
-  "servers": {
-    "mid-term-wing-nextstepedu-backend-docs": {
-      "type": "sse",
-      "url": "https://gitmcp.io/yoeurnkimsan-max/mid-term-wing-nextstepedu-backend.git"
-    }
-  }
-}

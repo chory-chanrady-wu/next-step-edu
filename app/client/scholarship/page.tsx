@@ -23,7 +23,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { getScholarships, type Scholarship } from "@/app/client/scholarship/data";
+import { SCHOLARSHIPS } from "@/app/client/scholarship/data";
 import { ScholarshipCard } from "@/app/client/components/scholarship/ScholarshipCard";
 
 type SortKey = "name_asc" | "deadline_asc" | "deadline_desc";
@@ -55,49 +55,25 @@ export default function ScholarshipClientPage() {
   const [location, setLocation] = React.useState<string>("all");
   const [level, setLevel] = React.useState<string>("all");
   const [sort, setSort] = React.useState<SortKey>("name_asc");
-  const [scholarships, setScholarships] = React.useState<Scholarship[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [loadError, setLoadError] = React.useState("");
   const pageFromUrl = Number(searchParams.get("page") ?? "1");
   const page =
     Number.isFinite(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
 
-  React.useEffect(() => {
-    const loadScholarships = async () => {
-      setIsLoading(true);
-      setLoadError("");
-      try {
-        const items = await getScholarships();
-        setScholarships(items);
-      } catch (error) {
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Failed to load scholarships from backend.";
-        setLoadError(message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadScholarships();
-  }, []);
-
   const locations = React.useMemo(() => {
     const uniq = Array.from(
-      new Set(scholarships.map((s) => s.location)),
+      new Set(SCHOLARSHIPS.map((s) => s.location)),
     ).sort();
     return ["all", ...uniq];
-  }, [scholarships]);
+  }, []);
 
   const levels = React.useMemo(() => {
-    const uniq = Array.from(new Set(scholarships.map((s) => s.level))).sort();
+    const uniq = Array.from(new Set(SCHOLARSHIPS.map((s) => s.level))).sort();
     return ["all", ...uniq];
-  }, [scholarships]);
+  }, []);
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    let results = scholarships.filter((s) => {
+    let results = SCHOLARSHIPS.filter((s) => {
       if (location !== "all" && s.location !== location) return false;
       if (level !== "all" && s.level !== level) return false;
       if (!q) return true;
@@ -115,7 +91,7 @@ export default function ScholarshipClientPage() {
     });
 
     return results;
-  }, [query, location, level, sort, scholarships]);
+  }, [query, location, level, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
@@ -188,9 +164,9 @@ export default function ScholarshipClientPage() {
                   />
                 </div>
 
-                <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 md:w-140">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:w-140">
                   <Select value={location} onValueChange={setLocation}>
-                    <SelectTrigger className="h-11 w-full rounded-xl">
+                    <SelectTrigger className="h-11 rounded-xl">
                       <div className="flex items-center gap-2">
                         <SlidersHorizontal className="h-4 w-4 text-slate-500" />
                         <SelectValue placeholder="All Locations" />
@@ -206,7 +182,7 @@ export default function ScholarshipClientPage() {
                   </Select>
 
                   <Select value={level} onValueChange={setLevel}>
-                    <SelectTrigger className="h-11 w-full rounded-xl">
+                    <SelectTrigger className="h-11 rounded-xl">
                       <SelectValue placeholder="All Levels" />
                     </SelectTrigger>
                     <SelectContent>
@@ -222,7 +198,7 @@ export default function ScholarshipClientPage() {
                     value={sort}
                     onValueChange={(v) => setSort(v as SortKey)}
                   >
-                    <SelectTrigger className="h-11 w-full rounded-xl">
+                    <SelectTrigger className="h-11 rounded-xl">
                       <SelectValue placeholder="Name (A-Z)" />
                     </SelectTrigger>
                     <SelectContent>
@@ -266,31 +242,18 @@ export default function ScholarshipClientPage() {
         <section className="py-6 sm:py-4">
           <div className="container mx-auto px-4">
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {!isLoading &&
-                paged.map((s, index) => (
+              {paged.map((s, index) => (
                 <ScholarshipCard key={s.id} scholarship={s} index={index} />
-                ))}
+              ))}
             </div>
 
-            {isLoading && (
-              <div className="mx-auto mt-10 max-w-7xl rounded-xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-600">
-                Loading scholarships...
-              </div>
-            )}
-
-            {loadError && !isLoading && (
-              <div className="mx-auto mt-10 max-w-7xl rounded-xl border border-red-200 bg-red-50 p-10 text-center text-sm text-red-700">
-                {loadError}
-              </div>
-            )}
-
-            {filtered.length === 0 && !isLoading && !loadError && (
+            {filtered.length === 0 && (
               <div className="mx-auto mt-10 max-w-7xl rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-600">
                 No scholarships match your search. Try adjusting filters.
               </div>
             )}
 
-            {filtered.length > 0 && !isLoading && (
+            {filtered.length > 0 && (
               <div className="mx-auto mt-10 max-w-7xl">
                 <Pagination>
                   <PaginationContent>
