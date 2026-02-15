@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { loginUser } from "@/app/lib/api";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,10 +20,16 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      // Add your login logic here
-      console.log("Login attempt:", { email, password });
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await loginUser(email, password);
+      
+      // Store auth token and user info
+      if (response.token) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user || { email }));
+      }
+      
+      // Redirect to client dashboard
+      router.push('/client');
     } catch (err) {
       setError("Invalid email or password");
     } finally {
@@ -184,7 +193,7 @@ export default function Login() {
 
           {/* Sign Up Link */}
           <p className="text-center mt-8 text-gray-300">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/login/signup"
               className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"

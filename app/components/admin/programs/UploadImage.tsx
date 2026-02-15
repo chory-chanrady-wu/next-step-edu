@@ -15,7 +15,7 @@ interface UploadImageProps {
   multiple?: boolean;
   url?: string;
   listType?: UploadProps["listType"];
-  label: string
+  label: string;
 }
 
 const UploadImageControl: React.FC<UploadImageProps> = ({
@@ -23,9 +23,8 @@ const UploadImageControl: React.FC<UploadImageProps> = ({
   control,
   id,
   multiple = false,
-  url,
   listType = "picture",
-  label
+  label,
 }) => {
   return (
     <Controller
@@ -38,7 +37,8 @@ const UploadImageControl: React.FC<UploadImageProps> = ({
         return (
           <Field data-invalid={fieldState.invalid} className="w-full gap-1">
             <FieldLabel htmlFor={id} className="flex items-center">
-              {label}<span className="text-red-500">*</span>
+              {label}
+              <span className="text-red-500">*</span>
             </FieldLabel>
             <Upload
               id={id}
@@ -47,15 +47,12 @@ const UploadImageControl: React.FC<UploadImageProps> = ({
               onChange={({ fileList }) => field.onChange(fileList)}
               multiple={multiple}
               listType={listType}
-
             >
               <Button icon={<UploadOutlined />}>
                 {multiple ? "Select Files" : "Select File"}
               </Button>
             </Upload>
-            {fieldState.invalid && (
-              <FieldError errors={[fieldState.error]} />
-            )}
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
         );
       }}

@@ -79,35 +79,31 @@ export default function UniversityDetailPage() {
   const isLoading = isUniversityLoading || isProgramsLoading;
   const hasError = isUniversityError || isProgramsError;
 
-  // Debug: Log the raw API response
-  console.log('Raw programs from API:', programs);
-
   const mappedPrograms: ProgramViewModel[] = (
     programs as ProgramResponse[]
   ).map((program) => {
-    console.log('Program:', program.name, {
-      degreeLevel: program.degreeLevel || program.degree_level,
-      tuitionFee: program.tuitionFee || program.tuition_fee_amount,
-      currency: program.currency,
-      studyPeriodMonths: program.studyPeriodMonths || program.study_period_months,
-      examRequired: program.examRequired ?? program.exam_required,
-    });
     return {
       id: String(program.id),
       name: program.name,
       description: program.description ?? "",
       degree_level: program.degreeLevel ?? program.degree_level,
-      degree_level_name: getDegreeLevelName(program.degreeLevel ?? program.degree_level),
+      degree_level_name: getDegreeLevelName(
+        program.degreeLevel ?? program.degree_level,
+      ),
       exam_required: program.examRequired ?? program.exam_required ?? false,
-      tuition_fee_amount: program.tuitionFee ?? program.tuition_fee_amount ?? undefined,
+      tuition_fee_amount:
+        program.tuitionFee ?? program.tuition_fee_amount ?? undefined,
       currency: program.currency ?? "USD",
-      study_period_months: program.studyPeriodMonths ?? program.study_period_months ?? undefined,
-      university_id: program.universityId ?? program.university_id
-        ? String(program.universityId ?? program.university_id)
-        : undefined,
-      faculty_id: program.facultyId ?? program.faculty_id
-        ? String(program.facultyId ?? program.faculty_id)
-        : undefined,
+      study_period_months:
+        program.studyPeriodMonths ?? program.study_period_months ?? undefined,
+      university_id:
+        (program.universityId ?? program.university_id)
+          ? String(program.universityId ?? program.university_id)
+          : undefined,
+      faculty_id:
+        (program.facultyId ?? program.faculty_id)
+          ? String(program.facultyId ?? program.faculty_id)
+          : undefined,
     };
   });
 
@@ -169,6 +165,7 @@ export default function UniversityDetailPage() {
               /^,\s*|,\s*$/g,
               "",
             )}
+            contacts={uniData.contacts || []}
           />
         </div>
       </div>

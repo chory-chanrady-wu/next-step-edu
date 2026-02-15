@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Link from "next/link";
@@ -73,9 +74,12 @@ export default function HeroSection() {
           {/* Background Image with Overlay */}
           <div className="absolute inset-0">
             {university.coverImageUrl ? (
-              <img
+              <Image
                 src={university.coverImageUrl}
                 alt={university.name}
+                fill
+                sizes="100vw"
+                loading="eager"
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -90,9 +94,11 @@ export default function HeroSection() {
               {/* Logo */}
               {university.logoUrl && (
                 <div className="mb-2">
-                  <img
+                  <Image
                     src={university.logoUrl}
                     alt={`${university.name} logo`}
+                    width={80}
+                    height={80}
                     className="h-20 w-20 rounded-lg shadow-lg bg-white p-2"
                   />
                 </div>

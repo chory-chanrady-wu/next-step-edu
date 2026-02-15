@@ -182,6 +182,7 @@ export interface UniversityMultipartPayload {
 ======================= */
 export interface UniversityContactRequest {
   universityId: number;
+  label?: string;
   name?: string;
   email?: string;
   phone?: string;

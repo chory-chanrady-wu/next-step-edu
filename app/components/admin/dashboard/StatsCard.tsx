@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 
@@ -31,7 +30,7 @@ export function StatsCard({
                 "text-sm font-medium",
                 changeType === "positive" && "text-success",
                 changeType === "negative" && "text-destructive",
-                changeType === "neutral" && "text-muted-foreground"
+                changeType === "neutral" && "text-muted-foreground",
               )}
             >
               {change}

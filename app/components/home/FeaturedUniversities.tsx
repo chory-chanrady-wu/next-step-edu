@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin, Star } from "lucide-react";
 import Container from "../common/Container";
 import Button from "../common/Button";
@@ -27,7 +28,8 @@ export default function FeaturedUniversities() {
               Featured Universities
             </h2>
             <p className="mt-3 text-slate-600 max-w-lg">
-              Explore Cambodia&apos;s leading universities offering world-class education and diverse programs.
+              Explore Cambodia&apos;s leading universities offering world-class
+              education and diverse programs.
             </p>
           </motion.div>
 
@@ -57,33 +59,58 @@ export default function FeaturedUniversities() {
               className="overflow-hidden rounded-3xl border bg-white shadow-sm"
             >
               <div className="relative h-44">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={u.coverImageUrl} alt={u.name} className="h-full w-full object-cover" />
+                <Image
+                  src={u.coverImageUrl}
+                  alt={u.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading="eager"
+                  className="h-full w-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
               </div>
 
               <div className="p-7">
                 <div className="-mt-14 mb-4 inline-flex rounded-2xl bg-white p-2 shadow">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={u.logoUrl} alt="logo" className="h-12 w-12 rounded-xl object-cover" />
+                  <Image
+                    src={u.logoUrl}
+                    alt="logo"
+                    width={48}
+                    height={48}
+                    className="rounded-xl object-cover"
+                  />
                 </div>
 
-                <h3 className="text-2xl font-extrabold text-slate-900">{u.name}</h3>
+                <h3 className="text-2xl font-extrabold text-slate-900">
+                  {u.name}
+                </h3>
 
                 <div className="mt-2 flex items-center gap-2 text-slate-600">
                   <MapPin className="h-5 w-5" />
-                  <span>{u.city}, {u.country}</span>
+                  <span>
+                    {u.city}, {u.country}
+                  </span>
                 </div>
 
-                <p className="mt-4 text-slate-600 line-clamp-3">{u.shortDescription}</p>
+                <p className="mt-4 text-slate-600 line-clamp-3">
+                  {u.shortDescription}
+                </p>
 
                 <div className="mt-6 flex items-center justify-between border-t pt-5">
                   <div className="flex items-center gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
-                        className={i < Math.min(5, Math.max(1, u.tuitionRank)) ? "h-5 w-5 text-amber-400" : "h-5 w-5 text-slate-200"}
-                        fill={i < Math.min(5, Math.max(1, u.tuitionRank)) ? "currentColor" : "none"}
+                        className={
+                          i < Math.min(5, Math.max(1, u.tuitionRank))
+                            ? "h-5 w-5 text-amber-400"
+                            : "h-5 w-5 text-slate-200"
+                        }
+                        fill={
+                          i < Math.min(5, Math.max(1, u.tuitionRank))
+                            ? "currentColor"
+                            : "none"
+                        }
                       />
                     ))}
                     <span className="ml-2 text-sm text-slate-600">Tuition</span>

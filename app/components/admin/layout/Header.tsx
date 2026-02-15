@@ -1,7 +1,14 @@
-import { Bell, Menu, Settings, ChevronDown, LogOut, User as UserIcon } from "lucide-react";
+import {
+  Bell,
+  Menu,
+  Settings,
+  ChevronDown,
+  LogOut,
+  User as UserIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BreadcrumbBasic } from "../../common/Breadcrumb";
-import { logout, getCurrentUser } from '@/app/lib/auth';
+import { logout, getCurrentUser } from "@/app/lib/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +25,17 @@ export function Header() {
 
   // Dynamically get user details from API/LocalStorage
   const currentUserDetails = {
-    name: user?.name && user.name !== "Admin User" ? user.name : (user?.email?.split('@')[0] || "Admin"),
-    email: user?.email || ""
+    name:
+      user?.name && user.name !== "Admin User"
+        ? user.name
+        : user?.email?.split("@")[0] || "Admin",
+    email: user?.email || "",
   };
 
   const getInitials = (user: typeof currentUserDetails) => {
     return user.name
       .split(" ")
-      .map((n) => n[0])
+      .map((n: string) => n[0])
       .join("")
       .toUpperCase()
       .slice(0, 2);
@@ -99,18 +109,29 @@ export function Header() {
                     <ChevronDown className="h-4 w-4 text-gray-500" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 mt-2 rounded-xl shadow-xl border-gray-100">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 mt-2 rounded-xl shadow-xl border-gray-100"
+                >
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{currentUserDetails.name}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {currentUserDetails.name}
+                      </p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {currentUserDetails.email}
                       </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="cursor-pointer py-2 focus:bg-blue-50 focus:text-blue-600">
-                    <Link href="/admin/profile" className="flex w-full items-center">
+                  <DropdownMenuItem
+                    asChild
+                    className="cursor-pointer py-2 focus:bg-blue-50 focus:text-blue-600"
+                  >
+                    <Link
+                      href="/admin/profile"
+                      className="flex w-full items-center"
+                    >
                       <UserIcon className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </Link>

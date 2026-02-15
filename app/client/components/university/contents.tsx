@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -107,9 +108,11 @@ export default function Contents({
                       {/* Cover Image */}
                       <div className="relative h-48 bg-gray-200 overflow-hidden">
                         {university.coverImageUrl ? (
-                          <img
+                          <Image
                             src={university.coverImageUrl}
                             alt={university.name}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -122,9 +125,11 @@ export default function Contents({
                         {/* Logo */}
                         {university.logoUrl && (
                           <div className="absolute -top-8 left-4 w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden border-2 border-white">
-                            <img
+                            <Image
                               src={university.logoUrl}
                               alt={`${university.name} logo`}
+                              width={64}
+                              height={64}
                               className="w-full h-full object-cover"
                             />
                           </div>

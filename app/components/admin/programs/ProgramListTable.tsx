@@ -26,18 +26,13 @@ import {
 } from "@/components/ui/table";
 import {
   Filter,
-  GraduationCap,
   Search,
   SortAsc,
   SortDesc,
   ChevronDown,
   Sparkles,
   MoreHorizontalIcon,
-  Clock,
-  DollarSign,
   BookOpen,
-  Users,
-  FileText,
 } from "lucide-react";
 import {
   flexRender,
@@ -54,7 +49,7 @@ import {
 import Link from "next/link";
 import { usePrograms } from "@/hooks/admin-custom-hook";
 import { ProgramSchemaType } from "@/app/lib/schema/program";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 // Helper function to format currency
 const formatCurrency = (amount: number, currency: string) => {
@@ -161,7 +156,7 @@ export const columns: ColumnDef<ProgramSchemaType>[] = [
       const program = row.original;
       const formatted = formatCurrency(
         program.tuition_fee_amount,
-        program.currency
+        program.currency,
       );
 
       return (
@@ -340,7 +335,7 @@ export const columns: ColumnDef<ProgramSchemaType>[] = [
               className="text-red-600 focus:text-red-600 hover:text-red-600"
               onClick={async () => {
                 const confirmed = window.confirm(
-                  "Are you sure you want to delete this program?"
+                  "Are you sure you want to delete this program?",
                 );
                 if (confirmed) {
                   try {
@@ -366,17 +361,18 @@ export const ProgramListTable = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { isLoading, data: programsData } = usePrograms();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState("");
 
+  /* eslint-disable-next-line react-hooks/incompatible-library */
   const table = useReactTable({
     data: React.useMemo(
       () => (programsData && Array.isArray(programsData) ? programsData : []),
-      [programsData]
+      [programsData],
     ),
     columns,
     onSortingChange: setSorting,
@@ -443,12 +439,13 @@ export const ProgramListTable = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuCheckboxItem
                     checked={
-                      table
-                        .getColumn("exam_required")
-                        ?.getFilterValue() === undefined
+                      table.getColumn("exam_required")?.getFilterValue() ===
+                      undefined
                     }
                     onCheckedChange={() =>
-                      table.getColumn("exam_required")?.setFilterValue(undefined)
+                      table
+                        .getColumn("exam_required")
+                        ?.setFilterValue(undefined)
                     }
                   >
                     All Programs
@@ -500,7 +497,7 @@ export const ProgramListTable = () => {
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
                     ))}
@@ -518,7 +515,7 @@ export const ProgramListTable = () => {
                         <TableCell key={cell.id} className="py-3.5">
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </TableCell>
                       ))}
@@ -538,8 +535,8 @@ export const ProgramListTable = () => {
                           No programs found
                         </p>
                         <p className="text-sm text-gray-500 max-w-md">
-                          Try adjusting your search or filters to find what you are
-                          looking for.
+                          Try adjusting your search or filters to find what you
+                          are looking for.
                         </p>
                         <Button
                           variant="outline"

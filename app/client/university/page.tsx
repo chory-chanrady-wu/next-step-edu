@@ -8,12 +8,15 @@ import { useAllUniversities } from "@/hooks/use-queries-hook";
 import Footer from "@/app/components/common/Footer";
 
 export default function UniversityPage() {
-  const { data: universities = [], isLoading: loading, error } = useAllUniversities();
+  const {
+    data: universities = [],
+    isLoading: loading,
+    error,
+  } = useAllUniversities();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("All Regions");
   const [sortBy, setSortBy] = useState("Name (A-Z)");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
+  const [viewMode] = useState<"grid" | "list">("grid");
   const filteredUniversities = universities.filter((uni) => {
     const matchesSearch =
       uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -34,7 +37,14 @@ export default function UniversityPage() {
     return 0;
   });
 
-  const regions = ["All Regions", ...new Set(universities.map((u) => u.city).filter((city): city is string => city !== undefined))];
+  const regions = [
+    "All Regions",
+    ...new Set(
+      universities
+        .map((u) => u.city)
+        .filter((city): city is string => city !== undefined),
+    ),
+  ];
 
   const hasActiveFilters =
     searchTerm !== "" ||

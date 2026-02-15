@@ -43,6 +43,8 @@ export default function DetailHero({ university }: DetailHeroProps) {
           src={university.cover_image}
           alt={university.name}
           fill
+          sizes="100vw"
+          loading="eager"
           className="object-cover brightness-50"
           priority
         />
@@ -64,6 +66,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
                 src={university.logo}
                 alt={university.name}
                 fill
+                sizes="(max-width: 768px) 4rem, 6rem"
                 className="object-cover"
               />
             </div>

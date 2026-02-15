@@ -1,0 +1,49 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  academicInstitution: String
+}
+
+type Course @table {
+  user: User!
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  createdAt: Timestamp!
+  courseCode: String
+  instructor: String
+  description: String
+}
+
+type Grade @table {
+  user: User!
+  course: Course!
+  assignmentName: String!
+  score: Float!
+  maxScore: Float!
+  gradeDate: Date!
+  createdAt: Timestamp!
+  category: String
+}
+
+type StudySession @table {
+  user: User!
+  course: Course
+  startTime: Timestamp!
+  endTime: Timestamp!
+  createdAt: Timestamp!
+  topicsCovered: String
+  notes: String
+}
+
+type Goal @table {
+  user: User!
+  title: String!
+  targetDate: Date!
+  status: String!
+  createdAt: Timestamp!
+  description: String
+  achievedDate: Date
+}

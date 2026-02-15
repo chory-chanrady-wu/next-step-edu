@@ -10,14 +10,17 @@ import {
   EyeOff,
   ArrowRight,
   CheckCircle,
+  Phone,
 } from "lucide-react";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
-    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
+    firstname: "",
+    lastname: "",
+    phone: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -61,10 +64,12 @@ export default function SignUp() {
 
     setIsLoading(true);
     try {
-      // Add your signup logic here
       console.log("Signup attempt:", {
-        fullName: formData.fullName,
         email: formData.email,
+        password: formData.password,
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        phone: formData.phone,
       });
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -73,7 +78,7 @@ export default function SignUp() {
         // Redirect to login or dashboard
         window.location.href = "/login";
       }, 2000);
-    } catch (err) {
+    } catch {
       setError("Failed to create account. Please try again.");
     } finally {
       setIsLoading(false);
@@ -128,26 +133,49 @@ export default function SignUp() {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Full Name Field */}
-                <div>
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-200 mb-2"
-                  >
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      id="fullName"
-                      type="text"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
-                      required
-                    />
+                {/* First Name & Last Name Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label
+                      htmlFor="firstname"
+                      className="block text-sm font-medium text-gray-200 mb-2"
+                    >
+                      First Name
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        id="firstname"
+                        type="text"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        placeholder="John"
+                        className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="lastname"
+                      className="block text-sm font-medium text-gray-200 mb-2"
+                    >
+                      Last Name
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        id="lastname"
+                        type="text"
+                        name="lastname"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        placeholder="Doe"
+                        className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -168,6 +196,29 @@ export default function SignUp() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="you@example.com"
+                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Phone Field */}
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-200 mb-2"
+                  >
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <input
+                      id="phone"
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+1234567890"
                       className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
                       required
                     />

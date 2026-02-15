@@ -389,7 +389,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
               // disabled={deleteTaskMutation.isPending}
               onClick={async () => {
                 const confirmed = window.confirm(
-                  "Are you sure you want to delete this task?"
+                  "Are you sure you want to delete this task?",
                 );
                 if (confirmed) {
                   try {
@@ -425,6 +425,7 @@ export const TableListScholarship = () => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState("");
 
+  /* eslint-disable-next-line react-hooks/incompatible-library */
   const table = useReactTable({
     data: React.useMemo(
       () => (data && Array.isArray(data) ? data : []),
@@ -540,9 +541,9 @@ export const TableListScholarship = () => {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     ))}
                   </TableRow>

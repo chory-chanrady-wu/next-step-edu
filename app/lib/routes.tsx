@@ -1,6 +1,3 @@
-import { sign } from "crypto";
-import { register } from "module";
-
 export const routes = {
   home: "/",
 

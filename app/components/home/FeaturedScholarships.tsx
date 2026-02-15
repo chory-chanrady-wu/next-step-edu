@@ -5,9 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Sparkles, Calendar, MapPin, School } from "lucide-react";
 import Container from "../common/Container";
 import Button from "../common/Button";
-import { i } from "framer-motion/client";
 import { scholarships } from "../data/mockData";
-
 
 export default function FeaturedScholarships() {
   const featured = scholarships.slice(0, 3);
@@ -30,7 +28,8 @@ export default function FeaturedScholarships() {
               Featured Scholarships
             </h2>
             <p className="mt-3 text-slate-600 max-w-lg">
-              Discover scholarships that can help fund your education journey and achieve your academic dreams.
+              Discover scholarships that can help fund your education journey
+              and achieve your academic dreams.
             </p>
           </motion.div>
 
@@ -64,10 +63,16 @@ export default function FeaturedScholarships() {
               <div className="p-7">
                 <div className="flex items-start gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.logoUrl} alt={s.name} className="h-16 w-16 rounded-2xl object-cover" />
+                  <img
+                    src={s.logoUrl}
+                    alt={s.name}
+                    className="h-16 w-16 rounded-2xl object-cover"
+                  />
 
                   <div className="flex-1">
-                    <h3 className="text-xl font-extrabold text-slate-900">{s.name}</h3>
+                    <h3 className="text-xl font-extrabold text-slate-900">
+                      {s.name}
+                    </h3>
 
                     <div className="mt-2 flex flex-wrap items-center gap-3 text-slate-600">
                       <span className="rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-600">
@@ -82,7 +87,9 @@ export default function FeaturedScholarships() {
                   </div>
                 </div>
 
-                <p className="mt-4 text-slate-600 line-clamp-3">{s.description}</p>
+                <p className="mt-4 text-slate-600 line-clamp-3">
+                  {s.description}
+                </p>
 
                 <div className="mt-6 flex flex-wrap items-center gap-4 border-b pb-6 text-slate-600">
                   <span className="inline-flex items-center gap-2">
@@ -97,7 +104,10 @@ export default function FeaturedScholarships() {
 
                 <div className="mt-5 flex flex-wrap gap-3">
                   {s.benefits.slice(0, 2).map((t) => (
-                    <span key={t} className="rounded-full border px-4 py-2 text-sm text-slate-700">
+                    <span
+                      key={t}
+                      className="rounded-full border px-4 py-2 text-sm text-slate-700"
+                    >
                       {t}
                     </span>
                   ))}

@@ -22,40 +22,50 @@ export default function LoginForm() {
     try {
       const data = await loginMutation.mutateAsync({ email, password });
 
+      console.log("Login response:", data);
+
+      if (!data.accessToken) {
+        throw new Error("No access token in response");
+      }
+
       localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("authToken", data.accessToken); 
-      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("authToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken || "");
 
       const userData = {
         id: data.id || "1",
-        name: data.email?.split('@')[0] || "Admin User",
+        name: data.email?.split("@")[0] || "Admin User",
         email: data.email || email,
         role: data.role || "admin",
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
+      console.log("Auth tokens saved, redirecting...");
       setShowToast(true);
 
+      // Redirect immediately
       setTimeout(() => {
+        console.log("Pushing to dashboard");
         router.push("/admin/dashboard");
-      }, 1500);
+      }, 800);
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(err.response?.data?.message || err.message || "Login failed");
     }
   };
 
   const isLoading = loginMutation.isPending;
 
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
       <div className="w-full max-w-md">
         {/* Toast Notification */}
         <div
-          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${showToast
-            ? "translate-x-0 opacity-100"
-            : "translate-x-[500px] opacity-0"
-            }`}
+          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${
+            showToast
+              ? "translate-x-0 opacity-100"
+              : "translate-x-[500px] opacity-0"
+          }`}
         >
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
             <CheckCircle className="w-6 h-6 text-white" />

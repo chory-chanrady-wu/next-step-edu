@@ -81,10 +81,6 @@ export default function Header() {
               <LogIn className="h-4 w-4" />
               Login
             </Button>
-            <Button size="sm" className="gap-2" onClick={openAuth}>
-              <User className="h-4 w-4" />
-              Get Started
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -138,12 +134,6 @@ export default function Header() {
                     <LogIn className="h-4 w-4" />
                     Login
                   </Button>
-                  <Link href={routes.signup} onClick={closeMobile}>
-                    <Button size="sm" className="w-full gap-2">
-                      <User className="h-4 w-4" />
-                      Get Started
-                    </Button>
-                  </Link>
                 </div>
               </nav>
             </motion.div>
