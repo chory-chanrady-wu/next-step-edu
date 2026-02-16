@@ -19,7 +19,7 @@ import { RecentUsersTable } from "@/app/components/admin/dashboard/RecentUsersTa
 
 export default function Dashboard() {
   const { data: universities } = useAllUniversities();
-  const { data: scholarships } = useAllScholarships({ size: 1 }); // Just need count
+  const { data: scholarships } = useAllScholarships({ size: 1 }); 
   const { data: programs } = useAllPrograms();
   const { data: profiles } = useAllProfiles();
   console.log("Dashboard Data:", { universities, scholarships, programs, profiles });
@@ -36,7 +36,6 @@ export default function Dashboard() {
         <StatsCard
           title="Total Universities"
           value={universities?.length || 0}
-          change="+3 this month"
           changeType="positive"
           icon={Building2}
           iconColor="bg-info/10 text-info"
@@ -44,7 +43,6 @@ export default function Dashboard() {
         <StatsCard
           title="Total Scholarships"
           value={scholarships?.totalElements || 0}
-          change="+12 this month"
           changeType="positive"
           icon={GraduationCap}
           iconColor="bg-accent/10 text-accent"
@@ -52,7 +50,6 @@ export default function Dashboard() {
         <StatsCard
           title="Programs"
           value={programs?.length || 0}
-          change="+8 this month"
           changeType="positive"
           icon={BookOpen}
           iconColor="bg-success/10 text-success"
@@ -60,7 +57,6 @@ export default function Dashboard() {
         <StatsCard
           title="Registered Users"
           value={profiles?.length || 0}
-          change="+127 this month"
           changeType="positive"
           icon={Users}
           iconColor="bg-warning/10 text-warning"

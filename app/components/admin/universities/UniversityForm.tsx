@@ -179,8 +179,8 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
     const [coverFile, setCoverFile] = useState<File | null>(null);
 
     // Preview URLs (initialize with existing URLs if editing)
-    const [logoPreview, setLogoPreview] = useState<string>(initialData?.logoUrl || "");
-    const [coverPreview, setCoverPreview] = useState<string>(initialData?.coverImageUrl || "");
+    const [logoPreview, setLogoPreview] = useState<string>(initialData?.logo || "");
+    const [coverPreview, setCoverPreview] = useState<string>(initialData?.coverImage || "");
 
     // Auto-generate slug from name
     useEffect(() => {
@@ -204,8 +204,8 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                 officialWebsite: initialData.officialWebsite || "",
                 status: initialData.status || "active",
             });
-            setLogoPreview(initialData.logoUrl || "");
-            setCoverPreview(initialData.coverImageUrl || "");
+            setLogoPreview(initialData.logo || "");
+            setCoverPreview(initialData.coverImage || "");
         }
     }, [initialData]);
 
@@ -227,14 +227,14 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
             if (file) {
                 setLogoPreview(URL.createObjectURL(file));
             } else {
-                setLogoPreview(initialData?.logoUrl || "");
+                setLogoPreview(initialData?.logo || "");
             }
         } else {
             setCoverFile(file);
             if (file) {
                 setCoverPreview(URL.createObjectURL(file));
             } else {
-                setCoverPreview(initialData?.coverImageUrl || "");
+                setCoverPreview(initialData?.coverImage || "");
             }
         }
     };
@@ -271,8 +271,8 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                 status: formData.status,
             },
             files: {
-                logoUrl: logoFile,
-                coverImageUrl: coverFile,
+                logo: logoFile,
+                coverImage: coverFile,
             }
         };
 
@@ -410,6 +410,7 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                                         onChange={handleChange}
                                         placeholder="e.g. United States"
                                         error={errors.country}
+                                        icon={Globe}
                                     />
                                 </div>
                                 <div className="space-y-1">
@@ -420,19 +421,22 @@ const UniversityForm = ({ initialData, mode = "create" }: UniversityFormProps) =
                                         onChange={handleChange}
                                         placeholder="e.g. Palo Alto"
                                         error={errors.city}
+                                        icon={MapPin}
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-1">
-                                    <FormLabel info="Complete website address.">Official University Website</FormLabel>
-                                    <TextInput
-                                        name="officialWebsite"
-                                        value={formData.officialWebsite}
-                                        onChange={handleChange}
-                                        placeholder="https://www.stanford.edu"
-                                        error={errors.officialWebsite}
-                                        icon={LinkIcon}
-                                    />
-                                </div>
+                            </div>
+
+
+                            <div className="space-y-1 pt-4">
+                                <FormLabel info="Complete website address.">Official University Website</FormLabel>
+                                <TextInput
+                                    name="officialWebsite"
+                                    value={formData.officialWebsite}
+                                    onChange={handleChange}
+                                    placeholder="https://www.stanford.edu"
+                                    error={errors.officialWebsite}
+                                    icon={LinkIcon}
+                                />
                             </div>
                         </CardContent>
                     </Card>

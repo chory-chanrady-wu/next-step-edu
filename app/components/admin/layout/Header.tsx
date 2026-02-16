@@ -16,7 +16,6 @@ export function Header() {
   const notificationCount = 3;
   const user = getCurrentUser();
 
-  // Dynamically get user details from API/LocalStorage
   const currentUserDetails = {
     name: user?.name && user.name !== "Admin User" ? user.name : (user?.email?.split('@')[0] || "Admin"),
     email: user?.email || ""
@@ -91,9 +90,6 @@ export function Header() {
                     <div className="hidden md:block text-left">
                       <p className="text-sm font-semibold text-gray-900 leading-none">
                         {getDisplayName(currentUserDetails)}
-                      </p>
-                      <p className="text-[10px] text-gray-500 mt-1 capitalize">
-                        {user?.role || "Administrator"}
                       </p>
                     </div>
                     <ChevronDown className="h-4 w-4 text-gray-500" />

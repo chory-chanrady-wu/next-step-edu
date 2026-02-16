@@ -147,8 +147,8 @@ export interface UniversityResponse {
   id: number;
   name: string;
   slug?: string;
-  logoUrl?: string;
-  coverImageUrl?: string;
+  logo?: string;
+  coverImage?: string;
   description?: string;
   country?: string;
   city?: string;
@@ -163,8 +163,8 @@ export interface UniversityResponse {
 export interface UniversityMultipartPayload {
   data: UniversityRequest;
   files?: {
-    logoUrl?: File | null;
-    coverImageUrl?: File | null;
+    logo?: File | null;
+    coverImage?: File | null;
   };
 }
 
@@ -173,7 +173,8 @@ export interface UniversityMultipartPayload {
 ======================= */
 export interface UniversityContactRequest {
   universityId: number;
-  name?: string;
+  label?: string; // Backend uses label
+  name?: string;  // Some parts might use name
   email?: string;
   phone?: string;
   website?: string;
@@ -189,20 +190,24 @@ export interface UniversityContactResponse extends UniversityContactRequest {
 /* =======================
    USER PROFILE
 ======================= */
+export type UserRole = "ADMIN" | "USER";
+
 export interface UserProfileResponse {
   id: number;
   userId: number;
-  email: string; // From authenticating user
+  email: string;
   firstname: string;
   lastname: string;
   phone: string;
-  imageUrl?: string;
-  image?: string; // Sometimes APIs return 'image' instead of 'imageUrl'
-  role?: string; // Optional if joined from Auth
-  status?: string; // Optional account status
-  createdAt?: string;
+
+  image?: string;
+
+  role: UserRole;          // ✅ required
+  status?: string;         // or make it boolean if backend is boolean
+  createdAt: string;       // ✅ required if backend sends it
   updatedAt?: string;
 }
+
 
 export interface UpdateProfileRequest {
   firstname: string;
@@ -213,4 +218,53 @@ export interface UpdateProfileRequest {
 
 export interface UpdateProfilePayload extends UpdateProfileRequest {
   userId: number | string;
+}
+/* =======================
+   APPLICANT
+======================= */
+export interface ApplicantRequest {
+  userId: number;
+  scholarshipId: number;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string; // LocalDate in Java maps to string in JSON
+  email: string;
+  phoneNumber: string;
+  address: string;
+  nationality: string;
+  highSchoolName: string;
+  gpa: number;
+  intendedMajor: string;
+  scholarshipType: string;
+  familyIncome: number;
+  motivationLetter: string;
+}
+
+export interface UpdateStatusRequest {
+  status: string;
+}
+
+export interface ApplicantResponse {
+  id: number;
+  userId: number;
+  scholarshipId: number;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  nationality: string;
+  highSchoolName: string;
+  gpa: number;
+  intendedMajor: string;
+  scholarshipType: string;
+  familyIncome: number;
+  motivationLetter: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  universityId?: number;
 }

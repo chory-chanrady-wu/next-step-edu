@@ -105,9 +105,9 @@ const UniversityDetailsContent = ({ university }: { university: UniversityRespon
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-3xl overflow-hidden">
                 {/* Cover Image Placeholder */}
                 <div className="relative h-64 md:h-80 w-full bg-gradient-to-r from-blue-600 to-indigo-700">
-                    {university.coverImageUrl ? (
+                    {university.coverImage ? (
                         <img
-                            src={university.coverImageUrl}
+                            src={university.coverImage}
                             alt="Cover"
                             className="w-full h-full object-cover opacity-60 mix-blend-overlay"
                         />
@@ -121,8 +121,8 @@ const UniversityDetailsContent = ({ university }: { university: UniversityRespon
 
                     {/* Logo positioning */}
                     <div className="absolute -bottom-10 left-8 h-32 w-32 rounded-3xl bg-white p-2 shadow-2xl border-4 border-white flex items-center justify-center overflow-hidden">
-                        {university.logoUrl ? (
-                            <img src={university.logoUrl} alt={university.name} className="w-full h-full object-contain p-2" />
+                        {university.logo ? (
+                            <img src={university.logo} alt={university.name} className="w-full h-full object-contain p-2" />
                         ) : (
                             <Building2 className="w-12 h-12 text-gray-300" />
                         )}
