@@ -1,4 +1,16 @@
-export type ScholarshipLevel = "Bachelor" | "Master" | "PhD";
+import {
+  getAllScholarships,
+  getScholarshipById as getScholarshipByIdApi,
+  getScholarshipContactsByScholarshipId,
+  getUniversityById,
+} from "@/lib/api";
+import type {
+  ScholarshipContactResponse,
+  ScholarshipResponse,
+  UniversityResponse,
+} from "@/types/nextstepedu";
+
+export type ScholarshipLevel = "Bachelor" | "Master" | "PhD" | string;
 
 export type ScholarshipContact = {
   name: string;
@@ -10,7 +22,7 @@ export type Scholarship = {
   id: string;
   title: string;
   level: ScholarshipLevel;
-  deadline: string; // YYYY-MM-DD
+  deadline: string;
   summary: string;
   location: string;
   university: string;
@@ -23,213 +35,140 @@ export type Scholarship = {
     url: string;
   };
   contact: ScholarshipContact;
-  imageUrl: string; // small square
-  heroImageUrl: string; // wide header background
+  imageUrl: string;
+  heroImageUrl: string;
 };
 
-export const SCHOLARSHIPS: Scholarship[] = [
-  {
-    id: "asean-scholarship-program",
-    title: "ASEAN Scholarship Program",
-    level: "Bachelor",
-    deadline: "2024-03-31",
-    summary:
-      "Full scholarship for outstanding ASEAN students to study at top universities in the region. Covers tuition, accommodation...",
-    location: "Southeast Asia",
-    university: "Multiple Universities",
-    field: "Regional Development",
-    benefits: ["Full tuition fee coverage", "Monthly living allowance", "Accommodation"],
-    requirements: [
-      "ASEAN citizenship",
-      "Strong academic record",
-      "Demonstrated leadership or community service",
-      "English proficiency",
-    ],
-    howToApply: {
-      text: "Apply online through the official scholarship portal during the annual application period.",
-      ctaLabel: "Go to Application Portal",
-      url: "https://example.com/apply/asean-scholarship-program",
-    },
-    contact: {
-      name: "ASEAN Scholarship Office",
-      email: "info@asean-scholarships.org",
-      phone: "+855 23 123 456",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&h=500&fit=crop",
-  },
-  {
-    id: "australia-awards-cambodia",
-    title: "Australia Awards Cambodia",
-    level: "Master",
-    deadline: "2024-04-30",
-    summary:
-      "Prestigious scholarship for Cambodian professionals to study at Australian universities. Full funding for Master's degree programs.",
-    location: "Australia",
-    university: "Australian Universities",
-    field: "Priority Development Areas",
-    benefits: [
-      "Full tuition fees",
-      "Return air travel",
-      "Contribution to living expenses",
-      "Overseas health cover",
-      "Introductory academic program",
-    ],
-    requirements: [
-      "Cambodian citizenship",
-      "2+ years work experience",
-      "Bachelor's degree",
-      "IELTS 6.5 overall",
-      "Not currently studying in Australia",
-    ],
-    howToApply: {
-      text: "Apply online through the Australia Awards website during the annual application period.",
-      ctaLabel: "Go to Application Portal",
-      url: "https://example.com/apply/australia-awards-cambodia",
-    },
-    contact: {
-      name: "Australia Awards",
-      email: "info@australiaawardscambodia.org",
-      phone: "+855 23 213 470",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&h=500&fit=crop",
-  },
-  {
-    id: "cambodia-excellence-award",
-    title: "Cambodia Excellence Award",
-    level: "Bachelor",
-    deadline: "2024-05-15",
-    summary:
-      "Merit-based scholarship for Cambodian students demonstrating academic excellence and community leadership.",
-    location: "Cambodia",
-    university: "Royal University of Phnom Penh",
-    field: "Academic Excellence",
-    benefits: ["50% tuition fee waiver", "Mentorship program", "Career workshops"],
-    requirements: [
-      "Cambodian citizenship",
-      "High school diploma or equivalent",
-      "Strong academic performance",
-      "Community involvement",
-    ],
-    howToApply: {
-      text: "Submit your application through the university scholarship office with required documents.",
-      ctaLabel: "View Application Steps",
-      url: "https://example.com/apply/cambodia-excellence-award",
-    },
-    contact: {
-      name: "RUPP Scholarship Office",
-      email: "scholarships@rupp.edu.kh",
-      phone: "+855 23 555 555",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=1600&h=500&fit=crop",
-  },
-  {
-    id: "japan-cambodia-friendship-grant",
-    title: "Japan-Cambodia Friendship Grant",
-    level: "Master",
-    deadline: "2024-04-20",
-    summary:
-      "Scholarship for Cambodian students to pursue graduate studies in Japan. Fully funded program including Japanese language support.",
-    location: "Japan",
-    university: "Japanese Universities",
-    field: "International Cooperation",
-    benefits: ["Full tuition fees", "Monthly stipend", "Japanese language training"],
-    requirements: [
-      "Cambodian citizenship",
-      "Bachelor's degree",
-      "Strong academic record",
-      "Willingness to study in Japan",
-    ],
-    howToApply: {
-      text: "Apply via the partner university nomination process and submit required forms.",
-      ctaLabel: "Go to Application Portal",
-      url: "https://example.com/apply/japan-cambodia-friendship-grant",
-    },
-    contact: {
-      name: "Japan Grant Program",
-      email: "info@japan-grants.jp",
-      phone: "+855 23 999 999",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1526481280695-3c687fd643ed?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1496307653780-42ee777d4833?w=1600&h=500&fit=crop",
-  },
-  {
-    id: "rural-student-support-fund",
-    title: "Rural Student Support Fund",
-    level: "Bachelor",
-    deadline: "2024-07-31",
-    summary:
-      "Supporting students from rural areas of Cambodia to access quality higher education in the capital and provincial institutions.",
-    location: "Cambodia",
-    university: "Public Universities",
-    field: "Access & Equity",
-    benefits: ["Monthly living allowance", "Transportation support", "Learning materials"],
-    requirements: [
-      "Cambodian citizenship",
-      "Rural residency proof",
-      "Financial need",
-      "Enrollment in public university program",
-    ],
-    howToApply: {
-      text: "Apply through local education offices with supporting documentation for eligibility.",
-      ctaLabel: "View Application Steps",
-      url: "https://example.com/apply/rural-student-support-fund",
-    },
-    contact: {
-      name: "Student Support Desk",
-      email: "support@studentsfund.kh",
-      phone: "+855 23 777 777",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1600&h=500&fit=crop",
-  },
-  {
-    id: "women-in-stem-scholarship",
-    title: "Women in STEM Scholarship",
-    level: "Bachelor",
-    deadline: "2024-06-30",
-    summary:
-      "Empowering women in Cambodia to pursue careers in Science, Technology, Engineering, and Mathematics through scholarships and mentorship.",
-    location: "Cambodia",
-    university: "Institute of Technology of Cambodia",
-    field: "STEM",
-    benefits: ["50% tuition fee waiver", "Mentorship program", "Internship placement"],
-    requirements: [
-      "Female applicant",
-      "Cambodian citizenship",
-      "High school diploma",
-      "Interest in STEM fields",
-    ],
-    howToApply: {
-      text: "Apply online and submit academic transcripts, recommendation letters, and a short motivation statement.",
-      ctaLabel: "Go to Application Portal",
-      url: "https://example.com/apply/women-in-stem-scholarship",
-    },
-    contact: {
-      name: "STEM Scholarship Team",
-      email: "stem@itc.edu.kh",
-      phone: "+855 23 888 888",
-    },
-    imageUrl:
-      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=240&h=240&fit=crop",
-    heroImageUrl:
-      "https://images.unsplash.com/photo-1526481280695-3c687fd643ed?w=1600&h=500&fit=crop",
-  },
-];
+const DEFAULT_IMAGE =
+  "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=240&h=240&fit=crop";
+const DEFAULT_HERO =
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&h=500&fit=crop";
 
-export function getScholarshipById(id: string) {
-  return SCHOLARSHIPS.find((s) => s.id === id);
+function levelToLabel(level: number | string | undefined): ScholarshipLevel {
+  if (level === 1 || level === "1") return "Bachelor";
+  if (level === 2 || level === "2") return "Master";
+  if (level === 3 || level === "3") return "PhD";
+  if (typeof level === "string" && level.trim().length > 0) return level;
+  return "Bachelor";
 }
 
+function toDateOnly(value?: string): string {
+  if (!value) return "TBA";
+  return value.slice(0, 10);
+}
+
+function splitTextList(value?: string): string[] {
+  if (!value) return [];
+
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) {
+      return parsed.map((v) => String(v).trim()).filter(Boolean);
+    }
+  } catch {
+    // Fallback to delimiter parsing below.
+  }
+
+  return value
+    .split(/\r?\n|,|;/)
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+function resolveUniversityName(
+  scholarship: ScholarshipResponse,
+  university?: UniversityResponse | null,
+) {
+  if (university?.name) return university.name;
+  if (scholarship.universityId) return `University #${scholarship.universityId}`;
+  return "Not specified";
+}
+
+function resolveLocation(university?: UniversityResponse | null) {
+  if (!university) return "Not specified";
+  const city = university.city?.trim();
+  const country = university.country?.trim();
+  if (city && country) return `${city}, ${country}`;
+  return city || country || "Not specified";
+}
+
+function mapScholarshipFromApi(
+  scholarship: ScholarshipResponse,
+  contact?: ScholarshipContactResponse | null,
+  university?: UniversityResponse | null,
+): Scholarship {
+  const benefits = splitTextList(scholarship.benefits);
+  const requirements = splitTextList(scholarship.requirements);
+
+  return {
+    id: String(scholarship.id),
+    title: scholarship.name,
+    level: levelToLabel(scholarship.level),
+    deadline: toDateOnly(scholarship.deadline),
+    summary:
+      scholarship.description?.trim() || "No description provided for this scholarship.",
+    location: resolveLocation(university),
+    university: resolveUniversityName(scholarship, university),
+    field: scholarship.programId ? `Program #${scholarship.programId}` : "General",
+    benefits:
+      benefits.length > 0
+        ? benefits
+        : ["Tuition support and educational funding details are provided by the scholarship office."],
+    requirements:
+      requirements.length > 0
+        ? requirements
+        : ["Please contact the scholarship office for full eligibility requirements."],
+    howToApply: {
+      text:
+        scholarship.howToApply?.trim() ||
+        "Submit your application through the official scholarship process before the deadline.",
+      ctaLabel: "Open Application Link",
+      url: scholarship.applyLink?.trim() || "#",
+    },
+    contact: {
+      name: contact?.name?.trim() || "Scholarship Office",
+      email: contact?.email?.trim() || "info@example.com",
+      phone: contact?.phone?.trim() || "N/A",
+    },
+    imageUrl: scholarship.logoUrl || DEFAULT_IMAGE,
+    heroImageUrl: scholarship.coverImageUrl || DEFAULT_HERO,
+  };
+}
+
+export async function getScholarships(): Promise<Scholarship[]> {
+  const response = await getAllScholarships({ page: 0, size: 100 });
+  const rawItems = Array.isArray(response)
+    ? response
+    : Array.isArray(response?.content)
+      ? response.content
+      : [];
+  return rawItems.map((item) => mapScholarshipFromApi(item));
+}
+
+export async function getScholarshipById(id: string): Promise<Scholarship | null> {
+  try {
+    const scholarship = await getScholarshipByIdApi(id);
+
+    let contact: ScholarshipContactResponse | null = null;
+    let university: UniversityResponse | null = null;
+
+    try {
+      const contacts = await getScholarshipContactsByScholarshipId(id);
+      contact = contacts[0] || null;
+    } catch {
+      contact = null;
+    }
+
+    if (scholarship.universityId) {
+      try {
+        university = await getUniversityById(scholarship.universityId);
+      } catch {
+        university = null;
+      }
+    }
+
+    return mapScholarshipFromApi(scholarship, contact, university);
+  } catch {
+    return null;
+  }
+}
