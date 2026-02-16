@@ -144,6 +144,33 @@ export interface ScholarshipContactResponse extends ScholarshipContactRequest {
 }
 
 /* =======================
+   APPLICANTS
+======================= */
+export interface ApplicantRequest {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  nationality: string;
+  highSchoolName: string;
+  gpa: number;
+  intendedMajor: string;
+  scholarshipType: string;
+  familyIncome: number;
+  motivationLetter: string;
+  status?: string;
+}
+
+export interface ApplicantResponse extends ApplicantRequest {
+  id: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/* =======================
    UNIVERSITY
 ======================= */
 export interface UniversityRequest {
