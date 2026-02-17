@@ -90,6 +90,7 @@ export interface ScholarshipRequest {
   benefits?: string;
   requirements?: string;
   howToApply?: string;
+  maxApplicant: number;
   applyLink?: string;
   status?: ScholarshipStatus;
   deadline?: string; // ISO date string (e.g. "2026-02-11") or datetime depending on backend

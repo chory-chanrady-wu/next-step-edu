@@ -35,9 +35,11 @@ import { UploadFile } from "antd"
 import CheckboxScholarship from "./CheckboxScholarship"
 import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
 import UploadImageControl from "./UploadImage"
-import { usePrograms } from "@/hooks/admin-custom-hook"
+// import { usePrograms } from "@/hooks/admin-custom-hook"
 import { programsToOptions } from "@/app/lib/formatters"
 import IncrementNumbers from "./IncredementNumbers"
+import { useUniversities } from "@/hooks/admin-custom-hook"
+import { useAllUniversities } from "@/hooks/use-queries-hook"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -97,7 +99,11 @@ export const eligibilityOptions = [
 
 export function FormCreateScholarship() {
 
-  const { isLoading, data, error } = usePrograms();
+  // const { isLoading, data, error } = usePrograms();
+
+  const {isLoading, data,error} = useAllUniversities()
+
+  console.log('Univeristy', data);
 
 
 
@@ -155,13 +161,13 @@ export function FormCreateScholarship() {
   }
 
 
-  if (isLoading) {
-    return <div>Loading ...</div>
-  }
+  // if (isLoading) {
+  //   return <div>Loading ...</div>
+  // }
 
-  if (error) {
-    return <div>Something went wrong</div>
-  }
+  // if (error) {
+  //   return <div>Something went wrong</div>
+  // }
 
   return (
     <Card className="w-full flex px-5 shadow-none border-none">
@@ -276,7 +282,7 @@ export function FormCreateScholarship() {
             {/*
               ** @Select Field Currency
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <Controller
                 name="currency"
                 control={form.control}
@@ -317,7 +323,7 @@ export function FormCreateScholarship() {
                   </Field>
                 )}
               />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Select Field Status
@@ -428,21 +434,21 @@ export function FormCreateScholarship() {
             {/*
               ** @Selects control component Eligibility field
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <MultipleSelectControlComponent id="form-rhf-select-eligibility" control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={eligibilityOptions} />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Selects control component Slugs field
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <MultipleSelectControlComponent id="form-rhf-select-slugs" control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "bse", label: "B-S-E" }]} />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Selection Award Type
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <Controller
                 name="awardType"
                 control={form.control}
@@ -483,7 +489,7 @@ export function FormCreateScholarship() {
                   </Field>
                 )}
               />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Selection Education Level
@@ -534,14 +540,14 @@ export function FormCreateScholarship() {
             {/*
               ** @Checkbox Renewable control component Scholarship
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <CheckboxScholarship id="form-rhf-checkbox-renewable" title="Renewable" name="renewable" control={form.control} />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Program Field
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <Controller
                 name="program"
                 control={form.control}
@@ -582,7 +588,7 @@ export function FormCreateScholarship() {
                   </Field>
                 )}
               />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Field Website
@@ -615,28 +621,28 @@ export function FormCreateScholarship() {
             {/*
               ** @Checkbox control component Featured
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <CheckboxScholarship title="Featured" name="featured" control={form.control} />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Checkbox control component Application Fee
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <CheckboxScholarship title="Application Fee" id="form-rhf-checkbox-application-fee" name="applicationFee" control={form.control} />
-            </FieldGroup>
+            </FieldGroup> */}
             {/*
               ** @Multiple Select control component Tags fields
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <MultipleSelectControlComponent id="form-rhf-select-tags" control={form.control} label="Tags" mode="tags" name="tags" size="large" options={[{ value: "new-oppunity", label: "New Oppunity" }]} />
-            </FieldGroup>
+            </FieldGroup> */}
             {/*
               ** @Checkbox control component International
               */}
-            <FieldGroup className="col-span-1">
+            {/* <FieldGroup className="col-span-1">
               <CheckboxScholarship id="form-rhf-checkbox-international" title="International Scholarship" name="international" control={form.control} />
-            </FieldGroup>
+            </FieldGroup> */}
 
             {/*
               ** @Multiple Select control component Document fields

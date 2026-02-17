@@ -49,11 +49,11 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { useScholarships } from "@/hooks/admin-custom-hook";
-import { ScholarshipType } from "@/app/lib/types";
+import { useAllScholarships } from "@/hooks/use-queries-hook";
+import { ScholarshipResponse } from "@/types/nextstepedu";
 
 // ========== COLUMNS DEFINITION ==========
-export const columns: ColumnDef<ScholarshipType>[] = [
+export const columns: ColumnDef<ScholarshipResponse>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -94,27 +94,31 @@ export const columns: ColumnDef<ScholarshipType>[] = [
     ),
     cell: ({ row }) => {
       const scholarship = row.original;
+      // Fallbacks for fields not guaranteed in ScholarshipResponse
+      const logoUrl = scholarship.logoUrl || "";
+      const providerName = scholarship.universityId
+        ? `University #${scholarship.universityId}`
+        : "Unknown Provider";
+      const featured = (scholarship as any).featured ?? false; // 'featured' not in type
+
       return (
         <div className="flex items-start gap-3 py-1">
           <Avatar className="h-10 w-10 rounded-lg border">
-            <AvatarImage
-              src={scholarship.providerLogo}
-              alt={scholarship.provider}
-            />
+            <AvatarImage src={logoUrl} alt={providerName} />
             <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-semibold">
               {scholarship.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col min-w-0">
             <div className="font-semibold text-sm flex items-center gap-2 text-gray-900">
-              {scholarship.featured && (
+              {featured && (
                 <Sparkles className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
               )}
               <span className="truncate">{scholarship.name}</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-0.5">
               <GraduationCap className="h-3 w-3 flex-shrink-0" />
-              <span className="truncate">{scholarship.provider}</span>
+              <span className="truncate">{providerName}</span>
             </div>
           </div>
         </div>
@@ -122,7 +126,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "amount", // Note: 'amount' is not in ScholarshipResponse; assume it's present in actual data
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -138,19 +142,30 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const amount = row.getValue("amount") as number;
-      const currency = row.original.currency;
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: currency,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(amount);
+      const amount = row.getValue("amount") as number | undefined;
+      // Fallback currency – if 'currency' not present, default to USD
+      const currency = (row.original as any).currency || "USD";
+      const renewable = (row.original as any).renewable ?? false;
+
+      let formatted = "N/A";
+      if (amount != null && !isNaN(amount)) {
+        try {
+          formatted = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: currency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(amount);
+        } catch {
+          // Fallback if currency code is invalid
+          formatted = `$${amount.toLocaleString()}`;
+        }
+      }
 
       return (
         <div className="flex flex-col items-center gap-0.5">
           <div className="font-bold text-sm text-emerald-600">{formatted}</div>
-          {row.original.renewable && (
+          {renewable && (
             <Badge
               variant="outline"
               className="text-[10px] px-1.5 py-0 h-4 w-fit border-emerald-200 text-emerald-700"
@@ -179,7 +194,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = (row.getValue("status") as string) || "open";
       const getStatusConfig = (status: string) => {
         const config = {
           open: {
@@ -235,7 +250,10 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const deadline = new Date(row.getValue("deadline"));
+      const deadlineValue = row.getValue("deadline") as string | undefined;
+      if (!deadlineValue) return <div className="text-gray-400">No deadline</div>;
+
+      const deadline = new Date(deadlineValue);
       const today = new Date();
       const daysLeft = Math.ceil(
         (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
@@ -262,7 +280,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
     },
   },
   {
-    accessorKey: "applicants",
+    accessorKey: "applicants", // Not in type – use fallback
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -278,14 +296,14 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const scholarship = row.original;
-      const applicants = scholarship.applicants;
-      const maxApplicants = scholarship.maxApplicants;
+      const scholarship = row.original as any; // Cast to any to access optional fields
+      const applicants = scholarship.applicants ?? 0;
+      const maxApplicants = scholarship.maxApplicants ?? null;
       const percentage = maxApplicants ? (applicants / maxApplicants) * 100 : 0;
 
       return (
         <div className="flex flex-col gap-1.5">
-          <div className="flex items-center  text-xs">
+          <div className="flex items-center text-xs">
             <span className="font-semibold text-gray-900">
               {applicants.toLocaleString()}
             </span>
@@ -310,7 +328,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
     },
   },
   {
-    accessorKey: "category",
+    accessorKey: "category", // Not in type – fallback
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -326,7 +344,7 @@ export const columns: ColumnDef<ScholarshipType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const category = row.getValue("category") as string;
+      const category = (row.original as any).category || "general";
       const categoryColors: Record<string, string> = {
         academic: "bg-blue-50 text-blue-700 border-blue-200",
         stem: "bg-purple-50 text-purple-700 border-purple-200",
@@ -336,13 +354,14 @@ export const columns: ColumnDef<ScholarshipType>[] = [
         merit: "bg-indigo-50 text-indigo-700 border-indigo-200",
         minority: "bg-rose-50 text-rose-700 border-rose-200",
         community: "bg-teal-50 text-teal-700 border-teal-200",
+        general: "bg-gray-50 text-gray-700 border-gray-200",
       };
 
       return (
-        <div className="flex  items-center justify-center">
+        <div className="flex items-center justify-center">
           <Badge
             variant="outline"
-            className={`capitalize text-xs px-2.5 font-medium ${categoryColors[category] || "bg-gray-50 text-gray-700"}`}
+            className={`capitalize text-xs px-2.5 font-medium ${categoryColors[category] || categoryColors.general}`}
           >
             {category.replace("-", " ")}
           </Badge>
@@ -386,7 +405,6 @@ export const columns: ColumnDef<ScholarshipType>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-red-600 focus:text-red-600 hover:text-red-600"
-              // disabled={deleteTaskMutation.isPending}
               onClick={async () => {
                 const confirmed = window.confirm(
                   "Are you sure you want to delete this task?",
@@ -394,10 +412,8 @@ export const columns: ColumnDef<ScholarshipType>[] = [
                 if (confirmed) {
                   try {
                     // await deleteTaskMutation.mutateAsync(id);
-                    // The mutation will handle invalidating queries and updating the UI
                   } catch (error) {
                     console.error("Failed to delete task:", error);
-                    // You might want to show an error message to the user here
                   }
                 }
               }}
@@ -415,7 +431,10 @@ export const columns: ColumnDef<ScholarshipType>[] = [
 // ========== MAIN COMPONENT ==========
 export const TableListScholarship = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { isLoading, data } = useScholarships();
+  const { isLoading, data } = useAllScholarships();
+
+  console.log("Scholarship", data);
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -425,11 +444,10 @@ export const TableListScholarship = () => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState("");
 
-  /* eslint-disable-next-line react-hooks/incompatible-library */
   const table = useReactTable({
     data: React.useMemo(
-      () => (data && Array.isArray(data) ? data : []),
-      [data],
+      () => (data?.content && Array.isArray(data.content) ? data.content : []),
+      [data?.content],
     ),
     columns,
     onSortingChange: setSorting,
@@ -456,9 +474,9 @@ export const TableListScholarship = () => {
 
   return (
     <div className="w-full min-h-screen mt-3">
-      <div className=" mx-auto space-y-6">
+      <div className="mx-auto space-y-6">
         {/* Filters and Controls */}
-        <div className=" border-gray-200 rounded-xl">
+        <div className="border-gray-200 rounded-xl">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -524,7 +542,7 @@ export const TableListScholarship = () => {
         </div>
 
         {/* Table */}
-        <div className=" border rounded overflow-hidden">
+        <div className="border rounded overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -536,14 +554,14 @@ export const TableListScholarship = () => {
                     {headerGroup.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="font-semibold text-gray-700 text-xs uppercase tracking-wider h-12 text-center" // Add text-center here
+                        className="font-semibold text-gray-700 text-xs uppercase tracking-wider h-12 text-center"
                       >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                       </TableHead>
                     ))}
                   </TableRow>
@@ -581,7 +599,7 @@ export const TableListScholarship = () => {
                         </p>
                         <p className="text-sm text-gray-500 max-w-md">
                           Try adjusting your search or filters to find what you
-                          looking for.
+                          are looking for.
                         </p>
                         <Button
                           variant="outline"
