@@ -503,6 +503,9 @@ export async function createUniversity(
   formData.append("country", payload.data.country || "");
   formData.append("city", payload.data.city || "");
   formData.append("officialWebsite", payload.data.officialWebsite || "");
+  formData.append("label", payload.data.label || "");
+  formData.append("email", payload.data.email || "");
+  formData.append("phone", payload.data.phone || "");
   formData.append("status", payload.data.status || "active");
 
   // Append files
@@ -575,6 +578,9 @@ export async function updateUniversity(
   formData.append("country", payload.data.country || "");
   formData.append("city", payload.data.city || "");
   formData.append("officialWebsite", payload.data.officialWebsite || "");
+  formData.append("label", payload.data.label || "");
+  formData.append("email", payload.data.email || "");
+  formData.append("phone", payload.data.phone || "");
   formData.append("status", payload.data.status || "active");
 
   // Append files

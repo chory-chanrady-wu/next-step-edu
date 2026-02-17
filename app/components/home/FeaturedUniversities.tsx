@@ -13,8 +13,9 @@ import { getAllUniversities } from "@/lib/api"; // change path to your api file
 const mapUniversity = (u: any) => ({
   id: u.id,
   name: u.name,
-  coverImage: u.coverImage || "/images/placeholder-cover.jpg",
-  logo: u.logo || "/images/placeholder-logo.png",
+  coverImage:
+    u.coverImageUrl || u.coverImage || "/images/placeholder-cover.jpg",
+  logo: u.logoUrl || u.logo || "/images/placeholder-logo.png",
   shortDesc: u.shortDescription || u.description || "",
   city: u.city || "",
   country: u.country || "Cambodia",

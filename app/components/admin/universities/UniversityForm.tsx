@@ -16,6 +16,8 @@ import {
   CloudUpload,
   Info,
   AlertCircle,
+  Mail,
+  Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -226,16 +228,23 @@ const UniversityForm = ({
     status: initialData?.status || "active",
   });
 
+  // Contact State (from university data directly)
+  const [contactData, setContactData] = useState({
+    label: initialData?.label || "",
+    email: initialData?.email || "",
+    phone: initialData?.phone || "",
+  });
+
   // File State
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
 
   // Preview URLs (initialize with existing URLs if editing)
   const [logoPreview, setLogoPreview] = useState<string>(
-    initialData?.logo || "",
+    initialData?.logoUrl || initialData?.logo || "",
   );
   const [coverPreview, setCoverPreview] = useState<string>(
-    initialData?.coverImage || "",
+    initialData?.coverImageUrl || initialData?.coverImage || "",
   );
 
   const handleChange = (
@@ -254,20 +263,34 @@ const UniversityForm = ({
     }
   };
 
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setContactData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
+  };
+
   const handleFileSelect = (type: "logo" | "cover", file: File | null) => {
     if (type === "logo") {
       setLogoFile(file);
       if (file) {
         setLogoPreview(URL.createObjectURL(file));
       } else {
-        setLogoPreview(initialData?.logo || "");
+        setLogoPreview(initialData?.logoUrl || initialData?.logo || "");
       }
     } else {
       setCoverFile(file);
       if (file) {
         setCoverPreview(URL.createObjectURL(file));
       } else {
-        setCoverPreview(initialData?.coverImage || "");
+        setCoverPreview(
+          initialData?.coverImageUrl || initialData?.coverImage || "",
+        );
       }
     }
   };
@@ -284,6 +307,12 @@ const UniversityForm = ({
     ) {
       newErrors.officialWebsite =
         "Must be a valid URL starting with http:// or https://";
+    }
+    if (
+      contactData.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email)
+    ) {
+      newErrors.email = "Please enter a valid email address";
     }
 
     // For Create mode, validation of files might be strict if required by backend,
@@ -305,6 +334,9 @@ const UniversityForm = ({
         country: formData.country,
         city: formData.city,
         officialWebsite: formData.officialWebsite,
+        label: contactData.label,
+        email: contactData.email,
+        phone: contactData.phone,
         status: formData.status,
       },
       files: {
@@ -507,6 +539,65 @@ const UniversityForm = ({
                   error={errors.officialWebsite}
                   icon={LinkIcon}
                 />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white rounded-3xl overflow-hidden">
+            <div className="p-8 border-b border-gray-50 flex items-center gap-3 bg-gray-50/30">
+              <div className="w-10 h-10 rounded-xl bg-purple-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                <Building2 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-xl text-gray-900 font-outfit leading-none">
+                  Contact Information
+                </h2>
+                <p className="text-xs text-gray-400 mt-1.5 font-medium uppercase tracking-wider">
+                  Office details and contact information
+                </p>
+              </div>
+            </div>
+            <CardContent className="p-8 space-y-8">
+              <div className="space-y-1">
+                <FormLabel info="Name of the administration office or department.">
+                  Office Label
+                </FormLabel>
+                <TextInput
+                  name="label"
+                  value={contactData.label}
+                  onChange={handleContactChange}
+                  placeholder="e.g. Administration Office"
+                  error={errors.label}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-1">
+                  <FormLabel info="Contact email address.">
+                    Email
+                  </FormLabel>
+                  <TextInput
+                    type="email"
+                    name="email"
+                    value={contactData.email}
+                    onChange={handleContactChange}
+                    placeholder="info@university.edu"
+                    error={errors.email}
+                    icon={Mail}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <FormLabel info="Contact phone number.">Phone</FormLabel>
+                  <TextInput
+                    type="tel"
+                    name="phone"
+                    value={contactData.phone}
+                    onChange={handleContactChange}
+                    placeholder="(+855) 12345678"
+                    error={errors.phone}
+                    icon={Phone}
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>

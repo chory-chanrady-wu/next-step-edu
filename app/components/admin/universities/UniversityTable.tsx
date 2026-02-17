@@ -205,9 +205,9 @@ const UniversityTable = () => {
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0 relative">
-                        {uni.logo ? (
+                        {uni.logoUrl || uni.logo ? (
                           <Image
-                            src={uni.logo}
+                            src={(uni.logoUrl || uni.logo)!}
                             alt={uni.name}
                             fill
                             className="object-contain p-2"
