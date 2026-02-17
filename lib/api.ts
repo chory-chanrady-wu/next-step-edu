@@ -489,16 +489,6 @@ export async function deleteScholarshipContact(
 }
 
 /* =======================
-   APPLICANTS
-======================= */
-export async function createApplicant(
-  body: ApplicantRequest,
-): Promise<ApplicantResponse> {
-  const { data } = await api.post<ApplicantResponse>("/api/v1/applicants", body);
-  return data;
-}
-
-/* =======================
    UNIVERSITIES
 ======================= */
 export async function createUniversity(
