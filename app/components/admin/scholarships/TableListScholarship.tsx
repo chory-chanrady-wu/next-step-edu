@@ -92,6 +92,7 @@ export const columns: ColumnDef<ScholarshipResponse>[] = [
         ) : null}
       </Button>
     ),
+    
     cell: ({ row }) => {
       const scholarship = row.original;
       // Fallbacks for fields not guaranteed in ScholarshipResponse
