@@ -405,7 +405,28 @@ export async function deleteScholarshipContact(
 export async function createApplicant(
   body: ApplicantRequest,
 ): Promise<ApplicantResponse> {
-  const { data } = await api.post<ApplicantResponse>("/api/v1/applicants", body);
+  const payload = {
+    ...body,
+    status: body.status ? body.status.toUpperCase() : "PENDING",
+    // Send both naming styles to tolerate backend DTO/json naming differences.
+    first_name: body.firstName,
+    last_name: body.lastName,
+    date_of_birth: body.dateOfBirth,
+    phone_number: body.phoneNumber,
+    high_school_name: body.highSchoolName,
+    intended_major: body.intendedMajor,
+    scholarship_type: body.scholarshipType,
+    family_income: body.familyIncome,
+    motivation_letter: body.motivationLetter,
+    user_id: body.userId,
+    scholarship_id: body.scholarshipId,
+    university_id: body.universityId,
+  };
+
+  const { data } = await api.post<ApplicantResponse>(
+    "/api/v1/applicants",
+    payload,
+  );
   return data;
 }
 

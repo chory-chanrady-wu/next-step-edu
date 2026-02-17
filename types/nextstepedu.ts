@@ -147,6 +147,8 @@ export interface ScholarshipContactResponse extends ScholarshipContactRequest {
    APPLICANTS
 ======================= */
 export interface ApplicantRequest {
+  userId: number;
+  scholarshipId: number;
   firstName: string;
   lastName: string;
   gender: string;
@@ -162,6 +164,7 @@ export interface ApplicantRequest {
   familyIncome: number;
   motivationLetter: string;
   status?: string;
+  universityId?: number;
 }
 
 export interface ApplicantResponse extends ApplicantRequest {

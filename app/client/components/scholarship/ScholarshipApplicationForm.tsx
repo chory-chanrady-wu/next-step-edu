@@ -76,6 +76,26 @@ export default function ScholarshipApplicationForm({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const getCurrentUserId = (): number | null => {
+    if (typeof window === "undefined") return null;
+
+    const rawUser = localStorage.getItem("user");
+    if (rawUser) {
+      try {
+        const parsed = JSON.parse(rawUser);
+        const idValue = Number(parsed?.id);
+        if (Number.isFinite(idValue) && idValue > 0) return idValue;
+      } catch {
+        // Fallback to explicit keys below.
+      }
+    }
+
+    const directId = Number(localStorage.getItem("userId"));
+    if (Number.isFinite(directId) && directId > 0) return directId;
+
+    return null;
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
@@ -103,8 +123,24 @@ export default function ScholarshipApplicationForm({
       return;
     }
 
+    const userId = getCurrentUserId();
+    if (!userId) {
+      setErrorMessage("Please log in before submitting an application.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const scholarshipId = Number(scholarship.id);
+    if (!Number.isFinite(scholarshipId) || scholarshipId <= 0) {
+      setErrorMessage("Invalid scholarship. Please refresh and try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await createApplicant({
+        userId,
+        scholarshipId,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         gender: form.gender,
