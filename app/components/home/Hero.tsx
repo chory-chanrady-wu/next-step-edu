@@ -9,7 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import Container from "../common/Container";
 import Button from "../common/Button";
-import { getAllUniversities, getAllScholarships, getAllPrograms } from "@/lib/api";
+import {
+  getAllUniversities,
+  getAllScholarships,
+  getAllPrograms,
+} from "@/lib/api";
 
 export default function HeroSection() {
   const router = useRouter();
@@ -73,7 +77,11 @@ export default function HeroSection() {
       <Container className="relative">
         <div className="mx-auto max-w-3xl text-center text-white">
           {/* Badge */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
               <GraduationCap className="h-4 w-4" />
               Your Gateway to Higher Education
@@ -90,7 +98,11 @@ export default function HeroSection() {
             Find Your Perfect{" "}
             <span className="relative inline-block">
               University
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
+              <svg
+                className="absolute -bottom-2 left-0 w-full"
+                viewBox="0 0 200 12"
+                fill="none"
+              >
                 <path
                   d="M2 10C50 2 150 2 198 10"
                   stroke="currentColor"
@@ -110,7 +122,8 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-6 mx-auto max-w-2xl text-lg text-white/80 md:text-xl"
           >
-            Discover universities and scholarships that match your goals. Get detailed information to make informed decisions about your future.
+            Discover universities and scholarships that match your goals. Get
+            detailed information to make informed decisions about your future.
           </motion.p>
 
           {/* Search */}
@@ -175,7 +188,9 @@ export default function HeroSection() {
               className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
             >
               <stat.icon className="mx-auto h-6 w-6 text-amber-400" />
-              <div className="mt-2 text-2xl font-extrabold text-white md:text-3xl">{stat.value}</div>
+              <div className="mt-2 text-2xl font-extrabold text-white md:text-3xl">
+                {stat.value}
+              </div>
               <div className="text-sm text-white/70">{stat.label}</div>
             </div>
           ))}
