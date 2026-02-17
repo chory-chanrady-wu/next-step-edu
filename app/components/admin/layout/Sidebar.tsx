@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Building2,
   GraduationCap,
+  BookOpen,
   Award,
   Users,
   Settings,
@@ -29,6 +30,7 @@ interface NavItemProps {
   subItems?: SubItem[];
 }
 
+
 const items = [
   {
     href: "/admin/dashboard",
@@ -41,11 +43,15 @@ const items = [
     label: "Universities",
     subItems: [
       { href: "/admin/universities", label: "List Universities", icon: List },
-      {
-        href: "/admin/universities/create",
-        label: "Create University",
-        icon: PlusCircle,
-      },
+      { href: "/admin/universities/create", label: "Create University", icon: PlusCircle },
+    ],
+  },
+  {
+    href: "/admin/applicants",
+    icon: Users,
+    label: "Applicants",
+    subItems: [
+      { href: "/admin/applicants", label: "List Applicants", icon: List }
     ],
   },
   {
@@ -54,11 +60,7 @@ const items = [
     label: "Scholarships",
     subItems: [
       { href: "/admin/scholarships", label: "List Scholarships", icon: List },
-      {
-        href: "/admin/scholarships/create",
-        label: "Create Scholarships",
-        icon: PlusCircle,
-      },
+      { href: "/admin/scholarships/create", label: "Create Scholarships", icon: PlusCircle },
     ],
   },
   {
@@ -67,11 +69,7 @@ const items = [
     label: "Programs",
     subItems: [
       { href: "/admin/programs", label: "List Programs", icon: List },
-      {
-        href: "/admin/programs/create",
-        label: "Create Programs",
-        icon: PlusCircle,
-      },
+      { href: "/admin/programs/create", label: "Create Programs", icon: PlusCircle },
     ],
   },
   {
@@ -96,9 +94,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   const isChildActive = subItems?.some((child) => pathname === child.href);
   const [isOpen, setIsOpen] = useState(isChildActive);
   const isActive = href
-    ? href === "/dashboard"
-      ? pathname === href
-      : pathname.startsWith(href)
+    ? (href === "/dashboard" ? pathname === href : pathname.startsWith(href))
     : isChildActive;
 
   const handleClick = (e: React.MouseEvent) => {
@@ -117,31 +113,25 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
           "group flex items-center justify-between px-4 py-3 text-sm font-medium transition-all duration-300 rounded-xl relative select-none cursor-pointer",
           isActive
             ? "bg-[#1f2937] text-teal-400"
-            : "text-slate-400 hover:text-white hover:bg-white/5",
+            : "text-slate-400 hover:text-white hover:bg-white/5"
         )}
       >
         <div className="flex items-center gap-3">
           <Icon
             className={cn(
               "w-5 h-5 transition-colors duration-300",
-              isActive
-                ? "text-teal-400"
-                : "text-slate-400 group-hover:text-white",
+              isActive ? "text-teal-400" : "text-slate-400 group-hover:text-white"
             )}
           />
           <span className="tracking-wide">{label}</span>
         </div>
 
         {subItems && (
-          <div
-            className={cn(
-              "transition-transform duration-200",
-              isOpen && "rotate-90",
-            )}
-          >
+          <div className={cn("transition-transform duration-200", isOpen && "rotate-90")}>
             <ChevronRight className="w-4 h-4 text-slate-500" />
           </div>
         )}
+
 
         {!subItems && isActive && (
           <span className="w-1.5 h-1.5 rounded-full bg-teal-400 absolute right-4 shadow-[0_0_8px_rgba(45,212,191,0.5)]" />
@@ -153,9 +143,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
         <div
           className={cn(
             "grid transition-all duration-300 ease-in-out pl-4 overflow-hidden",
-            isOpen
-              ? "grid-rows-[1fr] opacity-100 mt-1"
-              : "grid-rows-[0fr] opacity-0",
+            isOpen ? "grid-rows-[1fr] opacity-100 mt-1" : "grid-rows-[0fr] opacity-0"
           )}
         >
           <div className="min-h-0 border-l border-slate-700/50 ml-4 space-y-1">
@@ -169,18 +157,15 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
                     "flex items-center gap-2 pl-4 pr-3 py-2 text-sm rounded-r-lg transition-all duration-200 relative",
                     isSubActive
                       ? "text-teal-400 bg-white/5 font-medium"
-                      : "text-slate-500 hover:text-slate-300 hover:bg-white/5",
+                      : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
                   )}
                 >
+
                   {isSubActive && (
                     <span className="absolute left-0 w-0.5 h-full bg-teal-400/80 rounded-r-full" />
                   )}
 
-                  {child.icon ? (
-                    <child.icon className="w-4 h-4" />
-                  ) : (
-                    <span className="w-4" />
-                  )}
+                  {child.icon ? <child.icon className="w-4 h-4" /> : <span className="w-4" />}
                   <span>{child.label}</span>
                 </Link>
               );
@@ -192,7 +177,11 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   );
 };
 
+
+
 export function SideBar() {
+
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0B1120] border-r border-slate-800/50 flex flex-col z-50">
       {/* Brand Header */}
@@ -208,16 +197,18 @@ export function SideBar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto custom-scrollbar">
-        {items.map((item) => (
-          <NavItem
-            key={item.href}
-            href={item.href}
-            icon={item.icon}
-            label={item.label}
-            subItems={item.subItems}
-          />
-        ))}
+      <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto scrollbar-hide">
+        {
+          items.map((item) => (
+            <NavItem
+              key={item.label}
+              href={"href" in item ? item.href : undefined}
+              icon={item.icon}
+              label={item.label}
+              subItems={"subItems" in item ? item.subItems : undefined}
+            />
+          ))
+        }
       </nav>
     </aside>
   );

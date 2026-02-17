@@ -21,6 +21,9 @@ import type {
   UserProfileResponse,
   LoginRequest,
   AuthResponse,
+  ApplicantRequest,
+  ApplicantResponse,
+  UpdateStatusRequest,
 } from "@/types/nextstepedu";
 
 /* =======================
@@ -129,14 +132,6 @@ export function useDeleteProgram() {
   return useMutation<void, unknown, number | string>({
     mutationFn: (id) => api.deleteProgram(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["programs"] }),
-  });
-}
-
-export function useProgramsByUniversity(universityId?: number | string) {
-  return useQuery<ProgramResponse[]>({
-    queryKey: ["programs", "university", universityId],
-    queryFn: () => api.getProgramsByUniversity(universityId as number | string),
-    enabled: !!universityId,
   });
 }
 
@@ -271,14 +266,6 @@ export function useAllUniversityContacts() {
   });
 }
 
-export function useUniversityContactsByUniversityId(universityId?: number | string) {
-  return useQuery<UniversityContactResponse[]>({
-    queryKey: ["university-contacts", "university", universityId],
-    queryFn: () => api.getUniversityContactsByUniversityId(universityId as number | string),
-    enabled: !!universityId,
-  });
-}
-
 export function useCreateUniversityContact() {
   const qc = useQueryClient();
   return useMutation<UniversityContactResponse, unknown, UniversityContactRequest>({
@@ -294,6 +281,7 @@ export function useAllProfiles() {
   return useQuery<UserProfileResponse[]>({
     queryKey: ["profiles"],
     queryFn: api.getAllProfiles,
+    retry: false,
   });
 }
 
@@ -316,5 +304,88 @@ export function useDeleteProfile() {
   return useMutation<string, unknown, number | string>({
     mutationFn: (userId) => api.deleteProfile(userId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["profiles"] }),
+  });
+}
+
+export function useUpdateUserStatus() {
+  const qc = useQueryClient();
+  return useMutation<string, unknown, { id: number | string; status: string }>({
+    mutationFn: ({ id, status }) => api.updateUserStatus(id, status),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["profiles"] });
+      qc.invalidateQueries({ queryKey: ["all-users"] }); // if you have a separate key for all users
+    },
+  });
+}
+
+/* =======================
+   APPLICANTS
+======================= */
+export function useAllApplicants() {
+  return useQuery<ApplicantResponse[]>({
+    queryKey: ["applicants"],
+    queryFn: api.getAllApplicants,
+  });
+}
+
+export function useApplicant(id?: number | string) {
+  return useQuery<ApplicantResponse>({
+    queryKey: ["applicant", id],
+    queryFn: () => api.getApplicantById(id as any),
+    enabled: !!id,
+  });
+}
+
+export function useApplicantsByUser(userId?: number | string) {
+  return useQuery<ApplicantResponse[]>({
+    queryKey: ["applicants", "user", userId],
+    queryFn: () => api.getApplicantsByUserId(userId as any),
+    enabled: !!userId,
+  });
+}
+
+export function useApplicantsByStatus(status?: string) {
+  return useQuery<ApplicantResponse[]>({
+    queryKey: ["applicants", "status", status],
+    queryFn: () => api.getApplicantsByStatus(status as any),
+    enabled: !!status,
+  });
+}
+
+export function useCreateApplicant() {
+  const qc = useQueryClient();
+  return useMutation<ApplicantResponse, unknown, ApplicantRequest>({
+    mutationFn: (payload) => api.createApplicant(payload),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["applicants"] }),
+  });
+}
+
+export function useUpdateApplicant() {
+  const qc = useQueryClient();
+  return useMutation<ApplicantResponse, unknown, { id: number | string, body: ApplicantRequest }>({
+    mutationFn: ({ id, body }) => api.updateApplicant(id, body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["applicants"] });
+      qc.invalidateQueries({ queryKey: ["applicant"] });
+    },
+  });
+}
+
+export function useUpdateApplicantStatus() {
+  const qc = useQueryClient();
+  return useMutation<ApplicantResponse, unknown, { id: number | string; status: string }>({
+    mutationFn: ({ id, status }) => api.updateApplicantStatus(id, status),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["applicants"] });
+      qc.invalidateQueries({ queryKey: ["applicant"] });
+    },
+  });
+}
+
+export function useDeleteApplicant() {
+  const qc = useQueryClient();
+  return useMutation<void, unknown, number | string>({
+    mutationFn: (id) => api.deleteApplicant(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["applicants"] }),
   });
 }

@@ -12,10 +12,15 @@ export function UserChart() {
     const DATA = Array.from({ length: 7 }).map((_, i) => {
         const date = subMonths(new Date(), 6 - i);
         const count = profiles.filter(user => {
-            if (!user.createdAt) return false;
-            // Handle both ISO strings and potential timestamps
-            const userDate = typeof user.createdAt === 'string' ? parseISO(user.createdAt) : new Date(user.createdAt);
-            return isSameMonth(userDate, date) && isSameYear(userDate, date);
+            const dateStr = user.createdAt || (user as any).created_at || (user as any).createdDate;
+            if (!dateStr) return false;
+
+            try {
+                const userDate = typeof dateStr === 'string' ? parseISO(dateStr) : new Date(dateStr);
+                return isSameMonth(userDate, date) && isSameYear(userDate, date);
+            } catch (e) {
+                return false;
+            }
         }).length;
 
         return {
