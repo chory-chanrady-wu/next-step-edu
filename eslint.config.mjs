@@ -5,6 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    rules: {
+      // Example: Override a specific rule from the base configurations.
+      // "react/react-in-jsx-scope": "off",
+    },
+  },
+
   // Override default ignores of eslint-config-next.
   {
     rules: {
