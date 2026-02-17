@@ -80,6 +80,26 @@ export default function ScholarshipApplicationForm({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const getCurrentUserId = (): number | null => {
+    if (typeof window === "undefined") return null;
+
+    const rawUser = localStorage.getItem("user");
+    if (rawUser) {
+      try {
+        const parsed = JSON.parse(rawUser);
+        const idValue = Number(parsed?.id);
+        if (Number.isFinite(idValue) && idValue > 0) return idValue;
+      } catch {
+        // Fallback to explicit keys below.
+      }
+    }
+
+    const directId = Number(localStorage.getItem("userId"));
+    if (Number.isFinite(directId) && directId > 0) return directId;
+
+    return null;
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
@@ -107,21 +127,24 @@ export default function ScholarshipApplicationForm({
       return;
     }
 
+    const userId = getCurrentUserId();
+    if (!userId) {
+      setErrorMessage("Please log in before submitting an application.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const scholarshipId = Number(scholarship.id);
+    if (!Number.isFinite(scholarshipId) || scholarshipId <= 0) {
+      setErrorMessage("Invalid scholarship. Please refresh and try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      // Get userId from localStorage (would be set during authentication)
-      const userStr = localStorage.getItem("user");
-      const parsedUserId = userStr ? JSON.parse(userStr).id : null;
-      const userId = parsedUserId ? Number(parsedUserId) : null;
-
-      if (!userId) {
-        setErrorMessage("User not authenticated. Please log in first.");
-        setIsSubmitting(false);
-        return;
-      }
-
-      const applicantData = {
+      await createApplicant({
         userId,
-        scholarshipId: Number(scholarship.id) || 0,
+        scholarshipId,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         gender: form.gender,
@@ -136,9 +159,7 @@ export default function ScholarshipApplicationForm({
         scholarshipType: form.scholarshipType.trim(),
         familyIncome: parsedFamilyIncome,
         motivationLetter: form.motivationLetter.trim(),
-      };
-
-      await createApplicant(applicantData);
+      });
 
       setSuccessMessage("Application submitted successfully! Redirecting...");
 

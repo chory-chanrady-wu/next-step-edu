@@ -142,6 +142,41 @@ export interface ScholarshipContactResponse extends ScholarshipContactRequest {
   createdAt?: string;
   updatedAt?: string;
 }
+
+/* =======================
+   APPLICANTS
+======================= */
+export interface ApplicantRequest {
+  userId: number;
+  scholarshipId: number;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  nationality: string;
+  highSchoolName: string;
+  gpa: number;
+  intendedMajor: string;
+  scholarshipType: string;
+  familyIncome: number;
+  motivationLetter: string;
+  status?: string;
+  universityId?: number;
+}
+
+export interface ApplicantResponse extends ApplicantRequest {
+  id: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UpdateStatusRequest {
+  status: string;
+}
+
 /* =======================
    UNIVERSITY
 ======================= */
@@ -229,53 +264,4 @@ export interface UpdateProfileRequest {
 
 export interface UpdateProfilePayload extends UpdateProfileRequest {
   userId: number | string;
-}
-/* =======================
-   APPLICANT
-======================= */
-export interface ApplicantRequest {
-  userId: number;
-  scholarshipId: number;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dateOfBirth: string; // LocalDate in Java maps to string in JSON
-  email: string;
-  phoneNumber: string;
-  address: string;
-  nationality: string;
-  highSchoolName: string;
-  gpa: number;
-  intendedMajor: string;
-  scholarshipType: string;
-  familyIncome: number;
-  motivationLetter: string;
-}
-
-export interface UpdateStatusRequest {
-  status: string;
-}
-
-export interface ApplicantResponse {
-  id: number;
-  userId: number;
-  scholarshipId: number;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dateOfBirth: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  nationality: string;
-  highSchoolName: string;
-  gpa: number;
-  intendedMajor: string;
-  scholarshipType: string;
-  familyIncome: number;
-  motivationLetter: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  universityId?: number;
 }
