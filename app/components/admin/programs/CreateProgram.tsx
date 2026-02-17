@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CreateProgram = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div></div>;
+};
 
-export default CreateProgram
+export default CreateProgram;

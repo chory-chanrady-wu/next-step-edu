@@ -3,6 +3,7 @@
 import React, { use } from "react";
 import UniversityForm from "@/app/components/admin/universities/UniversityForm";
 import { useUniversityById } from "@/hooks/use-queries-hook";
+import { Loader2 } from "lucide-react";
 
 export default function EditUniversityPage({
   params,
@@ -10,30 +11,17 @@ export default function EditUniversityPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { data: university, isLoading, error } = useUniversityById(id);
+  const { data: university, isLoading, isError } = useUniversityById(id);
 
   if (isLoading) {
     return (
-      <div className="p-12 text-center">
-        <div className="text-lg text-gray-500">Loading university...</div>
+      <div className="flex h-[50vh] w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="p-12 text-center">
-        <h1 className="text-2xl font-bold text-red-600">
-          Error Loading University
-        </h1>
-        <p className="text-gray-500 mt-2">
-          Failed to load university data. Please try again.
-        </p>
-      </div>
-    );
-  }
-
-  if (!university) {
+  if (isError || !university) {
     return (
       <div className="p-12 text-center">
         <h1 className="text-2xl font-bold text-gray-900">

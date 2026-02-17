@@ -14,6 +14,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [error, setError] = useState("");
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,8 +22,6 @@ export default function LoginForm() {
 
     try {
       const data = await loginMutation.mutateAsync({ email, password });
-
-      console.log("Login response:", data);
 
       if (!data.accessToken) {
         throw new Error("No access token in response");
@@ -40,12 +39,10 @@ export default function LoginForm() {
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
-      console.log("Auth tokens saved, redirecting...");
+      setIsRedirecting(true);
       setShowToast(true);
 
-      // Redirect immediately
       setTimeout(() => {
-        console.log("Pushing to dashboard");
         router.push("/admin/dashboard");
       }, 800);
     } catch (err: any) {
@@ -54,7 +51,7 @@ export default function LoginForm() {
     }
   };
 
-  const isLoading = loginMutation.isPending;
+  const isLoading = loginMutation.isPending || isRedirecting;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
@@ -114,7 +111,8 @@ export default function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  disabled={isLoading}
+                  className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all disabled:opacity-50 disabled:bg-gray-50"
                   placeholder="admin@example.com"
                 />
               </div>
@@ -135,7 +133,8 @@ export default function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  disabled={isLoading}
+                  className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all disabled:opacity-50 disabled:bg-gray-50"
                   placeholder="••••••••"
                 />
                 <button
@@ -168,16 +167,6 @@ export default function LoginForm() {
               )}
             </Button>
           </form>
-
-          {/* Footer */}
-          <div className="text-center text-sm text-gray-600">
-            <a
-              href="#"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Forgot password?
-            </a>
-          </div>
         </div>
       </div>
     </div>

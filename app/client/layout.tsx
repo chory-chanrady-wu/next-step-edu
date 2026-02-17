@@ -26,7 +26,9 @@ export default function ClientLayout({
 }>) {
   return (
     <ReactQueryProvider>
-      <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <div
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <Header />
         {children}
       </div>

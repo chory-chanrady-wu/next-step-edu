@@ -107,26 +107,26 @@ export default function Contents({
                     >
                       {/* Cover Image */}
                       <div className="relative h-48 bg-gray-200 overflow-hidden">
-                        {university.coverImageUrl ? (
+                        {university.coverImage ? (
                           <Image
-                            src={university.coverImageUrl}
+                            src={university.coverImage}
                             alt={university.name}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500" />
+                          <div className="w-full h-full bg-linear-to-br from-teal-400 to-teal-500"></div>
                         )}
                       </div>
 
                       {/* Logo and Content */}
                       <div className="p-4 relative">
                         {/* Logo */}
-                        {university.logoUrl && (
+                        {university.logo && (
                           <div className="absolute -top-8 left-4 w-16 h-16 bg-white rounded-lg shadow-md overflow-hidden border-2 border-white">
                             <Image
-                              src={university.logoUrl}
+                              src={university.logo}
                               alt={`${university.name} logo`}
                               width={64}
                               height={64}
@@ -135,7 +135,7 @@ export default function Contents({
                           </div>
                         )}
 
-                        <div className={university.logoUrl ? "pt-12" : ""}>
+                        <div className={`${university.logo ? "pt-12" : ""}`}>
                           <h3 className="text-lg font-bold text-gray-900 mb-1">
                             {university.name}
                           </h3>

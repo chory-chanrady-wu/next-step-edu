@@ -22,7 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -85,14 +84,17 @@ export default function Header() {
       if (token && userData) {
         try {
           const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          setIsLoggedIn(true);
+          // Use a microtask to defer state updates and avoid cascading renders
+          Promise.resolve().then(() => {
+            setUser(parsedUser);
+            setIsLoggedIn(true);
+          });
         } catch (error) {
           console.error("Failed to parse user data:", error);
         }
       }
     }
-  }, [isAuthOpen]);
+  }, [isAuthOpen, setUser, setIsLoggedIn]);
 
   const closeMobile = () => setIsMobileMenuOpen(false);
   const openAuth = () => {
@@ -126,7 +128,7 @@ export default function Header() {
 
   const getImageUrl = () => {
     if (!user?.image) return "";
-    
+
     try {
       // If it's already a full URL, return as is
       if (user.image.startsWith("http")) return user.image;

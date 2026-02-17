@@ -8,12 +8,11 @@ export default function ClientHomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <Hero />
-      <FeaturedScholarships />
       <FeaturedUniversities />
+      <FeaturedScholarships />
       <Choose />
       <CTA />
       <Footer />
-     
     </div>
   );
 }

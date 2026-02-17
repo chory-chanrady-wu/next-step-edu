@@ -32,10 +32,7 @@ export default function SearchSection({
   }, []);
 
   return (
-    <section
-      className="bg-white py-8 px-4 top-16 z-10"
-      data-aos="fade-up"
-    >
+    <section className="bg-white py-8 px-4 top-16 z-10" data-aos="fade-up">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Search Input */}

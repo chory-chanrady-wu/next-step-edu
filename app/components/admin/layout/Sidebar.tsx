@@ -49,6 +49,14 @@ const items = [
     ],
   },
   {
+    href: "/admin/applicants",
+    icon: Users,
+    label: "Applicants",
+    subItems: [
+      { href: "/admin/applicants", label: "List Applicants", icon: List },
+    ],
+  },
+  {
     href: "/admin/scorlarships",
     icon: Building2,
     label: "Scholarships",
@@ -208,14 +216,14 @@ export function SideBar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto custom-scrollbar">
+      <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto scrollbar-hide">
         {items.map((item) => (
           <NavItem
-            key={item.href}
-            href={item.href}
+            key={item.label}
+            href={"href" in item ? item.href : undefined}
             icon={item.icon}
             label={item.label}
-            subItems={item.subItems}
+            subItems={"subItems" in item ? item.subItems : undefined}
           />
         ))}
       </nav>

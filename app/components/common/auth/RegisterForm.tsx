@@ -1,25 +1,15 @@
-import {
-  Lock,
-  Mail,
-  User,
-  Phone,
-  Upload,
-  Image,
-  X,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Lock, Mail, User, Phone, Upload, X, Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
 import { Label, PrimaryButton, TextInput } from "./ui";
 import { useState } from "react";
 import { registerUser } from "@/lib/api";
 import { toast } from "sonner";
 
 type Props = {
-  onSubmit: () => void;
   onSwitch: () => void;
 };
 
-export default function RegisterForm({ onSubmit, onSwitch }: Props) {
+export default function RegisterForm({ onSwitch }: Props) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [firstname, setFirstname] = useState("");
@@ -107,13 +97,15 @@ export default function RegisterForm({ onSubmit, onSwitch }: Props) {
           />
           <label
             htmlFor="profile-picture"
-            className="cursor-pointer h-20 w-20 rounded-full border-2 border-dashed border-gray-300 hover:border-teal-500 transition-colors flex items-center justify-center overflow-hidden"
+            className="cursor-pointer h-20 w-20 rounded-full border-2 border-dashed border-gray-300 hover:border-teal-500 transition-colors flex items-center justify-center overflow-hidden relative"
           >
             {imagePreview ? (
-              <img
+              <Image
                 src={imagePreview}
                 alt="Preview"
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
+                unoptimized
               />
             ) : (
               <Upload className="h-8 w-8 text-gray-400" />

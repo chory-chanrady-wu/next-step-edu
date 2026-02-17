@@ -80,7 +80,8 @@ function resolveUniversityName(
   university?: UniversityResponse | null,
 ) {
   if (university?.name) return university.name;
-  if (scholarship.universityId) return `University #${scholarship.universityId}`;
+  if (scholarship.universityId)
+    return `University #${scholarship.universityId}`;
   return "Not specified";
 }
 
@@ -100,24 +101,31 @@ function mapScholarshipFromApi(
   const benefits = splitTextList(scholarship.benefits);
   const requirements = splitTextList(scholarship.requirements);
 
-  return {
+  const mapped = {
     id: String(scholarship.id),
     title: scholarship.name,
     level: levelToLabel(scholarship.level),
     deadline: toDateOnly(scholarship.deadline),
     summary:
-      scholarship.description?.trim() || "No description provided for this scholarship.",
+      scholarship.description?.trim() ||
+      "No description provided for this scholarship.",
     location: resolveLocation(university),
     university: resolveUniversityName(scholarship, university),
-    field: scholarship.programId ? `Program #${scholarship.programId}` : "General",
+    field: scholarship.programId
+      ? `Program #${scholarship.programId}`
+      : "General",
     benefits:
       benefits.length > 0
         ? benefits
-        : ["Tuition support and educational funding details are provided by the scholarship office."],
+        : [
+            "Tuition support and educational funding details are provided by the scholarship office.",
+          ],
     requirements:
       requirements.length > 0
         ? requirements
-        : ["Please contact the scholarship office for full eligibility requirements."],
+        : [
+            "Please contact the scholarship office for full eligibility requirements.",
+          ],
     howToApply: {
       text:
         scholarship.howToApply?.trim() ||
@@ -133,6 +141,7 @@ function mapScholarshipFromApi(
     imageUrl: scholarship.logoUrl || DEFAULT_IMAGE,
     heroImageUrl: scholarship.coverImageUrl || DEFAULT_HERO,
   };
+  return mapped;
 }
 
 export async function getScholarships(): Promise<Scholarship[]> {
@@ -145,9 +154,18 @@ export async function getScholarships(): Promise<Scholarship[]> {
   return rawItems.map((item) => mapScholarshipFromApi(item));
 }
 
-export async function getScholarshipById(id: string): Promise<Scholarship | null> {
+export async function getScholarshipById(
+  id: string,
+): Promise<Scholarship | null> {
   try {
-    const scholarship = await getScholarshipByIdApi(id);
+    // Convert string ID to number if needed
+    const numId = isNaN(Number(id)) ? id : Number(id);
+    const scholarship = await getScholarshipByIdApi(numId);
+
+    if (!scholarship) {
+      console.warn(`No scholarship found for ID: ${id}`);
+      return null;
+    }
 
     let contact: ScholarshipContactResponse | null = null;
     let university: UniversityResponse | null = null;
@@ -155,20 +173,26 @@ export async function getScholarshipById(id: string): Promise<Scholarship | null
     try {
       const contacts = await getScholarshipContactsByScholarshipId(id);
       contact = contacts[0] || null;
-    } catch {
+    } catch (error) {
+      console.warn(`Failed to fetch contacts for scholarship ${id}:`, error);
       contact = null;
     }
 
     if (scholarship.universityId) {
       try {
         university = await getUniversityById(scholarship.universityId);
-      } catch {
+      } catch (error) {
+        console.warn(
+          `Failed to fetch university ${scholarship.universityId}:`,
+          error,
+        );
         university = null;
       }
     }
 
     return mapScholarshipFromApi(scholarship, contact, university);
-  } catch {
+  } catch (error) {
+    console.error(`Error fetching scholarship with ID ${id}:`, error);
     return null;
   }
 }

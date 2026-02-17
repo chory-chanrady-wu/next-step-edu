@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Building2,
+  Globe,
   MapPin,
   Link as LinkIcon,
   Image as ImageIcon,
@@ -146,8 +147,8 @@ const ImageUpload = ({
               src={previewUrl}
               alt="Preview"
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
+              className="object-cover transition-transform group-hover:scale-105 duration-500"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-2 backdrop-blur-[2px]">
               <Button
@@ -231,37 +232,11 @@ const UniversityForm = ({
 
   // Preview URLs (initialize with existing URLs if editing)
   const [logoPreview, setLogoPreview] = useState<string>(
-    initialData?.logoUrl || "",
+    initialData?.logo || "",
   );
   const [coverPreview, setCoverPreview] = useState<string>(
-    initialData?.coverImageUrl || "",
+    initialData?.coverImage || "",
   );
-
-  // Auto-generate slug from name (handled in handleChange for 'name' field)
-  const generateSlug = (name: string): string => {
-    return name
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-  };
-
-  // Handle initial data changes (if data fetches late)
-  React.useLayoutEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name || "",
-        slug: initialData.slug || "",
-        description: initialData.description || "",
-        country: initialData.country || "",
-        city: initialData.city || "",
-        officialWebsite: initialData.officialWebsite || "",
-        status: initialData.status || "active",
-      });
-      setLogoPreview(initialData.logoUrl || "");
-      setCoverPreview(initialData.coverImageUrl || "");
-    }
-  }, [initialData]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -269,21 +244,7 @@ const UniversityForm = ({
     >,
   ) => {
     const { name, value } = e.target;
-
-    let newValue = value;
-    // Auto-generate slug from name only in create mode
-    if (mode === "create" && name === "name" && !formData.slug) {
-      newValue = value;
-    }
-
-    const updatedData = { ...formData, [name]: newValue };
-
-    // Auto-generate slug if name changes in create mode and slug is empty
-    if (mode === "create" && name === "name" && !formData.slug) {
-      updatedData.slug = generateSlug(newValue);
-    }
-
-    setFormData(updatedData);
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -299,14 +260,14 @@ const UniversityForm = ({
       if (file) {
         setLogoPreview(URL.createObjectURL(file));
       } else {
-        setLogoPreview(initialData?.logoUrl || "");
+        setLogoPreview(initialData?.logo || "");
       }
     } else {
       setCoverFile(file);
       if (file) {
         setCoverPreview(URL.createObjectURL(file));
       } else {
-        setCoverPreview(initialData?.coverImageUrl || "");
+        setCoverPreview(initialData?.coverImage || "");
       }
     }
   };
@@ -347,8 +308,8 @@ const UniversityForm = ({
         status: formData.status,
       },
       files: {
-        logoUrl: logoFile,
-        coverImageUrl: coverFile,
+        logo: logoFile,
+        coverImage: coverFile,
       },
     };
 
@@ -518,6 +479,7 @@ const UniversityForm = ({
                     onChange={handleChange}
                     placeholder="e.g. United States"
                     error={errors.country}
+                    icon={Globe}
                   />
                 </div>
                 <div className="space-y-1">
@@ -528,21 +490,23 @@ const UniversityForm = ({
                     onChange={handleChange}
                     placeholder="e.g. Palo Alto"
                     error={errors.city}
+                    icon={MapPin}
                   />
                 </div>
-                <div className="md:col-span-2 space-y-1">
-                  <FormLabel info="Complete website address.">
-                    Official University Website
-                  </FormLabel>
-                  <TextInput
-                    name="officialWebsite"
-                    value={formData.officialWebsite}
-                    onChange={handleChange}
-                    placeholder="https://www.stanford.edu"
-                    error={errors.officialWebsite}
-                    icon={LinkIcon}
-                  />
-                </div>
+              </div>
+
+              <div className="space-y-1 pt-4">
+                <FormLabel info="Complete website address.">
+                  Official University Website
+                </FormLabel>
+                <TextInput
+                  name="officialWebsite"
+                  value={formData.officialWebsite}
+                  onChange={handleChange}
+                  placeholder="https://www.stanford.edu"
+                  error={errors.officialWebsite}
+                  icon={LinkIcon}
+                />
               </div>
             </CardContent>
           </Card>

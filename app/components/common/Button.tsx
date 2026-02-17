@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils";
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost" | "success" | "warning" | "heroOutline";
+  variant?:
+    | "primary"
+    | "outline"
+    | "ghost"
+    | "success"
+    | "warning"
+    | "heroOutline";
   size?: "sm" | "md" | "lg" | "xl";
 };
 
@@ -17,11 +23,13 @@ export default function Button({
 
   const variants = {
     primary: "bg-black text-white hover:opacity-90",
-    outline: "border border-slate-200 bg-white hover:bg-slate-50 text-slate-900",
+    outline:
+      "border border-slate-200 bg-white hover:bg-slate-50 text-slate-900",
     ghost: "bg-transparent hover:bg-slate-50 text-slate-900",
     success: "bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm",
     warning: "bg-amber-500 text-slate-900 hover:bg-amber-600 shadow-md",
-    heroOutline: "border border-white/30 bg-white/10 text-white hover:bg-white/15",
+    heroOutline:
+      "border border-white/30 bg-white/10 text-white hover:bg-white/15",
   };
 
   const sizes = {
@@ -32,6 +40,9 @@ export default function Button({
   };
 
   return (
-    <button className={cn(base, variants[variant], sizes[size], className)} {...props} />
+    <button
+      className={cn(base, variants[variant], sizes[size], className)}
+      {...props}
+    />
   );
 }

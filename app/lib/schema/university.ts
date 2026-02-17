@@ -16,7 +16,7 @@ export const UniversitySchema = z.object({
   status: z.enum(["published", "draft", "archived"]),
   deleted_at: z.string().datetime().nullable().optional(),
   created_at: z.string().datetime(),
-  updated_at: z.string().datetime()
+  updated_at: z.string().datetime(),
 });
 
 export type UniversitySchemaType = z.infer<typeof UniversitySchema>;

@@ -23,7 +23,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { getScholarships, type Scholarship } from "@/app/client/scholarship/data";
+import {
+  getScholarships,
+  type Scholarship,
+} from "@/app/client/scholarship/data";
 import { ScholarshipCard } from "@/app/client/components/scholarship/ScholarshipCard";
 
 type SortKey = "name_asc" | "deadline_asc" | "deadline_desc";
@@ -268,7 +271,7 @@ export default function ScholarshipClientPage() {
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {!isLoading &&
                 paged.map((s, index) => (
-                <ScholarshipCard key={s.id} scholarship={s} index={index} />
+                  <ScholarshipCard key={s.id} scholarship={s} index={index} />
                 ))}
             </div>
 

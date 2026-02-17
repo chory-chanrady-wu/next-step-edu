@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { getPayload } from "@/lib/auth";
+import { refreshToken } from "@/lib/api";
+
 interface AuthGuardProps {
   children: React.ReactNode;
 }
@@ -11,18 +14,42 @@ export function AuthGuard({ children }: AuthGuardProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const token =
-      localStorage.getItem("accessToken") ||
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("token");
-    const user = localStorage.getItem("user");
+    const checkAuth = () => {
+      const token =
+        localStorage.getItem("accessToken") ||
+        localStorage.getItem("authToken") ||
+        localStorage.getItem("token");
+      const user = localStorage.getItem("user");
 
-    if (!token || !user) {
-      router.replace("/admin/login");
-      setIsAuthenticated(false);
-    } else {
-      setIsAuthenticated(true);
-    }
+      if (!token || !user) {
+        router.replace("/admin/login");
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+
+    checkAuth();
+
+    const handleRefresh = async () => {
+      const payload = getPayload();
+      if (!payload?.exp) return;
+
+      const now = Math.floor(Date.now() / 1000);
+      const timeLeft = payload.exp - now;
+      if (timeLeft < 120) {
+        try {
+          console.log("Token expiring soon, refreshing proactively...");
+          await refreshToken();
+        } catch (error) {
+          console.error("Proactive refresh failed:", error);
+        }
+      }
+    };
+
+    const intervalId = setInterval(handleRefresh, 60000);
+
+    return () => clearInterval(intervalId);
   }, [router]);
 
   if (isAuthenticated === null) {

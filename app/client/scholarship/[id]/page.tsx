@@ -9,9 +9,12 @@ export default async function ScholarshipDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const scholarship = await getScholarshipById(id);
 
-  if (!scholarship) notFound();
+  if (!scholarship) {
+    notFound();
+  }
 
   return <ScholarshipDetail scholarship={scholarship} />;
 }

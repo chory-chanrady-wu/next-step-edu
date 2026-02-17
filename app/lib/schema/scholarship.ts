@@ -44,7 +44,9 @@ export const scholarshipSchema = z.object({
 
   maxApplicants: z.number(),
 
-  eligibility: z.array(z.string()).min(1, "Select at least one eligibility requirement"),
+  eligibility: z
+    .array(z.string())
+    .min(1, "Select at least one eligibility requirement"),
 
   slug: z.array(z.string()).min(1, "Select at least one slug requirement"),
 
@@ -76,7 +78,9 @@ export const scholarshipSchema = z.object({
 
   applicationFee: z.boolean(),
 
-  documentsRequired: z.array(z.string()).min(1, "Select at least one document requirement"),
+  documentsRequired: z
+    .array(z.string())
+    .min(1, "Select at least one document requirement"),
 
   location: z.string(),
 

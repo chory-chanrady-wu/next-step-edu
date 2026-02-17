@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -14,8 +13,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Edit,
-  Trash2,
   Eye,
+  Phone,
   MoreVertical,
   Search,
   Filter,
@@ -23,7 +22,9 @@ import {
   ChevronRight,
   UserCircle,
   ShieldCheck,
-  Phone,
+  ShieldAlert,
+  Ban,
+  Activity,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -31,67 +32,152 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import DeleteConfirmationModal from "../universities/DeleteConfirmationModal";
-
-import { useAllProfiles, useDeleteProfile } from "@/hooks/use-queries-hook";
+import UserForm from "./UserForm";
+import { toast } from "sonner";
+import {
+  useAllProfiles,
+  useDeleteProfile,
+  useUpdateUserStatus,
+} from "@/hooks/use-queries-hook";
+import { UserProfileResponse } from "@/types/nextstepedu";
 
 const UserTable = () => {
-  const { data: profiles = [] } = useAllProfiles();
+  const { data: profiles = [], isLoading, error } = useAllProfiles();
   const { mutate: deleteProfile, isPending: isDeleting } = useDeleteProfile();
+  const { mutate: updateStatus, isPending: isUpdatingStatus } =
+    useUpdateUserStatus();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [roleFilter, setRoleFilter] = useState<"all" | "admin" | "user">("all");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "inactive" | "suspended"
+  >("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<{
     id: number;
     name: string;
   } | null>(null);
+  const [editingUser, setEditingUser] = useState<UserProfileResponse | null>(
+    null,
+  );
 
   const itemsPerPage = 5;
 
-  // Filter logic
   const filteredUsers = useMemo(() => {
-    return profiles.filter((user) => {
-      const fullName = `${user.firstname} ${user.lastname}`;
+    const profilesList = Array.isArray(profiles)
+      ? profiles
+      : (profiles as any)?.profiles || (profiles as any)?.data || [];
+
+    return profilesList.filter((user: UserProfileResponse) => {
+      const fullName = `${user.firstname ?? ""} ${user.lastname ?? ""}`.trim();
+
       const matchesSearch =
         fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (user.email &&
           user.email.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      const userRoleLower = (user as any)?.role
+        ? String((user as any).role).toLowerCase()
+        : "";
+
       const matchesRole =
         roleFilter === "all" ||
-        (user.role && user.role.toLowerCase() === roleFilter);
+        (roleFilter === "admin" && userRoleLower === "admin") ||
+        (roleFilter === "user" && userRoleLower === "user");
+
+      const statusLower = user.status
+        ? String(user.status).toLowerCase()
+        : "active";
       const matchesStatus =
         statusFilter === "all" ||
-        (user.status && user.status.toLowerCase() === statusFilter);
+        (statusFilter === "active" && statusLower === "active") ||
+        (statusFilter === "inactive" && statusLower === "inactive") ||
+        (statusFilter === "suspended" && statusLower === "suspended");
+
       return matchesSearch && matchesRole && matchesStatus;
     });
   }, [searchQuery, roleFilter, statusFilter, profiles]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedData = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
 
-  const handleDeleteClick = (id: number, name: string) => {
-    setUserToDelete({ id, name });
-    setIsDeleteModalOpen(true);
-  };
-
   const handleConfirmDelete = () => {
     if (!userToDelete) return;
+
     deleteProfile(userToDelete.id, {
       onSuccess: () => {
+        toast.success("User deleted successfully");
         setIsDeleteModalOpen(false);
         setUserToDelete(null);
       },
+      onError: (err: any) => {
+        toast.error(err.response?.data || "Failed to delete user");
+      },
     });
+  };
+
+  const handleStatusUpdate = (userId: number, newStatus: string) => {
+    updateStatus(
+      { id: userId, status: newStatus },
+      {
+        onSuccess: () => {
+          toast.success(`User status updated to ${newStatus}`);
+        },
+        onError: (err: any) => {
+          console.group("Status Update Error Debug");
+          console.error("User ID:", userId);
+          console.error("Requested Status:", newStatus);
+          console.error("Error Object:", err);
+          if (err.response) {
+            console.error("Response Status:", err.response.status);
+            console.error("Response Data:", err.response.data);
+          } else if (err.request) {
+            console.error(
+              "No response received. Request details:",
+              err.request,
+            );
+          } else {
+            console.error("Error message:", err.message);
+          }
+          console.groupEnd();
+
+          toast.error(
+            err.response?.data?.message ||
+              err.response?.data ||
+              "Failed to update status",
+          );
+        },
+      },
+    );
+  };
+
+  const renderRoleBadge = (user: UserProfileResponse) => {
+    const role = (user as any)?.role
+      ? String((user as any).role).toUpperCase()
+      : "USER";
+
+    const isAdmin = role === "ADMIN";
+    return (
+      <Badge
+        className={cn(
+          "font-bold text-[10px] uppercase tracking-widest px-2.5 py-0.5 border-none rounded-lg",
+          isAdmin ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700",
+        )}
+      >
+        {isAdmin ? "Admin" : "Student"}
+      </Badge>
+    );
   };
 
   return (
@@ -105,6 +191,10 @@ const UserTable = () => {
         isLoading={isDeleting}
       />
 
+      {editingUser && (
+        <UserForm user={editingUser} onClose={() => setEditingUser(null)} />
+      )}
+
       {/* Filters Bar */}
       <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
         <div className="flex flex-1 items-center gap-3 w-full max-w-2xl">
@@ -114,7 +204,10 @@ const UserTable = () => {
               type="text"
               placeholder="Search by name or email..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 transition-all font-outfit"
             />
           </div>
@@ -130,21 +223,35 @@ const UserTable = () => {
                   <ShieldCheck className="h-4 w-4" />
                   {roleFilter === "all"
                     ? "All Roles"
-                    : roleFilter.charAt(0).toUpperCase() + roleFilter.slice(1)}
+                    : roleFilter === "user"
+                      ? "Student"
+                      : "Admin"}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 rounded-xl">
-                <DropdownMenuItem onClick={() => setRoleFilter("all")}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setRoleFilter("all");
+                    setCurrentPage(1);
+                  }}
+                >
                   All Roles
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setRoleFilter("admin")}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setRoleFilter("admin");
+                    setCurrentPage(1);
+                  }}
+                >
                   Admin
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setRoleFilter("student")}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setRoleFilter("user");
+                    setCurrentPage(1);
+                  }}
+                >
                   Student
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setRoleFilter("recruiter")}>
-                  Recruiter
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -159,25 +266,48 @@ const UserTable = () => {
                   <Filter className="h-4 w-4" />
                   {statusFilter === "all"
                     ? "All Status"
-                    : statusFilter.charAt(0).toUpperCase() +
-                      statusFilter.slice(1)}
+                    : statusFilter === "active"
+                      ? "Active"
+                      : statusFilter === "inactive"
+                        ? "Inactive"
+                        : "Suspended"}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 rounded-xl">
-                <DropdownMenuItem onClick={() => setStatusFilter("all")}>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setStatusFilter("all");
+                    setCurrentPage(1);
+                  }}
+                >
                   All Status
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("active")}
+                  onClick={() => {
+                    setStatusFilter("active");
+                    setCurrentPage(1);
+                  }}
                   className="text-green-600"
                 >
                   Active
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setStatusFilter("Inactive")}
+                  onClick={() => {
+                    setStatusFilter("inactive");
+                    setCurrentPage(1);
+                  }}
                   className="text-amber-600"
                 >
                   Inactive
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setStatusFilter("suspended");
+                    setCurrentPage(1);
+                  }}
+                  className="text-red-600"
+                >
+                  Suspended
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -198,83 +328,98 @@ const UserTable = () => {
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {paginatedData.length > 0 ? (
-              paginatedData.map((user) => (
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="h-40 text-center text-gray-500 font-medium font-outfit"
+                >
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    Loading users...
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : error ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="h-40 text-center text-red-500 font-medium font-outfit"
+                >
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <p>Failed to load users.</p>
+                    <p className="text-xs text-gray-400">
+                      {(error as any)?.message}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.location.reload()}
+                      className="mt-2"
+                    >
+                      Retry
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : paginatedData.length > 0 ? (
+              paginatedData.map((user: UserProfileResponse) => (
                 <TableRow
                   key={user.id}
                   className="hover:bg-blue-50/10 transition-colors border-gray-50"
                 >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-2xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm shrink-0 relative">
-                        {user.imageUrl ? (
-                          <Image
-                            src={user.imageUrl}
+                      <div className="w-11 h-11 rounded-2xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm shrink-0">
+                        {(user as any).imageUrl || (user as any).image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={(user as any).imageUrl || (user as any).image}
                             alt={user.firstname}
-                            fill
-                            sizes="2.75rem"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : user.image ? (
-                          <Image
-                            src={user.image}
-                            alt={user.firstname}
-                            fill
-                            sizes="2.75rem"
                             className="w-full h-full object-cover"
                           />
                         ) : (
                           <UserCircle className="w-6 h-6 text-gray-400" />
                         )}
                       </div>
+
                       <div className="flex flex-col min-w-0">
                         <span className="text-sm font-bold text-gray-900 truncate font-outfit">
                           {user.firstname} {user.lastname}
                         </span>
-                        <span className="text-xs text-gray-500 truncate">
-                          {user.email || "No email"}
+                        <span className="text-[11px] text-gray-400 font-medium truncate">
+                          {user.email}
                         </span>
                       </div>
                     </div>
                   </TableCell>
+
                   <TableCell>
                     <Badge
                       className={cn(
                         "font-bold text-[10px] uppercase tracking-widest px-2.5 py-0.5 border-none rounded-lg",
-                        (user.status || "active").toLowerCase() === "active" &&
+                        (user.status || "ACTIVE").toUpperCase() === "ACTIVE" &&
                           "bg-green-100 text-green-700",
-                        (user.status || "").toLowerCase() === "inactive" &&
+                        (user.status || "").toUpperCase() === "INACTIVE" &&
                           "bg-amber-100 text-amber-700",
-                        !user.status && "bg-green-100 text-green-700", // Default to active if missing
+                        (user.status || "").toUpperCase() === "SUSPENDED" &&
+                          "bg-red-100 text-red-700",
+                        !user.status && "bg-green-100 text-green-700",
                       )}
                     >
                       {user.status || "ACTIVE"}
                     </Badge>
                   </TableCell>
+
+                  {/* ✅ ROLE COLUMN */}
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <div
-                        className={cn(
-                          "p-1.5 rounded-lg shrink-0",
-                          (user.role || "student").toLowerCase() === "admin"
-                            ? "bg-purple-50"
-                            : (user.role || "").toLowerCase() === "recruiter"
-                              ? "bg-indigo-50"
-                              : "bg-blue-50",
-                        )}
-                      >
-                        {(user.role || "student").toLowerCase() === "admin" ? (
-                          <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
-                        ) : (
-                          <UserCircle className="w-3.5 h-3.5 text-blue-600" />
-                        )}
-                      </div>
-                      <span className="text-sm font-bold text-gray-700 capitalize font-outfit">
-                        {user.role || "Student"}
-                      </span>
+                      {renderRoleBadge(user)}
                     </div>
                   </TableCell>
+
                   <TableCell>
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -283,15 +428,17 @@ const UserTable = () => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm text-gray-500 font-medium">
+
+                  <TableCell className="text-sm text-gray-500 font-medium font-outfit">
                     {user.createdAt
                       ? new Date(user.createdAt).toLocaleDateString(undefined, {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })
-                      : "N/A"}
+                      : "-"}
                   </TableCell>
+
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -303,6 +450,7 @@ const UserTable = () => {
                           <MoreVertical className="h-4 w-4 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
+
                       <DropdownMenuContent
                         align="end"
                         className="w-48 rounded-2xl shadow-xl border-gray-100 p-2"
@@ -315,26 +463,76 @@ const UserTable = () => {
                             </span>
                           </DropdownMenuItem>
                         </Link>
-                        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg">
+
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg"
+                          onClick={() => setEditingUser(user)}
+                        >
                           <Edit className="h-4 w-4 text-amber-500" />
                           <span className="font-bold text-gray-700 text-xs">
                             Edit Account
                           </span>
                         </DropdownMenuItem>
 
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg">
+                            <Activity className="h-4 w-4 text-blue-500" />
+                            <span className="font-bold text-gray-700 text-xs">
+                              Update Status
+                            </span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuSubContent className="w-40 rounded-xl p-1 shadow-lg border-gray-100">
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleStatusUpdate(user.userId, "ACTIVE")
+                              }
+                              className="flex items-center gap-2 cursor-pointer py-2 rounded-lg"
+                              disabled={
+                                isUpdatingStatus ||
+                                (user.status || "ACTIVE").toUpperCase() ===
+                                  "ACTIVE"
+                              }
+                            >
+                              <ShieldCheck className="h-4 w-4 text-green-500" />
+                              <span className="font-bold text-gray-700 text-[10px] uppercase">
+                                Active
+                              </span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleStatusUpdate(user.userId, "INACTIVE")
+                              }
+                              className="flex items-center gap-2 cursor-pointer py-2 rounded-lg"
+                              disabled={
+                                isUpdatingStatus ||
+                                (user.status || "").toUpperCase() === "INACTIVE"
+                              }
+                            >
+                              <Ban className="h-4 w-4 text-amber-500" />
+                              <span className="font-bold text-gray-700 text-[10px] uppercase">
+                                Inactive
+                              </span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleStatusUpdate(user.userId, "SUSPENDED")
+                              }
+                              className="flex items-center gap-2 cursor-pointer py-2 rounded-lg"
+                              disabled={
+                                isUpdatingStatus ||
+                                (user.status || "").toUpperCase() ===
+                                  "SUSPENDED"
+                              }
+                            >
+                              <ShieldAlert className="h-4 w-4 text-red-500" />
+                              <span className="font-bold text-gray-700 text-[10px] uppercase">
+                                Suspended
+                              </span>
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+
                         <DropdownMenuSeparator className="my-1 border-gray-50" />
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600 py-2.5 rounded-lg font-black"
-                          onClick={() =>
-                            handleDeleteClick(
-                              user.id,
-                              user.firstname + " " + user.lastname,
-                            )
-                          }
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="text-xs">Delete </span>
-                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -360,6 +558,7 @@ const UserTable = () => {
                         setSearchQuery("");
                         setRoleFilter("all");
                         setStatusFilter("all");
+                        setCurrentPage(1);
                       }}
                     >
                       Reset all filters
@@ -377,6 +576,7 @@ const UserTable = () => {
             Total Users:{" "}
             <span className="text-gray-900">{filteredUsers.length}</span>
           </p>
+
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
@@ -387,6 +587,7 @@ const UserTable = () => {
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
+
             <div className="flex items-center gap-1">
               {Array.from({ length: totalPages }).map((_, i) => (
                 <Button
@@ -405,6 +606,7 @@ const UserTable = () => {
                 </Button>
               ))}
             </div>
+
             <Button
               variant="outline"
               size="icon"

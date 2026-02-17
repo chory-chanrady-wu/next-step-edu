@@ -147,6 +147,8 @@ export interface ScholarshipContactResponse extends ScholarshipContactRequest {
    APPLICANTS
 ======================= */
 export interface ApplicantRequest {
+  userId: number;
+  scholarshipId: number;
   firstName: string;
   lastName: string;
   gender: string;
@@ -162,12 +164,17 @@ export interface ApplicantRequest {
   familyIncome: number;
   motivationLetter: string;
   status?: string;
+  universityId?: number;
 }
 
 export interface ApplicantResponse extends ApplicantRequest {
   id: number;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface UpdateStatusRequest {
+  status: string;
 }
 
 /* =======================
@@ -187,8 +194,8 @@ export interface UniversityResponse {
   id: number;
   name: string;
   slug?: string;
-  logoUrl?: string;
-  coverImageUrl?: string;
+  logo?: string;
+  coverImage?: string;
   description?: string;
   country?: string;
   city?: string;
@@ -203,8 +210,8 @@ export interface UniversityResponse {
 export interface UniversityMultipartPayload {
   data: UniversityRequest;
   files?: {
-    logoUrl?: File | null;
-    coverImageUrl?: File | null;
+    logo?: File | null;
+    coverImage?: File | null;
   };
 }
 
@@ -213,8 +220,8 @@ export interface UniversityMultipartPayload {
 ======================= */
 export interface UniversityContactRequest {
   universityId: number;
-  label?: string;
-  name?: string;
+  label?: string; // Backend uses label
+  name?: string; // Some parts might use name
   email?: string;
   phone?: string;
   website?: string;
@@ -230,18 +237,21 @@ export interface UniversityContactResponse extends UniversityContactRequest {
 /* =======================
    USER PROFILE
 ======================= */
+export type UserRole = "ADMIN" | "USER";
+
 export interface UserProfileResponse {
   id: number;
   userId: number;
-  email: string; // From authenticating user
+  email: string;
   firstname: string;
   lastname: string;
   phone: string;
-  imageUrl?: string;
-  image?: string; // Sometimes APIs return 'image' instead of 'imageUrl'
-  role?: string; // Optional if joined from Auth
-  status?: string; // Optional account status
-  createdAt?: string;
+
+  image?: string;
+
+  role: UserRole; // ✅ required
+  status?: string; // or make it boolean if backend is boolean
+  createdAt: string; // ✅ required if backend sends it
   updatedAt?: string;
 }
 

@@ -40,7 +40,10 @@ export default function ClientNavbar() {
 
             <DesktopActions onOpenAuth={openAuthModal} />
 
-            <MobileToggle open={openMenu} onToggle={() => setOpenMenu((v) => !v)} />
+            <MobileToggle
+              open={openMenu}
+              onToggle={() => setOpenMenu((v) => !v)}
+            />
           </div>
 
           <MobileMenu
@@ -89,7 +92,7 @@ function DesktopNav({
             href={item.href}
             className={cn(
               "font-medium transition-colors",
-              active ? "text-teal-600" : "text-gray-700 hover:text-teal-600"
+              active ? "text-teal-600" : "text-gray-700 hover:text-teal-600",
             )}
           >
             {item.label}
@@ -178,7 +181,7 @@ function MobileMenu({
                     "rounded-md px-3 py-2 font-medium transition-colors",
                     active
                       ? "bg-teal-50 text-teal-700"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-teal-600"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-teal-600",
                   )}
                 >
                   {item.label}
