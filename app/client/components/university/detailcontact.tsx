@@ -10,23 +10,36 @@ interface DetailContactProps {
   universityId: string;
   officialWebsite?: string;
   location: string;
-  contacts?: UniversityContactResponse[];
+  email?: string;
+  phone?: string;
+  label?: string;
+  contacts?: UniversityContactResponse[]; // Keep for backward compatibility
 }
 
 export default function DetailContact({
   universityId,
   officialWebsite,
   location,
+  email,
+  phone,
+  label,
   contacts: propContacts,
 }: DetailContactProps) {
-  // Only fetch contacts if not provided via props
-  const shouldFetch = !propContacts || propContacts.length === 0;
+  // Only fetch contacts if not provided via props or direct fields
+  const hasDirectContactInfo = email || phone || label;
+  const shouldFetch =
+    !hasDirectContactInfo && (!propContacts || propContacts.length === 0);
   const { data: fetchedContacts = [], isLoading } =
     useUniversityContactsByUniversityId(shouldFetch ? universityId : undefined);
 
   const contacts =
     propContacts && propContacts.length > 0 ? propContacts : fetchedContacts;
   const contact = (contacts as UniversityContactResponse[])[0];
+
+  // Use direct props if available, otherwise fall back to contact object
+  const contactEmail = email || contact?.email;
+  const contactPhone = phone || contact?.phone;
+  const contactLabel = label || contact?.label;
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true, offset: 100 });
@@ -47,12 +60,12 @@ export default function DetailContact({
     {
       icon: "📧",
       title: "Email",
-      content: contact?.email || "N/A",
+      content: contactEmail || "N/A",
     },
     {
       icon: "📞",
       title: "Phone",
-      content: contact?.phone || "N/A",
+      content: contactPhone || "N/A",
     },
   ];
 
@@ -66,10 +79,10 @@ export default function DetailContact({
           </h2>
           <div className="w-24 h-1 bg-linear-to-r from-teal-600 to-teal-400 mx-auto"></div>
         </div>
-        {contact?.label && (
+        {contactLabel && (
           <div>
             <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-              {contact.label}
+              {contactLabel}
             </h4>
           </div>
         )}

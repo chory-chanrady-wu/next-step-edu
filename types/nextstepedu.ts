@@ -187,6 +187,9 @@ export interface UniversityRequest {
   country?: string;
   city?: string;
   officialWebsite?: string;
+  label?: string;
+  email?: string;
+  phone?: string;
   status?: string;
 }
 
@@ -195,11 +198,16 @@ export interface UniversityResponse {
   name: string;
   slug?: string;
   logo?: string;
+  logoUrl?: string;
   coverImage?: string;
+  coverImageUrl?: string;
   description?: string;
   country?: string;
   city?: string;
   officialWebsite?: string;
+  label?: string;
+  email?: string;
+  phone?: string;
   status?: string;
   createdAt?: string;
   updatedAt?: string;

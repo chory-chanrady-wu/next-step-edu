@@ -138,8 +138,9 @@ export default function UniversityDetailPage() {
             "",
           ),
           description: uniData.description ?? "",
-          logo: uniData.logo || fallbackLogoImage,
-          cover_image: uniData.coverImage || fallbackCoverImage,
+          logo: uniData.logoUrl || uniData.logo || fallbackLogoImage,
+          cover_image:
+            uniData.coverImageUrl || uniData.coverImage || fallbackCoverImage,
           tuition_rank: 0,
           programs_count: mappedPrograms.length,
         }}
@@ -165,6 +166,9 @@ export default function UniversityDetailPage() {
               /^,\s*|,\s*$/g,
               "",
             )}
+            email={uniData.email}
+            phone={uniData.phone}
+            label={uniData.label}
             contacts={uniData.contacts || []}
           />
         </div>

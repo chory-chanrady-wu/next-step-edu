@@ -63,7 +63,7 @@ export default function DetailHero({ university }: DetailHeroProps) {
               data-aos-delay="0"
             >
               <Image
-                src={university.logo}
+                src={university.logoUrl || university.logo || ""}
                 alt={university.name}
                 fill
                 sizes="(max-width: 768px) 4rem, 6rem"
