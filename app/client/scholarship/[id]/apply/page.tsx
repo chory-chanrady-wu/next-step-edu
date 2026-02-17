@@ -1,17 +1,58 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
-import ScholarshipApplicationForm from "@/app/client/components/scholarship/ScholarshipApplicationForm";
+import ScholarshipApplication from "@/app/client/components/scholarship/ScholarshipApplicationForm";
 import { getScholarshipById } from "@/app/client/scholarship/data";
 
-export default async function ScholarshipApplyPage({
+export default async function ApplyPageWrapper({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const scholarship = await getScholarshipById(id);
 
-  if (!scholarship) notFound();
+  try {
+    const scholarship = await getScholarshipById(id);
 
-  return <ScholarshipApplicationForm scholarship={scholarship} />;
+    if (!scholarship) {
+      console.error(`[DEBUG] No scholarship returned for ID: ${id}`);
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
+          <div className="text-center max-w-md">
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
+            <p className="text-slate-600 mb-4">
+              Scholarship not found. The scholarship you are trying to apply for
+              could not be found.
+            </p>
+            <Link
+              href="/client/scholarship"
+              className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Back to Scholarships
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
+    return <ScholarshipApplication scholarship={scholarship} />;
+  } catch (error) {
+    console.error(`[DEBUG] Error fetching scholarship (ID: ${id}):`, error);
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Error</h1>
+          <p className="text-slate-600 mb-4">
+            Unable to load the scholarship details. Please try again later.
+          </p>
+          <Link
+            href="/client/scholarship"
+            className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            Back to Scholarships
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }

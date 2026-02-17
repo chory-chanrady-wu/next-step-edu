@@ -47,7 +47,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
       }
     };
 
-    const intervalId = setInterval(handleRefresh, 60000); 
+    const intervalId = setInterval(handleRefresh, 60000);
 
     return () => clearInterval(intervalId);
   }, [router]);

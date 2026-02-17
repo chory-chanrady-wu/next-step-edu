@@ -13,7 +13,6 @@ export default function ClientHomePage() {
       <Choose />
       <CTA />
       <Footer />
-     
     </div>
   );
 }

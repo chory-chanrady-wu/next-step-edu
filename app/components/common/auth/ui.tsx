@@ -1,9 +1,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export function Label({ children, className }: { children: React.ReactNode; className?: string }) {
+export function Label({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <label className={cn("block text-sm font-medium text-slate-700", className)}>
+    <label
+      className={cn("block text-sm font-medium text-slate-700", className)}
+    >
       {children}
     </label>
   );
@@ -22,7 +30,7 @@ export function TextInput({
       className={cn(
         "mt-2 flex h-12 w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 shadow-sm transition",
         "focus-within:border-teal-300 focus-within:ring-4 focus-within:ring-teal-100",
-        className
+        className,
       )}
     >
       <span className="text-slate-400">{icon}</span>
@@ -44,7 +52,6 @@ export function PrimaryButton({ children }: { children: React.ReactNode }) {
     </button>
   );
 }
-
 
 export function OutlineButton({
   children,

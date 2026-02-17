@@ -73,9 +73,9 @@ export default function HeroSection() {
         >
           {/* Background Image with Overlay */}
           <div className="absolute inset-0">
-            {university.coverImageUrl ? (
+            {university.coverImage ? (
               <Image
-                src={university.coverImageUrl}
+                src={university.coverImage}
                 alt={university.name}
                 fill
                 sizes="100vw"
@@ -92,10 +92,10 @@ export default function HeroSection() {
           <div className="relative h-full max-w-7xl mx-auto px-4 flex items-center">
             <div className="text-white max-w-3xl" data-aos="fade-right">
               {/* Logo */}
-              {university.logoUrl && (
+              {university.logo && (
                 <div className="mb-2">
                   <Image
-                    src={university.logoUrl}
+                    src={university.logo}
                     alt={`${university.name} logo`}
                     width={80}
                     height={80}

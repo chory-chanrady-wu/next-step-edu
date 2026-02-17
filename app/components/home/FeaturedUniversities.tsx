@@ -10,12 +10,11 @@ import Container from "../common/Container";
 import Button from "../common/Button";
 
 import { getAllUniversities } from "@/lib/api"; // change path to your api file
-import type { UniversityResponse } from "@/types/nextstepedu";
 const mapUniversity = (u: any) => ({
   id: u.id,
   name: u.name,
-  coverImage: u.coverImageUrl || "/images/placeholder-cover.jpg",
-  logo: u.logoUrl || "/images/placeholder-logo.png",
+  coverImage: u.coverImage || "/images/placeholder-cover.jpg",
+  logo: u.logo || "/images/placeholder-logo.png",
   shortDesc: u.shortDescription || u.description || "",
   city: u.city || "",
   country: u.country || "Cambodia",

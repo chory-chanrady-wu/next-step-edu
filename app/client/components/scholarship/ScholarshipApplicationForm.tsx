@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Award,
@@ -67,7 +68,10 @@ const initialState = (scholarship: Scholarship): ApplicationFormState => ({
 export default function ScholarshipApplicationForm({
   scholarship,
 }: ScholarshipApplicationFormProps) {
-  const [form, setForm] = useState<ApplicationFormState>(initialState(scholarship));
+  const router = useRouter();
+  const [form, setForm] = useState<ApplicationFormState>(
+    initialState(scholarship),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -104,7 +108,20 @@ export default function ScholarshipApplicationForm({
     }
 
     try {
-      await createApplicant({
+      // Get userId from localStorage (would be set during authentication)
+      const userStr = localStorage.getItem("user");
+      const parsedUserId = userStr ? JSON.parse(userStr).id : null;
+      const userId = parsedUserId ? Number(parsedUserId) : null;
+
+      if (!userId) {
+        setErrorMessage("User not authenticated. Please log in first.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const applicantData = {
+        userId,
+        scholarshipId: Number(scholarship.id) || 0,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         gender: form.gender,
@@ -119,14 +136,32 @@ export default function ScholarshipApplicationForm({
         scholarshipType: form.scholarshipType.trim(),
         familyIncome: parsedFamilyIncome,
         motivationLetter: form.motivationLetter.trim(),
-        status: "pending",
-      });
+      };
 
-      setSuccessMessage("Application submitted successfully.");
-      setForm(initialState(scholarship));
+      await createApplicant(applicantData);
+
+      setSuccessMessage("Application submitted successfully! Redirecting...");
+
+      // Redirect to scholarship detail page after 2 seconds
+      setTimeout(() => {
+        router.push(`/client/scholarship/${scholarship.id}`);
+      }, 2000);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to submit application.";
+      console.error("[Form] Application submission failed:", error);
+      let message = "Failed to submit application.";
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (error && typeof error === "object") {
+        // Handle axios error response
+        const axiosError = error as any;
+        if (axiosError.response?.data?.message) {
+          message = axiosError.response.data.message;
+        } else if (axiosError.response?.statusText) {
+          message = `Error: ${axiosError.response.statusText}`;
+        }
+      }
+
       setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
@@ -157,10 +192,12 @@ export default function ScholarshipApplicationForm({
               <Sparkles className="h-3.5 w-3.5" />
               Scholarship Application
             </span>
-            <h1 className="mt-4 text-2xl font-bold leading-tight">{scholarship.title}</h1>
+            <h1 className="mt-4 text-2xl font-bold leading-tight">
+              {scholarship.title}
+            </h1>
             <p className="mt-3 text-sm text-cyan-100/90">
-              Complete the form carefully. Your details will be saved to the applicant
-              table for review.
+              Complete the form carefully. Your details will be saved to the
+              applicant table for review.
             </p>
 
             <div className="mt-6 space-y-3 rounded-2xl border border-white/20 bg-white/10 p-4 text-sm">
@@ -184,7 +221,9 @@ export default function ScholarshipApplicationForm({
           </aside>
 
           <div className="rounded-3xl border border-slate-200/90 bg-white/85 p-6 shadow-xl backdrop-blur-xl sm:p-8">
-            <h2 className="text-2xl font-bold text-slate-900">Application Form</h2>
+            <h2 className="text-2xl font-bold text-slate-900">
+              Application Form
+            </h2>
             <p className="mt-1 text-sm text-slate-600">
               Fill in all required information below.
             </p>
@@ -303,7 +342,9 @@ export default function ScholarshipApplicationForm({
                     <Input
                       id="high_school_name"
                       value={form.highSchoolName}
-                      onChange={(e) => onChange("highSchoolName", e.target.value)}
+                      onChange={(e) =>
+                        onChange("highSchoolName", e.target.value)
+                      }
                       className="bg-white"
                       required
                     />
@@ -331,7 +372,9 @@ export default function ScholarshipApplicationForm({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="family_income">Family Income (USD / year)</Label>
+                    <Label htmlFor="family_income">
+                      Family Income (USD / year)
+                    </Label>
                     <Input
                       id="family_income"
                       type="number"
@@ -351,7 +394,9 @@ export default function ScholarshipApplicationForm({
                     <Input
                       id="intended_major"
                       value={form.intendedMajor}
-                      onChange={(e) => onChange("intendedMajor", e.target.value)}
+                      onChange={(e) =>
+                        onChange("intendedMajor", e.target.value)
+                      }
                       className="bg-white"
                       required
                     />
@@ -361,7 +406,9 @@ export default function ScholarshipApplicationForm({
                     <Input
                       id="scholarship_type"
                       value={form.scholarshipType}
-                      onChange={(e) => onChange("scholarshipType", e.target.value)}
+                      onChange={(e) =>
+                        onChange("scholarshipType", e.target.value)
+                      }
                       className="bg-white"
                       required
                     />
@@ -378,7 +425,9 @@ export default function ScholarshipApplicationForm({
                   <Textarea
                     id="motivation_letter"
                     value={form.motivationLetter}
-                    onChange={(e) => onChange("motivationLetter", e.target.value)}
+                    onChange={(e) =>
+                      onChange("motivationLetter", e.target.value)
+                    }
                     className="min-h-40 bg-white"
                     required
                   />

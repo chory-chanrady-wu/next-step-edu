@@ -58,10 +58,11 @@ export default function LoginForm() {
       <div className="w-full max-w-md">
         {/* Toast Notification */}
         <div
-          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${showToast
-            ? "translate-x-0 opacity-100"
-            : "translate-x-[500px] opacity-0"
-            }`}
+          className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${
+            showToast
+              ? "translate-x-0 opacity-100"
+              : "translate-x-[500px] opacity-0"
+          }`}
         >
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
             <CheckCircle className="w-6 h-6 text-white" />

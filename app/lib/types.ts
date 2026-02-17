@@ -33,12 +33,7 @@ export type ScholarshipType = {
 
   program: string;
 
-  educationLevel:
-    | "undergraduate"
-    | "graduate"
-    | "phd"
-    | "high-school"
-    | "all";
+  educationLevel: "undergraduate" | "graduate" | "phd" | "high-school" | "all";
 
   renewable: boolean;
 

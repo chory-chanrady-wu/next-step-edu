@@ -1,26 +1,29 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { scholarshipSchema, ScholarshipTask } from "@/app/lib/schema/scholarship"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  scholarshipSchema,
+  ScholarshipTask,
+} from "@/app/lib/schema/scholarship";
 import {
   Select,
   SelectContent,
@@ -28,39 +31,39 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { DatePickerScholarship } from "./DatePicker"
-import { Textarea } from "@/components/ui/textarea"
-import { UploadFile } from "antd"
-import CheckboxScholarship from "./CheckboxScholarship"
-import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
-import UploadImageControl from "./UploadImage"
-import { usePrograms, useScholarship } from "@/hooks/admin-custom-hook"
-import { programsToOptions } from "@/app/lib/formatters"
-import IncrementNumbers from "./IncredementNumbers"
+} from "@/components/ui/select";
+import { DatePickerScholarship } from "./DatePicker";
+import { Textarea } from "@/components/ui/textarea";
+import { UploadFile } from "antd";
+import CheckboxScholarship from "./CheckboxScholarship";
+import MultipleSelectControlComponent from "./MultipleSelectControlComponent";
+import UploadImageControl from "./UploadImage";
+import { usePrograms, useScholarship } from "@/hooks/admin-custom-hook";
+import { programsToOptions } from "@/app/lib/formatters";
+import IncrementNumbers from "./IncredementNumbers";
 
 const currencyOpts = [
   { label: "USD($)", value: "USD" },
   { label: "RIEL(៛) ", value: "RIEL" },
-] as const
+] as const;
 const statusOpts = [
   { label: "Open", value: "open" },
   { label: "Closed", value: "closed" },
   { label: "Upcoming", value: "upcoming" },
   { label: "Extended", value: "extended" },
-] as const
+] as const;
 const awardType = [
   { label: "Full", value: "full" },
   { label: "Partial", value: "partial" },
   { label: "Tuition", value: "tuition" },
   { label: "Stipend", value: "stipend" },
-] as const
+] as const;
 const educationLevel = [
   { label: "Undergraduate", value: "undergraduate" },
   { label: "Graduate", value: "graduate" },
   { label: "Phd", value: "phd" },
   { label: "Diploma", value: "diploma" },
-] as const
+] as const;
 const categories = [
   { label: "Academic", value: "academic" },
   { label: "Sports", value: "sports" },
@@ -70,7 +73,7 @@ const categories = [
   { label: "Merit", value: "merit" },
   { label: "Minority", value: "minority" },
   { label: "Community", value: "community" },
-] as const
+] as const;
 
 export const eligibilityOptions = [
   { value: "high-school-graduate", label: "High School Graduate" },
@@ -90,19 +93,17 @@ export const eligibilityOptions = [
   { value: "entrepreneur", label: "Entrepreneur" },
   { value: "veteran", label: "Veteran" },
   { value: "teacher", label: "Teacher/Educator" },
-  { value: "student-leader", label: "Student Leader" }
+  { value: "student-leader", label: "Student Leader" },
 ];
 
 type ChildrenProps = {
-  id: string
-}
+  id: string;
+};
 
 export function FormEditScholarship({ id }: ChildrenProps) {
-
   const { isLoading, data, error } = useScholarship(id);
 
-  const {data: programData} = usePrograms();
-
+  const { data: programData } = usePrograms();
 
   const form = useForm<ScholarshipTask>({
     resolver: zodResolver(scholarshipSchema),
@@ -110,20 +111,24 @@ export function FormEditScholarship({ id }: ChildrenProps) {
       id: data?.id,
       title: data?.name,
       provider: data?.provider,
-      providerLogo: [{
-        uid: "-1",
-        name: data?.providerLogo,
-        status: "done",
-        url: data?.providerLogo
-      }] as UploadFile[],
-      coverImage: [{
-        uid: "-1",
-        name: data?.coverImage,
-        status: "done",
-        url: data?.coverImage
-      }] as UploadFile[],
+      providerLogo: [
+        {
+          uid: "-1",
+          name: data?.providerLogo,
+          status: "done",
+          url: data?.providerLogo,
+        },
+      ] as UploadFile[],
+      coverImage: [
+        {
+          uid: "-1",
+          name: data?.coverImage,
+          status: "done",
+          url: data?.coverImage,
+        },
+      ] as UploadFile[],
       amount: data?.amount,
-      currency: data?.currency,/* ** Not complete */
+      currency: data?.currency /* ** Not complete */,
       status: data?.status,
       category: data?.category,
       deadline: data?.deadline, // you can set a default date string if needed
@@ -146,10 +151,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
       location: data?.location,
       international: data?.international,
     },
-  })
+  });
 
   function onSubmit(data: ScholarshipTask) {
-    console.log('Data', data);
+    console.log("Data", data);
 
     toast("You submitted the following values:", {
       description: (
@@ -164,40 +169,39 @@ export function FormEditScholarship({ id }: ChildrenProps) {
       style: {
         "--border-radius": "calc(var(--radius)  + 4px)",
       } as React.CSSProperties,
-    })
+    });
   }
 
-
   if (isLoading) {
-    return <div>Loading ...</div>
+    return <div>Loading ...</div>;
   }
 
   if (error) {
-    return <div>Something went wrong</div>
+    return <div>Something went wrong</div>;
   }
 
   return (
     <Card className="w-full flex px-5 shadow-none border-none">
       <CardHeader>
         <CardTitle>Create Scholarships</CardTitle>
-        <CardDescription>
-          Create scholarship information below.
-        </CardDescription>
+        <CardDescription>Create scholarship information below.</CardDescription>
       </CardHeader>
       <CardContent>
         <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-3">
-
             {/*
-              ** @Field Title
-              */}
+             ** @Field Title
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="title"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-username" className="flex items-center">
+                    <FieldLabel
+                      htmlFor="form-rhf-input-username"
+                      className="flex items-center"
+                    >
                       Title<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
@@ -217,15 +221,18 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Field Provider
-              */}
+             ** @Field Provider
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="provider"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-provider" className="flex items-center">
+                    <FieldLabel
+                      htmlFor="form-rhf-input-provider"
+                      className="flex items-center"
+                    >
                       Provider<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
@@ -245,22 +252,34 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @File Provider Logo
-              */}
+             ** @File Provider Logo
+             */}
             <FieldGroup className="col-span-1">
-              <UploadImageControl name="providerLogo" id="form-rhf-input-provider-logo" label="Provider Logo" control={form.control} multiple={false} />
+              <UploadImageControl
+                name="providerLogo"
+                id="form-rhf-input-provider-logo"
+                label="Provider Logo"
+                control={form.control}
+                multiple={false}
+              />
             </FieldGroup>
 
             {/*
-              ** @File Cover Image
-              */}
+             ** @File Cover Image
+             */}
             <FieldGroup className="col-span-1">
-              <UploadImageControl name="coverImage" id="form-rhf-input-cover-image" label="Cover Image" control={form.control} multiple={false} />
+              <UploadImageControl
+                name="coverImage"
+                id="form-rhf-input-cover-image"
+                label="Cover Image"
+                control={form.control}
+                multiple={false}
+              />
             </FieldGroup>
 
             {/*
-              ** @Select Field Amount
-              */}
+             ** @Select Field Amount
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="amount"
@@ -287,8 +306,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Select Field Currency
-              */}
+             ** @Select Field Currency
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="currency"
@@ -300,7 +319,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-select-currency" className="flex items-center">
+                      <FieldLabel
+                        htmlFor="form-rhf-select-currency"
+                        className="flex items-center"
+                      >
                         Currency<span className="text-red-500">*</span>
                       </FieldLabel>
                       <Select
@@ -320,7 +342,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
                           {currencyOpts.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
+                            <SelectItem
+                              key={language.value}
+                              value={language.value}
+                            >
                               {language.label}
                             </SelectItem>
                           ))}
@@ -333,8 +358,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Select Field Status
-              */}
+             ** @Select Field Status
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="status"
@@ -379,8 +404,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Select Field Category
-              */}
+             ** @Select Field Category
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="category"
@@ -412,7 +437,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
                           {categories.map((category) => (
-                            <SelectItem key={category.value} value={category.value}>
+                            <SelectItem
+                              key={category.value}
+                              value={category.value}
+                            >
                               {category.label}
                             </SelectItem>
                           ))}
@@ -425,36 +453,64 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Date Field Deadline
-              */}
+             ** @Date Field Deadline
+             */}
             <FieldGroup className="col-span-1">
-              <DatePickerScholarship id="form-rhf-select-deadline" placeholder="Pick a date" name="deadline" control={form.control} />
+              <DatePickerScholarship
+                id="form-rhf-select-deadline"
+                placeholder="Pick a date"
+                name="deadline"
+                control={form.control}
+              />
             </FieldGroup>
 
             {/*
-              ** @Field Max Applicants
-              */}
+             ** @Field Max Applicants
+             */}
             <FieldGroup className="col-span-1">
-              <IncrementNumbers control={form.control} placeholder="Set maximum accept applicant" max={500} label="Set Maximun accept applicants" name="maxApplicants" />
+              <IncrementNumbers
+                control={form.control}
+                placeholder="Set maximum accept applicant"
+                max={500}
+                label="Set Maximun accept applicants"
+                name="maxApplicants"
+              />
             </FieldGroup>
 
             {/*
-              ** @Selects control component Eligibility field
-              */}
+             ** @Selects control component Eligibility field
+             */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-eligibility" control={form.control} label="Eligibility" placeholder="Select Eligibilities" name="eligibility" size="large" options={eligibilityOptions} />
+              <MultipleSelectControlComponent
+                id="form-rhf-select-eligibility"
+                control={form.control}
+                label="Eligibility"
+                placeholder="Select Eligibilities"
+                name="eligibility"
+                size="large"
+                options={eligibilityOptions}
+              />
             </FieldGroup>
 
             {/*
-              ** @Selects control component Slugs field
-              */}
+             ** @Selects control component Slugs field
+             */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-slugs" control={form.control} label="Slug" mode="tags" placeholder="Select slugs or Type enter" name="slug" size="large" options={[{ value: "bse", label: "B-S-E" }]} />
+              <MultipleSelectControlComponent
+                id="form-rhf-select-slugs"
+                control={form.control}
+                label="Slug"
+                mode="tags"
+                placeholder="Select slugs or Type enter"
+                name="slug"
+                size="large"
+                options={[{ value: "bse", label: "B-S-E" }]}
+              />
             </FieldGroup>
 
             {/*
-              ** @Selection Award Type
-              */}
+             ** @Selection Award Type
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="awardType"
@@ -499,8 +555,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Selection Education Level
-              */}
+             ** @Selection Education Level
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="educationLevel"
@@ -532,7 +588,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
                           <SelectItem value="auto">Auto</SelectItem>
                           <SelectSeparator />
                           {educationLevel.map((language) => (
-                            <SelectItem key={language.value} value={language.value}>
+                            <SelectItem
+                              key={language.value}
+                              value={language.value}
+                            >
                               {language.label}
                             </SelectItem>
                           ))}
@@ -545,15 +604,20 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Checkbox Renewable control component Scholarship
-              */}
+             ** @Checkbox Renewable control component Scholarship
+             */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship id="form-rhf-checkbox-renewable" title="Renewable" name="renewable" control={form.control} />
+              <CheckboxScholarship
+                id="form-rhf-checkbox-renewable"
+                title="Renewable"
+                name="renewable"
+                control={form.control}
+              />
             </FieldGroup>
 
             {/*
-              ** @Program Field
-              */}
+             ** @Program Field
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="program"
@@ -565,7 +629,10 @@ export function FormEditScholarship({ id }: ChildrenProps) {
                     className="w-full"
                   >
                     <div className="w-full flex flex-col gap-1">
-                      <FieldLabel id="form-rhf-select-program" className="flex items-center">
+                      <FieldLabel
+                        id="form-rhf-select-program"
+                        className="flex items-center"
+                      >
                         Program<span className="text-red-500">*</span>
                       </FieldLabel>
                       <Select
@@ -598,15 +665,18 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Field Website
-              */}
+             ** @Field Website
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="website"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel htmlFor="form-rhf-input-web-url" className="flex items-center">
+                    <FieldLabel
+                      htmlFor="form-rhf-input-web-url"
+                      className="flex items-center"
+                    >
                       Website URL<span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
@@ -626,41 +696,70 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-              ** @Checkbox control component Featured
-              */}
+             ** @Checkbox control component Featured
+             */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship title="Featured" name="featured" control={form.control} />
+              <CheckboxScholarship
+                title="Featured"
+                name="featured"
+                control={form.control}
+              />
             </FieldGroup>
 
             {/*
-              ** @Checkbox control component Application Fee
-              */}
+             ** @Checkbox control component Application Fee
+             */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship title="Application Fee" id="form-rhf-checkbox-application-fee" name="applicationFee" control={form.control} />
+              <CheckboxScholarship
+                title="Application Fee"
+                id="form-rhf-checkbox-application-fee"
+                name="applicationFee"
+                control={form.control}
+              />
             </FieldGroup>
             {/*
-              ** @Multiple Select control component Tags fields
-              */}
+             ** @Multiple Select control component Tags fields
+             */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-tags" control={form.control} label="Tags" mode="tags" name="tags" size="large" options={[{ value: "new-oppunity", label: "New Oppunity" }]} />
+              <MultipleSelectControlComponent
+                id="form-rhf-select-tags"
+                control={form.control}
+                label="Tags"
+                mode="tags"
+                name="tags"
+                size="large"
+                options={[{ value: "new-oppunity", label: "New Oppunity" }]}
+              />
             </FieldGroup>
             {/*
-              ** @Checkbox control component International
-              */}
+             ** @Checkbox control component International
+             */}
             <FieldGroup className="col-span-1">
-              <CheckboxScholarship id="form-rhf-checkbox-international" title="International Scholarship" name="international" control={form.control} />
+              <CheckboxScholarship
+                id="form-rhf-checkbox-international"
+                title="International Scholarship"
+                name="international"
+                control={form.control}
+              />
             </FieldGroup>
 
             {/*
-              ** @Multiple Select control component Document fields
-              */}
+             ** @Multiple Select control component Document fields
+             */}
             <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent id="form-rhf-select-document" control={form.control} label="Document Required" name="documentsRequired" size="large" options={[{ value: "ielts", label: "IELTS" }]} />
+              <MultipleSelectControlComponent
+                id="form-rhf-select-document"
+                control={form.control}
+                label="Document Required"
+                name="documentsRequired"
+                size="large"
+                options={[{ value: "ielts", label: "IELTS" }]}
+              />
             </FieldGroup>
 
             {/*
-            ** @Location Field
-            */}
+             ** @Location Field
+             */}
             <FieldGroup className="col-span-1">
               <Controller
                 name="location"
@@ -687,27 +786,40 @@ export function FormEditScholarship({ id }: ChildrenProps) {
             </FieldGroup>
 
             {/*
-            ** @Description Field
-            */}
+             ** @Description Field
+             */}
             <FieldGroup className="col-span-2">
               <Controller
                 name="description"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field>
-                    <FieldLabel htmlFor="textarea-description">Description</FieldLabel>
-                    <FieldDescription>Enter your description below.</FieldDescription>
-                    <Textarea {...field} aria-invalid={fieldState.invalid} id="textarea-description" placeholder="Type your message here." />
+                    <FieldLabel htmlFor="textarea-description">
+                      Description
+                    </FieldLabel>
+                    <FieldDescription>
+                      Enter your description below.
+                    </FieldDescription>
+                    <Textarea
+                      {...field}
+                      aria-invalid={fieldState.invalid}
+                      id="textarea-description"
+                      placeholder="Type your message here."
+                    />
                   </Field>
                 )}
               />
             </FieldGroup>
 
             {/*
-            ** @Action Save and Reset
-            */}
+             ** @Action Save and Reset
+             */}
             <Field orientation="horizontal">
-              <Button type="button" variant="outline" onClick={() => form.reset()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+              >
                 Reset
               </Button>
               <Button type="submit" form="form-rhf-input">
@@ -718,5 +830,5 @@ export function FormEditScholarship({ id }: ChildrenProps) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

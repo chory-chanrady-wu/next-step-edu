@@ -17,7 +17,10 @@ function truncate(text: string, max: number) {
   return `${text.slice(0, max)}...`;
 }
 
-export function ScholarshipCard({ scholarship, index = 0 }: ScholarshipCardProps) {
+export function ScholarshipCard({
+  scholarship,
+  index = 0,
+}: ScholarshipCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -47,7 +50,10 @@ export function ScholarshipCard({ scholarship, index = 0 }: ScholarshipCardProps
               </h3>
 
               <div className="mt-1 flex flex-wrap items-center gap-2">
-                <Badge variant="accent" className="bg-emerald-50 text-emerald-950">
+                <Badge
+                  variant="accent"
+                  className="bg-emerald-50 text-emerald-950"
+                >
                   {scholarship.level}
                 </Badge>
 

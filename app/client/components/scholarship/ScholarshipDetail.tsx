@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -25,18 +26,29 @@ type ScholarshipDetailProps = {
   scholarship: Scholarship;
 };
 
-export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProps) {
+export default function ScholarshipDetail({
+  scholarship,
+}: ScholarshipDetailProps) {
+  const [heroImageError, setHeroImageError] = useState(false);
+  const [logoImageError, setLogoImageError] = useState(false);
+
+  const DEFAULT_HERO =
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&h=500&fit=crop";
+  const DEFAULT_LOGO =
+    "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=240&h=240&fit=crop";
+
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="flex-1">
         {/* Hero */}
         <section className="relative">
-          <div className="relative h-64 overflow-hidden sm:h-72">
+          <div className="relative h-64 overflow-hidden sm:h-72 bg-gradient-to-br from-slate-200 to-slate-300">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={scholarship.heroImageUrl}
+              src={heroImageError ? DEFAULT_HERO : scholarship.heroImageUrl}
               alt={scholarship.title}
               className="h-full w-full object-cover"
+              onError={() => setHeroImageError(true)}
             />
             <div className="absolute inset-0 bg-linear-to-t from-slate-50 via-slate-30/40 to-transparent" />
           </div>
@@ -61,16 +73,20 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                 <div className="h-20 w-20 overflow-hidden rounded-2xl border-4 border-slate-50 bg-white shadow-md sm:h-24 sm:w-24">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={scholarship.imageUrl}
+                    src={logoImageError ? DEFAULT_LOGO : scholarship.imageUrl}
                     alt={scholarship.title}
                     className="h-full w-full object-cover"
                     loading="lazy"
+                    onError={() => setLogoImageError(true)}
                   />
                 </div>
 
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="accent" className="bg-emerald-50 text-emerald-950">
+                    <Badge
+                      variant="accent"
+                      className="bg-emerald-50 text-emerald-950"
+                    >
                       <Sparkles className="mr-1 h-3.5 w-3.5" />
                       {scholarship.level}
                     </Badge>
@@ -161,7 +177,10 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                   </h2>
                   <ul className="space-y-3">
                     {scholarship.requirements.map((req, idx) => (
-                      <li key={`${idx}-${req}`} className="flex items-start gap-3">
+                      <li
+                        key={`${idx}-${req}`}
+                        className="flex items-start gap-3"
+                      >
                         <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-600/10">
                           <span className="text-xs font-semibold text-teal-700">
                             {idx + 1}
@@ -185,7 +204,11 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                   <p className="mb-4 leading-relaxed text-slate-600">
                     {scholarship.howToApply.text}
                   </p>
-                  <a href={scholarship.howToApply.url} target="_blank" rel="noreferrer">
+                  <a
+                    href={scholarship.howToApply.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Button variant="outline" className="gap-2 rounded-xl">
                       <ExternalLink className="h-4 w-4" />
                       {scholarship.howToApply.ctaLabel}
@@ -230,7 +253,9 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                     </li>
                     <li className="flex items-center justify-between gap-4">
                       <span className="text-slate-500">Deadline</span>
-                      <Badge variant="destructive">{scholarship.deadline}</Badge>
+                      <Badge variant="destructive">
+                        {scholarship.deadline}
+                      </Badge>
                     </li>
                   </ul>
                 </motion.div>
@@ -272,12 +297,17 @@ export default function ScholarshipDetail({ scholarship }: ScholarshipDetailProp
                   className="overflow-hidden rounded-2xl bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500 p-6 text-center text-white"
                 >
                   <Sparkles className="mx-auto mb-3 h-8 w-8 text-white/90" />
-                  <h3 className="mb-2 text-lg font-semibold">Ready to Apply?</h3>
+                  <h3 className="mb-2 text-lg font-semibold">
+                    Ready to Apply?
+                  </h3>
                   <p className="mb-4 text-sm text-white/80">
                     Don&apos;t miss this opportunity to fund your education
                   </p>
                   <Link href={`/client/scholarship/${scholarship.id}/apply`}>
-                    <Button variant="secondary" className="h-11 w-full rounded-xl bg-white text-slate-900 hover:bg-white/90">
+                    <Button
+                      variant="secondary"
+                      className="h-11 w-full rounded-xl bg-white text-slate-900 hover:bg-white/90"
+                    >
                       <span className="inline-flex items-center gap-2">
                         <ExternalLink className="h-4 w-4" />
                         Apply Now

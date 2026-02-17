@@ -138,8 +138,8 @@ export default function UniversityDetailPage() {
             "",
           ),
           description: uniData.description ?? "",
-          logo: uniData.logoUrl || fallbackLogoImage,
-          cover_image: uniData.coverImageUrl || fallbackCoverImage,
+          logo: uniData.logo || fallbackLogoImage,
+          cover_image: uniData.coverImage || fallbackCoverImage,
           tuition_rank: 0,
           programs_count: mappedPrograms.length,
         }}

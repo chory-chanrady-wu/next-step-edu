@@ -3,12 +3,7 @@
 import { StatsCard } from "@/app/components/admin/dashboard/StatsCard";
 import { RevenueChart } from "@/app/components/admin/dashboard/RevenueChart";
 import { UserChart } from "@/app/components/admin/dashboard/UserChart";
-import {
-  Building2,
-  GraduationCap,
-  BookOpen,
-  Users,
-} from "lucide-react";
+import { Building2, GraduationCap, BookOpen, Users } from "lucide-react";
 import {
   useAllUniversities,
   useAllScholarships,
@@ -19,10 +14,15 @@ import { RecentUsersTable } from "@/app/components/admin/dashboard/RecentUsersTa
 
 export default function Dashboard() {
   const { data: universities } = useAllUniversities();
-  const { data: scholarships } = useAllScholarships({ size: 1 }); 
+  const { data: scholarships } = useAllScholarships({ size: 1 });
   const { data: programs } = useAllPrograms();
   const { data: profiles } = useAllProfiles();
-  console.log("Dashboard Data:", { universities, scholarships, programs, profiles });
+  console.log("Dashboard Data:", {
+    universities,
+    scholarships,
+    programs,
+    profiles,
+  });
 
   return (
     <div className="space-y-6">

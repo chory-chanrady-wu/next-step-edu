@@ -103,6 +103,9 @@ export function getRoleFromToken(accessToken: string): string | null {
   return decodeToken(accessToken)?.role ?? null;
 }
 
-export function loginWithResponse(res: { accessToken: string; refreshToken?: string | null }) {
+export function loginWithResponse(res: {
+  accessToken: string;
+  refreshToken?: string | null;
+}) {
   setTokens(res.accessToken, res.refreshToken);
 }

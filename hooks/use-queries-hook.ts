@@ -23,7 +23,6 @@ import type {
   AuthResponse,
   ApplicantRequest,
   ApplicantResponse,
-  UpdateStatusRequest,
 } from "@/types/nextstepedu";
 
 /* =======================
@@ -73,7 +72,11 @@ export function useCreateFaculty() {
 
 export function useUpdateFaculty() {
   const qc = useQueryClient();
-  return useMutation<FacultyResponse, unknown, { id: number | string; body: FacultyRequest }>({
+  return useMutation<
+    FacultyResponse,
+    unknown,
+    { id: number | string; body: FacultyRequest }
+  >({
     mutationFn: ({ id, body }) => api.updateFaculty(id, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["faculties"] });
@@ -108,6 +111,14 @@ export function useProgram(id?: number | string) {
   });
 }
 
+export function useProgramsByUniversity(universityId?: number | string) {
+  return useQuery<ProgramResponse[]>({
+    queryKey: ["programs-by-university", universityId],
+    queryFn: () => api.getProgramsByUniversity(universityId as any),
+    enabled: !!universityId,
+  });
+}
+
 export function useCreateProgram() {
   const qc = useQueryClient();
   return useMutation<ProgramResponse, unknown, ProgramRequest>({
@@ -118,7 +129,11 @@ export function useCreateProgram() {
 
 export function useUpdateProgram() {
   const qc = useQueryClient();
-  return useMutation<ProgramResponse, unknown, { id: number | string; body: ProgramRequest }>({
+  return useMutation<
+    ProgramResponse,
+    unknown,
+    { id: number | string; body: ProgramRequest }
+  >({
     mutationFn: ({ id, body }) => api.updateProgram(id, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["programs"] });
@@ -168,7 +183,11 @@ export function useCreateScholarship() {
 
 export function useUpdateScholarship() {
   const qc = useQueryClient();
-  return useMutation<ScholarshipResponse, unknown, { id: number | string; payload: ScholarshipMultipartPayload }>({
+  return useMutation<
+    ScholarshipResponse,
+    unknown,
+    { id: number | string; payload: ScholarshipMultipartPayload }
+  >({
     mutationFn: ({ id, payload }) => api.updateScholarship(id, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["scholarships"] });
@@ -195,19 +214,27 @@ export function useAllScholarshipContacts() {
   });
 }
 
-export function useScholarshipContactsByScholarshipId(scholarshipId?: number | string) {
+export function useScholarshipContactsByScholarshipId(
+  scholarshipId?: number | string,
+) {
   return useQuery<ScholarshipContactResponse[]>({
     queryKey: ["scholarship-contacts", "scholarship", scholarshipId],
-    queryFn: () => api.getScholarshipContactsByScholarshipId(scholarshipId as any),
+    queryFn: () =>
+      api.getScholarshipContactsByScholarshipId(scholarshipId as any),
     enabled: !!scholarshipId,
   });
 }
 
 export function useCreateScholarshipContact() {
   const qc = useQueryClient();
-  return useMutation<ScholarshipContactResponse, unknown, ScholarshipContactRequest>({
+  return useMutation<
+    ScholarshipContactResponse,
+    unknown,
+    ScholarshipContactRequest
+  >({
     mutationFn: (body) => api.createScholarshipContact(body),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["scholarship-contacts"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["scholarship-contacts"] }),
   });
 }
 
@@ -239,7 +266,11 @@ export function useCreateUniversity() {
 
 export function useUpdateUniversity() {
   const qc = useQueryClient();
-  return useMutation<UniversityResponse, unknown, { id: number | string; payload: UniversityMultipartPayload }>({
+  return useMutation<
+    UniversityResponse,
+    unknown,
+    { id: number | string; payload: UniversityMultipartPayload }
+  >({
     mutationFn: ({ id, payload }) => api.updateUniversity(id, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["universities"] });
@@ -266,11 +297,26 @@ export function useAllUniversityContacts() {
   });
 }
 
+export function useUniversityContactsByUniversityId(
+  universityId?: number | string,
+) {
+  return useQuery<UniversityContactResponse[]>({
+    queryKey: ["university-contacts-by-id", universityId],
+    queryFn: () => api.getUniversityContactsByUniversityId(universityId as any),
+    enabled: !!universityId,
+  });
+}
+
 export function useCreateUniversityContact() {
   const qc = useQueryClient();
-  return useMutation<UniversityContactResponse, unknown, UniversityContactRequest>({
+  return useMutation<
+    UniversityContactResponse,
+    unknown,
+    UniversityContactRequest
+  >({
     mutationFn: (body) => api.createUniversityContact(body),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["university-contacts"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["university-contacts"] }),
   });
 }
 
@@ -362,7 +408,11 @@ export function useCreateApplicant() {
 
 export function useUpdateApplicant() {
   const qc = useQueryClient();
-  return useMutation<ApplicantResponse, unknown, { id: number | string, body: ApplicantRequest }>({
+  return useMutation<
+    ApplicantResponse,
+    unknown,
+    { id: number | string; body: ApplicantRequest }
+  >({
     mutationFn: ({ id, body }) => api.updateApplicant(id, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["applicants"] });
@@ -373,7 +423,11 @@ export function useUpdateApplicant() {
 
 export function useUpdateApplicantStatus() {
   const qc = useQueryClient();
-  return useMutation<ApplicantResponse, unknown, { id: number | string; status: string }>({
+  return useMutation<
+    ApplicantResponse,
+    unknown,
+    { id: number | string; status: string }
+  >({
     mutationFn: ({ id, status }) => api.updateApplicantStatus(id, status),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["applicants"] });

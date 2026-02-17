@@ -142,34 +142,6 @@ export interface ScholarshipContactResponse extends ScholarshipContactRequest {
   createdAt?: string;
   updatedAt?: string;
 }
-
-/* =======================
-   APPLICANTS
-======================= */
-export interface ApplicantRequest {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dateOfBirth: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  nationality: string;
-  highSchoolName: string;
-  gpa: number;
-  intendedMajor: string;
-  scholarshipType: string;
-  familyIncome: number;
-  motivationLetter: string;
-  status?: string;
-}
-
-export interface ApplicantResponse extends ApplicantRequest {
-  id: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 /* =======================
    UNIVERSITY
 ======================= */
@@ -214,7 +186,7 @@ export interface UniversityMultipartPayload {
 export interface UniversityContactRequest {
   universityId: number;
   label?: string; // Backend uses label
-  name?: string;  // Some parts might use name
+  name?: string; // Some parts might use name
   email?: string;
   phone?: string;
   website?: string;
@@ -242,12 +214,11 @@ export interface UserProfileResponse {
 
   image?: string;
 
-  role: UserRole;          // ✅ required
-  status?: string;         // or make it boolean if backend is boolean
-  createdAt: string;       // ✅ required if backend sends it
+  role: UserRole; // ✅ required
+  status?: string; // or make it boolean if backend is boolean
+  createdAt: string; // ✅ required if backend sends it
   updatedAt?: string;
 }
-
 
 export interface UpdateProfileRequest {
   firstname: string;
