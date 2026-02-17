@@ -98,7 +98,7 @@ export default function ApplicantDetailsPage({
     );
   }
 
-  const status = getStatusConfig(applicant.status);
+  const status = getStatusConfig(applicant.status || "pending");
   const StatusIcon = status.icon;
 
   return (

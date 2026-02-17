@@ -548,9 +548,7 @@ export async function getUniversityBySlug(
 }
 
 export async function getAllUniversities(): Promise<UniversityResponse[]> {
-  const { data } = await api.get<UniversityResponse[]>("/api/v1/universities", {
-    headers: authHeader(),
-  });
+  const { data } = await api.get<UniversityResponse[]>("/api/v1/universities");
   return data;
 }
 
@@ -559,7 +557,7 @@ export async function searchUniversities(
 ): Promise<UniversityResponse[]> {
   const { data } = await api.get<UniversityResponse[]>(
     "/api/v1/universities/search",
-    { params: { keyword }, headers: authHeader() },
+    { params: { keyword } },
   );
   return data;
 }

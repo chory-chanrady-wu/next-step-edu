@@ -276,10 +276,10 @@ const ApplicantTable = () => {
                     <Badge
                       className={cn(
                         "font-semibold text-[10px] uppercase tracking-wider px-2 py-0.5 border-none",
-                        getStatusColor(app.status),
+                        getStatusColor(app.status || "pending"),
                       )}
                     >
-                      {app.status}
+                      {app.status || "pending"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-xs text-gray-500 font-medium">

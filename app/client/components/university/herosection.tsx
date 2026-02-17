@@ -79,7 +79,8 @@ export default function HeroSection() {
                 alt={university.name}
                 fill
                 sizes="100vw"
-                loading="eager"
+                priority={index === currentSlide}
+                loading={index === currentSlide ? "eager" : "lazy"}
                 className="w-full h-full object-cover"
               />
             ) : (
