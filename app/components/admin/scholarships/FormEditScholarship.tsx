@@ -294,9 +294,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
                         className="focus-visible:ring-blue-500"
                       />
                       {scholarship.university?.name && (
-                        <p className="text-xs text-muted-foreground mt-1.5">
-                          Current:
-                          <span className="text-blue-500 font-bold">@{scholarship.university.name}</span>
+                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                          <span>Current:</span>
+                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.university.name}</span>
                         </p>
                       )}
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -322,9 +322,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
                         className="focus-visible:ring-blue-500"
                       />
                       {scholarship.program?.name && (
-                        <p className="text-xs text-muted-foreground mt-1.5">
-                          Current:
-                          <span className="text-blue-500 font-bold">@{scholarship.program.name}</span>
+                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                          <span>Current:</span>
+                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.program.name}</span>
                         </p>
                       )}
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
