@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, Resolver, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -31,8 +31,9 @@ import MultipleSelectControlComponent from "./MultipleSelectControlComponent"
 import { useFaculties, usePrograms, useUniversities } from "@/hooks/admin-custom-hook"
 import { facultiesToOptions, universitiesToOptions } from "@/app/lib/formatters"
 import IncrementNumbers from "./IncredementNumbers"
-import { ProgramSchema, ProgramSchemaType } from "@/app/lib/schema/program"
+// import { ProgramSchema, ProgramSchemaType } from "@/app/lib/schema/program"
 import CheckboxProgram from "./CheckboxProgram"
+import { ProgramUpdateRequest, programUpdateSchema } from "@/lib/schema/program"
 
 const currencyOpts = [
   { label: "USD($)", value: "usd" },
@@ -66,24 +67,25 @@ export function FormEditProgram() {
   const { data: universities, } = useUniversities();
   const { data: faculties, } = useFaculties();
 
-  const form = useForm<ProgramSchemaType>({
-    resolver: zodResolver(ProgramSchema),
+  const resolver = zodResolver(programUpdateSchema) as Resolver<ProgramUpdateRequest>;
+  const form = useForm<ProgramUpdateRequest>({
+    resolver,
     defaultValues: {
-      id: crypto.randomUUID(), // Generate a new UUID
-      university_id: "", // Should be populated from context/selection
-      faculty_id: "", // Should be populated from context/selection
+      id: 0, // Generate a new UUID
+      universityId: 0, // Should be populated from context/selection
+      facultyId: 0, // Should be populated from context/selection
       name: "",
       description: "",
-      eligibility: [], // Empty array, validation will require at least one
-      exam_required: false,
-      tuition_fee_amount: 0,
+      // eligibility: [], // Empty array, validation will require at least one
+      examRequired: false,
+      tuitionFeeAmount: 0,
       currency: "USD", // Default to USD
-      study_period_months: 48 // Typical 4-year program (48 months)
+      studyPeriodMonths: 48 // Typical 4-year program (48 months)
 
     },
   })
 
-  function onSubmit(data: ProgramSchemaType) {
+  function onSubmit(data: ProgramUpdateRequest) {
 
 
     toast("You submitted the following values:", {
@@ -156,7 +158,7 @@ export function FormEditProgram() {
               */}
             <FieldGroup className="col-span-1">
               <Controller
-                name="university_id"
+                name="universityId"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field
@@ -170,7 +172,7 @@ export function FormEditProgram() {
                       </FieldLabel>
                       <Select
                         name={field.name}
-                        value={field.value}
+                        value={field.value.toString()}
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
@@ -201,7 +203,7 @@ export function FormEditProgram() {
               */}
             <FieldGroup className="col-span-1">
               <Controller
-                name="faculty_id"
+                name="facultyId"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field
@@ -215,7 +217,7 @@ export function FormEditProgram() {
                       </FieldLabel>
                       <Select
                         name={field.name}
-                        value={field.value}
+                        value={field.value.toString()}
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger
