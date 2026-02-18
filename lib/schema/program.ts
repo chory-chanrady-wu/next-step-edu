@@ -6,7 +6,7 @@ export const programCreateSchema = z.object({
   description: z.string().default(""),
   degreeLevel: z.number().int().min(1, "Degree level is required"),
   examRequired: z.boolean().default(false),
-  tuition_fee_amount: z.number().nonnegative("Tuition fee cannot be negative"),
+  tuitionFeeAmount: z.number().nonnegative("Tuition fee cannot be negative"),
   currency: z.string().length(3).toUpperCase().default("USD"),
   studyPeriodMonths: z.number().int().positive("Must be at least 1 month"),
   universityId: z.coerce.number().int().positive("University ID is required"),

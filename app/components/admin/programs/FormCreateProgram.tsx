@@ -204,7 +204,6 @@ export function FormCreateProgram() {
                       <FieldLabel>Tuition Fee Amount *</FieldLabel>
                       <Input
                         type="number"
-                        step="0.01"
                         {...field}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                       />
