@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Loader2, Save, RotateCcw } from "lucide-react";
 
@@ -40,9 +40,10 @@ import {
 export function FormCreateProgram() {
   const { mutate: createProgram, isPending: isCreating } = useCreateProgram();
 
+  const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
   // FIX: Ensure the generic matches the Request schema (Flat IDs)
   const form = useForm<ProgramCreateRequest>({
-    resolver: zodResolver(programCreateSchema),
+    resolver,
     defaultValues: {
       name: "",
       description: "", // Matches z.string().default("")
