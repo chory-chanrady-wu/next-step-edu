@@ -63,10 +63,10 @@ import {
 } from "@/components/ui/select";
 import { OverviewScholarship } from "./OverviewScholarship";
 
-// Status configuration
+// Status configuration - UPDATED for ACTIVE | INACTIVE
 const STATUS_CONFIG = {
-  open: {
-    label: "Open",
+  ACTIVE: {
+    label: "Active",
     icon: CheckCircle2,
     gradient: "from-emerald-500 to-emerald-600",
     lightBg: "bg-emerald-50",
@@ -74,8 +74,8 @@ const STATUS_CONFIG = {
     borderColor: "border-emerald-200",
     badgeColor: "bg-emerald-100 text-emerald-700 border-emerald-200",
   },
-  closed: {
-    label: "Closed",
+  INACTIVE: {
+    label: "Inactive",
     icon: XCircle,
     gradient: "from-gray-500 to-gray-600",
     lightBg: "bg-gray-50",
@@ -83,25 +83,21 @@ const STATUS_CONFIG = {
     borderColor: "border-gray-200",
     badgeColor: "bg-gray-100 text-gray-700 border-gray-200",
   },
-  upcoming: {
-    label: "Upcoming",
-    icon: Clock,
-    gradient: "from-amber-500 to-amber-600",
-    lightBg: "bg-amber-50",
-    textColor: "text-amber-700",
-    borderColor: "border-amber-200",
-    badgeColor: "bg-amber-100 text-amber-700 border-amber-200",
-  },
-  extended: {
-    label: "Extended",
-    icon: AlertCircle,
-    gradient: "from-blue-500 to-blue-600",
-    lightBg: "bg-blue-50",
-    textColor: "text-blue-700",
-    borderColor: "border-blue-200",
-    badgeColor: "bg-blue-100 text-blue-700 border-blue-200",
-  },
 } as const;
+
+// Helper function to get status config (maps OPEN to ACTIVE)
+const getStatusConfig = (status?: string) => {
+  if (!status) return STATUS_CONFIG.ACTIVE;
+
+  const upperStatus = status.toUpperCase();
+
+  // Map OPEN to ACTIVE
+  if (upperStatus === "OPEN") {
+    return STATUS_CONFIG.ACTIVE;
+  }
+
+  return STATUS_CONFIG[upperStatus as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.ACTIVE;
+};
 
 // Category configuration
 const CATEGORY_CONFIG = {
@@ -189,7 +185,13 @@ export const TableListScholarship = () => {
     }
 
     if (statusFilter !== "all") {
-      filtered = filtered.filter((s) => s.status?.toLowerCase() === statusFilter.toLowerCase());
+      filtered = filtered.filter((s) => {
+        const status = s.status?.toUpperCase() || "";
+        if (statusFilter === "ACTIVE") {
+          return status === "ACTIVE" || status === "OPEN";
+        }
+        return status === statusFilter;
+      });
     }
 
     return filtered;
@@ -306,14 +308,18 @@ export const TableListScholarship = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Status</SelectItem>
-                  {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                    <SelectItem key={key} value={key}>
-                      <div className="flex items-center gap-2">
-                        <config.icon className={`h-4 w-4 ${config.textColor}`} />
-                        <span>{config.label}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="ACTIVE">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+                      <span>Active</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="INACTIVE">
+                    <div className="flex items-center gap-2">
+                      <XCircle className="h-4 w-4 text-gray-700" />
+                      <span>Inactive</span>
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
 
@@ -357,14 +363,18 @@ export const TableListScholarship = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Status</SelectItem>
-                  {Object.entries(STATUS_CONFIG).map(([key, config]) => (
-                    <SelectItem key={key} value={key}>
-                      <div className="flex items-center gap-2">
-                        <config.icon className={`h-4 w-4 ${config.textColor}`} />
-                        <span>{config.label}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="ACTIVE">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+                      <span>Active</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="INACTIVE">
+                    <div className="flex items-center gap-2">
+                      <XCircle className="h-4 w-4 text-gray-700" />
+                      <span>Inactive</span>
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
 
@@ -407,12 +417,16 @@ export const TableListScholarship = () => {
               {paginatedData.length > 0 ? (
                 paginatedData.map((scholarship, index) => {
                   const deadline = formatDeadline(scholarship.deadline);
-                  const StatusIcon = STATUS_CONFIG[scholarship.status?.toLowerCase() as keyof typeof STATUS_CONFIG]?.icon || CheckCircle2;
-                  const statusConfig = STATUS_CONFIG[scholarship.status?.toLowerCase() as keyof typeof STATUS_CONFIG];
+                  const statusConfig = getStatusConfig(scholarship.status);
+                  const StatusIcon = statusConfig.icon;
                   const category = (scholarship as any).category || "general";
                   const categoryConfig = CATEGORY_CONFIG[category as keyof typeof CATEGORY_CONFIG] || CATEGORY_CONFIG.general;
                   const CategoryIcon = categoryConfig.icon;
                   const avatarGradient = getAvatarGradient(scholarship.id);
+
+                  // Get amount from program if available
+                  const amount = scholarship.program?.tuitionFeeAmount || 0;
+                  const currency = scholarship.program?.currency || "USD";
 
                   return (
                     <TableRow
@@ -422,7 +436,7 @@ export const TableListScholarship = () => {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="h-12 w-12 rounded-xl border-2 border-white shadow-md">
-                            <AvatarImage src={scholarship.logoUrl || ""} />
+                            <AvatarImage src={scholarship.university?.logoUrl || scholarship.logoUrl || ""} />
                             <AvatarFallback className={`rounded-xl bg-gradient-to-br ${avatarGradient} text-white font-semibold`}>
                               {scholarship.name?.substring(0, 2).toUpperCase()}
                             </AvatarFallback>
@@ -438,8 +452,8 @@ export const TableListScholarship = () => {
                               )}
                             </div>
                             <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                              <span className="px-2 py-0.5 bg-gray-100 rounded-full">
-                                ID: #{scholarship.universityId}
+                              <span className="px-2 py-0.5 bg-gray-100 rounded-full text-blue-400 font-bold">
+                                @{scholarship.university?.name || `University #${scholarship.universityId}`}
                               </span>
                             </div>
                           </div>
@@ -449,23 +463,18 @@ export const TableListScholarship = () => {
                       <TableCell>
                         <div className="space-y-1">
                           <div className="font-semibold text-emerald-600 text-lg">
-                            {formatAmount((scholarship as any).amount, (scholarship as any).currency)}
+                            {formatAmount(amount, currency)}
                           </div>
-                          {(scholarship as any).renewable && (
-                            <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-emerald-200 bg-emerald-50 text-emerald-700">
-                              Renewable
-                            </Badge>
-                          )}
                         </div>
                       </TableCell>
 
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className={`p-1 rounded-full ${statusConfig?.lightBg}`}>
-                            <StatusIcon className={`h-4 w-4 ${statusConfig?.textColor}`} />
+                          <div className={`p-1 rounded-full ${statusConfig.lightBg}`}>
+                            <StatusIcon className={`h-4 w-4 ${statusConfig.textColor}`} />
                           </div>
-                          <span className={`text-sm font-medium capitalize ${statusConfig?.textColor}`}>
-                            {scholarship.status || "open"}
+                          <span className={`text-sm font-medium capitalize ${statusConfig.textColor}`}>
+                            {statusConfig.label}
                           </span>
                         </div>
                       </TableCell>
@@ -491,23 +500,13 @@ export const TableListScholarship = () => {
                         <div className="space-y-2">
                           <div className="flex items-center gap-1.5 text-sm">
                             <Users className="h-4 w-4 text-gray-400" />
-                            <span className="font-medium">{(scholarship as any).applicants?.toLocaleString() || "0"}</span>
-                            {(scholarship as any).maxApplicants && (
+                            <span className="font-medium">0</span>
+                            {scholarship.maxApplicant && (
                               <span className="text-gray-400 text-xs">
-                                / {(scholarship as any).maxApplicants.toLocaleString()}
+                                / {scholarship.maxApplicant.toLocaleString()}
                               </span>
                             )}
                           </div>
-                          {(scholarship as any).maxApplicants && (
-                            <div className="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                              <div
-                                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"
-                                style={{
-                                  width: `${((scholarship as any).applicants / (scholarship as any).maxApplicants) * 100}%`,
-                                }}
-                              />
-                            </div>
-                          )}
                         </div>
                       </TableCell>
 
@@ -671,7 +670,6 @@ export const TableListScholarship = () => {
 };
 
 // Loading skeleton with gray colors
-// Loading skeleton with consistent gray colors
 const ScholarshipSkeleton = () => (
   <div className="space-y-8">
     {/* Header Skeleton */}

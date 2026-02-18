@@ -98,13 +98,54 @@ export interface ScholarshipRequest {
   universityId?: number;
 }
 
-export interface ScholarshipResponse extends ScholarshipRequest {
+export interface ScholarshipResponse {
   id: number;
+  name: string;
   slug?: string;
   logoUrl?: string;
   coverImageUrl?: string;
+  description?: string;
+  level: number;
+  maxApplicant?: number | null;
+  benefits?: string | null;
+  requirements?: string | null;
+  howToApply?: string | null;
+  applyLink?: string | null;
+  status?: string;
+  deadline?: string;
   createdAt?: string;
   updatedAt?: string;
+  programId?: number;
+  universityId?: number;
+  program?: {
+    id: number;
+    name: string;
+    description?: string;
+    degreeLevel: number;
+    examRequired: boolean;
+    tuitionFeeAmount: number;
+    currency: string;
+    studyPeriodMonths: number;
+  };
+  university?: {
+    id: number;
+    name: string;
+    slug?: string;
+    logoUrl?: string;
+    coverImageUrl?: string;
+    description?: string | null;
+    country: string;
+    city: string;
+    officialWebsite?: string | null;
+    status: string;
+  };
+  contacts?: Array<{
+    id: number;
+    label?: string;
+    email?: string;
+    phone?: string;
+    websiteUrl?: string;
+  }>;
 }
 
 export interface PageResponse<T> {
