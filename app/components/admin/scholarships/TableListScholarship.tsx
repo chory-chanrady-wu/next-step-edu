@@ -446,8 +446,8 @@ export const TableListScholarship = () => {
         </Card>
 
         {/* Table Section */}
-        <Card className="border p-2 overflow-hidden">
-          <div className="overflow-x-auto">
+        <Card className="border min-h-[75vh] p-2 flex flex-col">
+           <div className="overflow-auto flex-1">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b border-gray-200">
