@@ -25,6 +25,7 @@ import type {
   ApplicantRequest,
   ApplicantResponse,
 } from "@/types/nextstepedu";
+import { ProgramListResponse } from "./schema/program";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -191,8 +192,8 @@ export async function createProgram(
   return data;
 }
 
-export async function getAllPrograms(): Promise<ProgramResponse[]> {
-  const { data } = await api.get<ProgramResponse[]>("/api/v1/programs");
+export async function getAllPrograms(): Promise<ProgramListResponse> {
+  const { data } = await api.get<ProgramListResponse>("/api/v1/programs");
   return data;
 }
 

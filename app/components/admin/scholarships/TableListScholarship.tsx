@@ -259,7 +259,6 @@ export const TableListScholarship = () => {
   };
 
   const handleDeleteFaculty = (id: string | number) => {
-    // setDeletingFaculty(faculty);
     setScholarshipIdToDelete(id);
     setShowDeleteModal(true);
   };
@@ -296,7 +295,7 @@ export const TableListScholarship = () => {
 
   return (
     <>
-    {/*
+      {/*
       ** @Delete loading
     */}
       {onDeletingScholarship && (

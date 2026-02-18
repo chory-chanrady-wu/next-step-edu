@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Loader2, Save, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,360 +20,285 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MultipleSelectControlComponent from "./MultipleSelectControlComponent";
-import {
-  useFaculties,
-  usePrograms,
-  useUniversities,
-} from "@/hooks/admin-custom-hook";
-import {
-  facultiesToOptions,
-  universitiesToOptions,
-} from "@/app/lib/formatters";
-import IncrementNumbers from "./IncredementNumbers";
-import { ProgramSchema, ProgramSchemaType } from "@/app/lib/schema/program";
-import CheckboxProgram from "./CheckboxProgram";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
-const currencyOpts = [
-  { label: "USD($)", value: "usd" },
-  { label: "RIEL(៛) ", value: "riel" },
-] as const;
-
-export const eligibilityOptions = [
-  { value: "high-school-graduate", label: "High School Graduate" },
-  { value: "undergraduate-student", label: "Undergraduate Student" },
-  { value: "bachelor-degree", label: "Bachelor Degree" },
-  { value: "master-degree", label: "Master Degree" },
-  { value: "doctoral-degree", label: "Doctoral/PhD Degree" },
-  { value: "working-professional", label: "Working Professional" },
-  { value: "researcher", label: "Researcher" },
-  { value: "international-student", label: "International Student" },
-  { value: "domestic-student", label: "Domestic Student" },
-  { value: "low-income", label: "Low Income" },
-  { value: "merit-based", label: "Merit Based" },
-  { value: "athlete", label: "Athlete" },
-  { value: "minority", label: "Minority Group" },
-  { value: "disability", label: "Person with Disability" },
-  { value: "entrepreneur", label: "Entrepreneur" },
-  { value: "veteran", label: "Veteran" },
-  { value: "teacher", label: "Teacher/Educator" },
-  { value: "student-leader", label: "Student Leader" },
-];
+import { useCreateProgram } from "@/hooks/use-queries-hook";
+import {
+  ProgramCreateRequest,
+  programCreateSchema
+} from "@/lib/schema/program";
 
 export function FormCreateProgram() {
-  const { isLoading, error } = usePrograms();
-  const { data: universities } = useUniversities();
-  const { data: faculties } = useFaculties();
+  const { mutate: createProgram, isPending: isCreating } = useCreateProgram();
 
-  const form = useForm<ProgramSchemaType>({
-    resolver: zodResolver(ProgramSchema),
+  // FIX: Ensure the generic matches the Request schema (Flat IDs)
+  const form = useForm<ProgramCreateRequest>({
+    resolver: zodResolver(programCreateSchema),
     defaultValues: {
-      id: crypto.randomUUID(), // Generate a new UUID
-      university_id: "", // Should be populated from context/selection
-      faculty_id: "", // Should be populated from context/selection
       name: "",
-      description: "",
-      eligibility: [], // Empty array, validation will require at least one
-      exam_required: false,
-      tuition_fee_amount: 0,
-      currency: "USD", // Default to USD
-      study_period_months: 48, // Typical 4-year program (48 months)
+      description: "", // Matches z.string().default("")
+      degreeLevel: 1,
+      examRequired: false,
+      tuitionFeeAmount: 0,
+      currency: "USD",
+      studyPeriodMonths: 12,
+      universityId: 0,
+      facultyId: 0,
     },
   });
 
-  function onSubmit(data: ProgramSchemaType) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
+  function onSubmit(data: ProgramCreateRequest) {
+    createProgram(data, {
+      onSuccess: () => {
+        toast.success("Program created successfully!", {
+          description: `${data.name} has been added to production.`,
+        });
+        form.reset();
       },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
+      onError: (error: any) => {
+        toast.error("Failed to create program", {
+          description: error?.response?.data?.message || error?.message || "Something went wrong",
+        });
+      },
     });
   }
 
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
-
-  if (error) {
-    return <div>Something went wrong</div>;
-  }
-
   return (
-    <Card className="w-full flex px-5 shadow-none border-none">
-      <CardHeader>
-        <CardTitle>Create Program</CardTitle>
-        <CardDescription>Create Program information below.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-2 gap-3">
-            {/*
-             ** @Field Title
-             */}
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="name"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="gap-1">
-                    <FieldLabel
-                      htmlFor="form-rhf-input-username"
-                      className="flex items-center"
-                    >
-                      Program name<span className="text-red-500">*</span>
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-input-username"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Program name"
-                      autoComplete="title"
-                      className="rounded"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
+    <div className="relative">
+      {/* Global loading overlay */}
+      {isCreating && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <div className="text-center">
+              <p className="font-bold text-gray-900">Creating Program</p>
+              <p className="text-sm text-gray-500">Syncing with Railway database...</p>
+            </div>
+          </div>
+        </div>
+      )}
 
-            {/*
-             ** @Select Field University
-             */}
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="university_id"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    orientation="responsive"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-select-category">
-                        University
-                      </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger
-                          id="form-rhf-select-category"
-                          aria-invalid={fieldState.invalid}
-                          className="w-[34.1rem] rounded"
-                        >
-                          <SelectValue placeholder="Select" />
+      <Card className="w-full px-5 shadow-none border-none">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">New Academic Program</CardTitle>
+          <CardDescription>
+            Register a new program to allow scholarship mapping.
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              {/* Program Name */}
+              <FieldGroup className="md:col-span-2">
+                <Controller
+                  name="name"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Program Title *</FieldLabel>
+                      <Input {...field} placeholder="e.g. Master of Computer Science" />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* University ID */}
+              <FieldGroup>
+                <Controller
+                  name="universityId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>University ID *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        placeholder="Enter ID"
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* Faculty ID */}
+              <FieldGroup>
+                <Controller
+                  name="facultyId"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Faculty ID *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        placeholder="Enter ID"
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              <Separator className="md:col-span-2" />
+
+              {/* Degree Level */}
+              <FieldGroup>
+                <Controller
+                  name="degreeLevel"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Degree Level (1-4) *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* Study Period */}
+              <FieldGroup>
+                <Controller
+                  name="studyPeriodMonths"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Duration (Months) *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* Tuition Fee */}
+              <FieldGroup>
+                <Controller
+                  name="tuitionFeeAmount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Tuition Fee Amount *</FieldLabel>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        {...field}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* Currency */}
+              <FieldGroup>
+                <Controller
+                  name="currency"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Currency *</FieldLabel>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger>
+                          <SelectValue />
                         </SelectTrigger>
-
-                        <SelectContent position="item-aligned">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectSeparator />
-                          {universitiesToOptions(universities).map(
-                            (category) => (
-                              <SelectItem
-                                key={category.value}
-                                value={category.value}
-                              >
-                                {category.label}
-                              </SelectItem>
-                            ),
-                          )}
+                        <SelectContent>
+                          <SelectItem value="USD">USD ($)</SelectItem>
+                          <SelectItem value="EUR">EUR (€)</SelectItem>
+                          <SelectItem value="GBP">GBP (£)</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-            {/*
-             ** @Select Field Faculty
-             */}
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="faculty_id"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    orientation="responsive"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <div className="w-full flex flex-col gap-1">
-                      <FieldLabel htmlFor="form-rhf-select-faculty">
-                        Faculty
-                      </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
+              {/* Exam Required */}
+              <FieldGroup className="md:col-span-2 py-2">
+                <Controller
+                  name="examRequired"
+                  control={form.control}
+                  render={({ field }) => (
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                      <Checkbox
+                        id="examRequired"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <label
+                        htmlFor="examRequired"
+                        className="text-sm font-semibold text-gray-700 cursor-pointer"
                       >
-                        <SelectTrigger
-                          id="form-rhf-select-faculty"
-                          aria-invalid={fieldState.invalid}
-                          className="w-[34.1rem] rounded"
-                        >
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-
-                        <SelectContent position="item-aligned">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectSeparator />
-                          {facultiesToOptions(faculties).map((category) => (
-                            <SelectItem
-                              key={category.value}
-                              value={category.value}
-                            >
-                              {category.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        Entrance examination is mandatory for this program
+                      </label>
                     </div>
-                  </Field>
-                )}
-              />
-            </FieldGroup>
+                  )}
+                />
+              </FieldGroup>
 
-            {/*
-             ** @Selects control component Eligibility field
-             */}
-            <FieldGroup className="col-span-1">
-              <MultipleSelectControlComponent
-                id="form-rhf-select-eligibility"
-                control={form.control}
-                label="Eligibility"
-                placeholder="Select Eligibilities"
-                name="eligibility"
-                size="large"
-                options={eligibilityOptions}
-              />
-            </FieldGroup>
+              {/* Description */}
+              <FieldGroup className="md:col-span-2">
+                <Controller
+                  name="description"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel>Program Description</FieldLabel>
+                      <Textarea {...field} rows={4} placeholder="Optional details..." />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+            </div>
 
-            {/*
-             ** @Checkbox Exam Required control component Scholarship
-             */}
-            <FieldGroup className="col-span-1">
-              <CheckboxProgram
-                id="form-rhf-checkbox-renewable"
-                title="Exam Required"
-                name="exam_required"
-                control={form.control}
-              />
-            </FieldGroup>
-
-            {/*
-             ** @Select Field Currency
-             */}
-            <FieldGroup className="col-span-1">
-              <Controller
-                name="currency"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    orientation="responsive"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <div className="w-full flex flex-col gap-1">
-                      <FieldLabel
-                        htmlFor="form-rhf-select-currency"
-                        className="flex items-center"
-                      >
-                        Currency<span className="text-red-500">*</span>
-                      </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger
-                          id="form-rhf-select-currency"
-                          aria-invalid={fieldState.invalid}
-                          className="w-[34.1rem] rounded"
-                        >
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-
-                        <SelectContent position="item-aligned">
-                          <SelectItem value="auto">Auto</SelectItem>
-                          <SelectSeparator />
-                          {currencyOpts.map((language) => (
-                            <SelectItem
-                              key={language.value}
-                              value={language.value}
-                            >
-                              {language.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-
-            {/*
-             ** @Field Fee
-             */}
-            <FieldGroup className="col-span-1">
-              <IncrementNumbers
-                control={form.control}
-                placeholder="Set Tuition Fee Amount"
-                max={500}
-                label="Set Tuition Fee Amount"
-                name="tuition_fee_amount"
-              />
-            </FieldGroup>
-            {/*
-             ** @Field study_period_months
-             */}
-            <FieldGroup className="col-span-1">
-              <IncrementNumbers
-                control={form.control}
-                placeholder="Set Study Period Months"
-                max={500}
-                label="Set Tuition Fee Amount"
-                name="study_period_months"
-              />
-            </FieldGroup>
-            {/*
-             ** @Action Save and Reset
-             */}
-            <Field orientation="horizontal" className="col-end-2">
+            <div className="flex justify-end gap-3 pt-4">
               <Button
                 type="button"
                 variant="outline"
+                disabled={isCreating}
                 onClick={() => form.reset()}
               >
+                <RotateCcw className="w-4 h-4 mr-2" />
                 Reset
               </Button>
-              <Button type="submit" form="form-rhf-input">
-                Save
+              <Button type="submit" disabled={isCreating} className="px-8">
+                {isCreating ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Save className="w-4 h-4 mr-2" />
+                )}
+                Save Program
               </Button>
-            </Field>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

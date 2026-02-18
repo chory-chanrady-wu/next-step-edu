@@ -1,20 +1,34 @@
 "use client";
 
 import * as React from "react";
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  X,
+  Loader2,
+  BookOpen,
+  GraduationCap,
+  Building2,
+  Users,
+  DollarSign,
+  Calendar,
+  Sparkles,
+  Euro,
+  PoundSterling,
+  JapaneseYen,
+} from "lucide-react";
+import Link from "next/link";
+import { useAllPrograms, useDeleteProgram } from "@/hooks/use-queries-hook"; // adjust import as needed
+import { ProgramResponse } from "@/types/nextstepedu";
+
+// UI Components
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -25,529 +39,437 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Filter,
-  Search,
-  SortAsc,
-  SortDesc,
-  ChevronDown,
-  Sparkles,
-  MoreHorizontalIcon,
-  BookOpen,
-} from "lucide-react";
+  Card,
+  CardContent,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
-} from "@tanstack/react-table";
-import Link from "next/link";
-import { usePrograms } from "@/hooks/admin-custom-hook";
-import { ProgramSchemaType } from "@/app/lib/schema/program";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
 
-// Helper function to format currency
-const formatCurrency = (amount: number, currency: string) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+// ============================================================================
+// Configuration (similar to scholarships but tailored for programs)
+// ============================================================================
+const DEGREE_LEVELS = [
+  { value: 1, label: "Bachelor" },
+  { value: 2, label: "Master" },
+  { value: 3, label: "PhD" },
+  { value: 4, label: "Diploma" },
+  { value: 5, label: "Certificate" },
+] as const;
+
+const currencyIconMap: Record<string, React.ElementType> = {
+  USD: DollarSign,
+  EUR: Euro,
+  GBP: PoundSterling,
+  JPY: JapaneseYen,
 };
 
-// Helper function to get program type based on study period
-const getProgramType = (studyMonths: number) => {
-  if (studyMonths <= 24) return "Short-term";
-  if (studyMonths <= 48) return "Bachelor's";
-  if (studyMonths <= 60) return "Master's";
-  return "Doctoral";
+// Helper to get degree level label
+const getDegreeLabel = (level?: number) => {
+  if (!level) return "—";
+  const found = DEGREE_LEVELS.find(d => d.value === level);
+  return found?.label || `Level ${level}`;
 };
 
-// ========== COLUMNS DEFINITION ==========
-export const columns: ColumnDef<ProgramSchemaType>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="font-semibold -ml-4 hover:bg-transparent"
-      >
-        Program Name
-        {column.getIsSorted() === "asc" ? (
-          <SortAsc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : column.getIsSorted() === "desc" ? (
-          <SortDesc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : null}
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const program = row.original;
-      return (
-        <div className="flex items-start gap-3 py-1">
-          <Avatar className="h-10 w-10 rounded-lg border">
-            <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-semibold">
-              {program.name.substring(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col min-w-0">
-            <div className="font-semibold text-sm flex items-center gap-2 text-gray-900">
-              {program.exam_required && (
-                <Sparkles className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
-              )}
-              <span className="truncate">{program.name}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-0.5">
-              <BookOpen className="h-3 w-3 flex-shrink-0" />
-              <span className="truncate">
-                {getProgramType(program.study_period_months)}
-              </span>
-            </div>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "tuition_fee_amount",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="font-semibold -ml-4 hover:bg-transparent"
-      >
-        Tuition Fee
-        {column.getIsSorted() === "asc" ? (
-          <SortAsc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : column.getIsSorted() === "desc" ? (
-          <SortDesc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : null}
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const program = row.original;
-      const formatted = formatCurrency(
-        program.tuition_fee_amount,
-        program.currency,
-      );
+// Amount formatting
+const formatAmount = (amount?: number, currency: string = "USD") => {
+  if (!amount) return <span>—</span>;
 
-      return (
-        <div className="flex flex-col items-center gap-0.5">
-          <div className="font-bold text-sm text-emerald-600">{formatted}</div>
-          <Badge
-            variant="outline"
-            className="text-[10px] px-1.5 py-0 h-4 w-fit border-gray-200 text-gray-700"
-          >
-            Per Year
-          </Badge>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "study_period_months",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="font-semibold -ml-4 hover:bg-transparent"
-      >
-        Duration
-        {column.getIsSorted() === "asc" ? (
-          <SortAsc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : column.getIsSorted() === "desc" ? (
-          <SortDesc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : null}
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const months = row.getValue("study_period_months") as number;
-      const years = Math.floor(months / 12);
-      const remainingMonths = months % 12;
+  const Icon = currencyIconMap[currency] || DollarSign;
 
-      return (
-        <div className="flex flex-col justify-center gap-1">
-          <div className="font-medium text-sm text-gray-900">
-            {years > 0 ? `${years} year${years > 1 ? "s" : ""}` : ""}
-            {remainingMonths > 0
-              ? `${years > 0 ? ", " : ""}${remainingMonths} month${remainingMonths > 1 ? "s" : ""}`
-              : ""}
-          </div>
-          <div className="text-xs font-medium text-gray-500">
-            ({months} months total)
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "exam_required",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="font-semibold -ml-4 hover:bg-transparent"
-      >
-        Exam Required
-        {column.getIsSorted() === "asc" ? (
-          <SortAsc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : column.getIsSorted() === "desc" ? (
-          <SortDesc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : null}
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const examRequired = row.getValue("exam_required") as boolean;
-      const config = examRequired
-        ? {
-            label: "Required",
-            color: "bg-blue-50 text-blue-700 border-blue-200",
-          }
-        : {
-            label: "Not Required",
-            color: "bg-gray-50 text-gray-600 border-gray-200",
-          };
-
-      return (
-        <div className="flex justify-center items-center">
-          <Badge
-            variant="outline"
-            className={`font-medium text-xs px-2.5 ${config.color}`}
-          >
-            {config.label}
-          </Badge>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "eligibility",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="font-semibold -ml-4 hover:bg-transparent"
-      >
-        Eligibility
-        {column.getIsSorted() === "asc" ? (
-          <SortAsc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : column.getIsSorted() === "desc" ? (
-          <SortDesc className="ml-2 h-3.5 w-3.5 opacity-50" />
-        ) : null}
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const eligibility = row.original.eligibility;
-
-      return (
-        <div className="flex flex-col gap-1.5">
-          <div className="text-xs text-gray-900">
-            {
-              // eligibility.map(item=> (item))
-            }
-          </div>
-          <div className="flex flex-wrap gap-1">
-            {eligibility?.slice(0, 2).map((req, index) => (
-              <Badge
-                key={index}
-                variant="outline"
-                className="text-[10px] px-1.5 py-0 h-4 bg-gray-50 text-gray-700 border-gray-200"
-              >
-                {req.length > 15 ? `${req.substring(0, 15)}...` : req}
-              </Badge>
-            ))}
-            {eligibility?.length > 2 && (
-              <Badge
-                variant="outline"
-                className="text-[10px] px-1.5 py-0 h-4 bg-gray-50 text-gray-500 border-gray-200"
-              >
-                +{eligibility.length - 2} more
-              </Badge>
-            )}
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const program = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="cursor-pointer shadow-none outline-0 ring-0"
-              aria-label="Open menu"
-            >
-              <MoreHorizontalIcon size={18} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="start">
-            <DropdownMenuLabel>Program Actions</DropdownMenuLabel>
-            <DropdownMenuGroup>
-              <Link href={`/admin/programs/${program.id}`}>
-                <DropdownMenuItem>
-                  View Details
-                  <DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </Link>
-              <Link href={`/admin/programs/edit/${program.id}`}>
-                <DropdownMenuItem>
-                  Edit Program
-                  <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-red-600 focus:text-red-600 hover:text-red-600"
-              onClick={async () => {
-                const confirmed = window.confirm(
-                  "Are you sure you want to delete this program?",
-                );
-                if (confirmed) {
-                  try {
-                    // await deleteProgramMutation.mutateAsync(program.id);
-                  } catch (error) {
-                    console.error("Failed to delete program:", error);
-                  }
-                }
-              }}
-            >
-              Delete Program
-              <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-// ========== MAIN COMPONENT ==========
-export const ProgramListTable = () => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { isLoading, data: programsData } = usePrograms();
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+  return (
+    <div className="flex items-center gap-1">
+      <Icon className="h-4 w-4 text-emerald-500" />
+      <span>{amount.toLocaleString()}</span>
+    </div>
   );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState("");
+};
 
-  /* eslint-disable-next-line react-hooks/incompatible-library */
-  const table = useReactTable({
-    data: React.useMemo(
-      () => (programsData && Array.isArray(programsData) ? programsData : []),
-      [programsData],
-    ),
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-      globalFilter,
-    },
-  });
+
+// Avatar gradient (same as scholarship)
+const getAvatarGradient = (id: number) => {
+  const gradients = [
+    "from-blue-500 to-indigo-600",
+    "from-emerald-500 to-teal-600",
+    "from-purple-500 to-pink-600",
+    "from-amber-500 to-orange-600",
+    "from-rose-500 to-red-600",
+  ];
+  return gradients[id % gradients.length];
+};
+
+// ============================================================================
+// Main Component
+// ============================================================================
+export const TableListProgram = () => {
+  const { isLoading, data } = useAllPrograms();
+  const { mutate: deleteProgram, isPending: onDeletingProgram } = useDeleteProgram();
+
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+  const [programIdToDelete, setProgramIdToDelete] = React.useState<number | string>(0);
+  const [degreeFilter, setDegreeFilter] = React.useState<string>("all");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [showMobileFilters, setShowMobileFilters] = React.useState(false);
+
+  const itemsPerPage = 10;
+
+  // Filter programs
+  const filteredData = React.useMemo(() => {
+    if (!data) return [];
+
+    let filtered = data as ProgramResponse[];
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query) ||
+          p.description
+      );
+    }
+
+    if (degreeFilter !== "all") {
+      const level = parseInt(degreeFilter);
+      filtered = filtered.filter((p) => p.degreeLevel === level);
+    }
+
+    return filtered;
+  }, [data, searchQuery, degreeFilter]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleDeleteProgram = (id: string | number) => {
+    setProgramIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDeleteProgram = (id: string | number) => {
+    setShowDeleteModal(false);
+    if (id === 0) {
+      toast.error("Failed to delete", {
+        description: "Please try again later.",
+      });
+      return;
+    }
+
+    deleteProgram(id, {
+      onSettled: () => {
+        setProgramIdToDelete(0);
+      },
+      onSuccess: () => {
+        toast.success("Program deleted!", {
+          description: "The list has been updated.",
+        });
+      },
+      onError: (error) => {
+        toast.error("Failed to delete", {
+          description: "Please try again later.",
+        });
+      }
+    });
+  };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading programs...</p>
-        </div>
-      </div>
-    );
+    return <ProgramSkeleton />;
   }
 
   return (
-    <div className="w-full min-h-screen mt-3">
-      <div className="mx-auto space-y-6">
-        {/* Filters and Controls */}
-        <div className="border-gray-200 rounded-xl">
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search by program name, description, or eligibility..."
-                value={globalFilter}
-                onChange={(event) => setGlobalFilter(event.target.value)}
-                className="pl-10 shadow-none rounded focus-visible:ring-transparent focus-visible:ring-offset-0 h-10"
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="gap-2 shadow-none rounded focus-visible:ring-transparent focus-visible:ring-offset-0 h-10"
-                  >
-                    <Filter className="h-4 w-4" />
-                    Filter Exam
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  <DropdownMenuLabel className="text-xs font-semibold text-gray-500">
-                    Filter by Exam Requirement
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={
-                      table.getColumn("exam_required")?.getFilterValue() ===
-                      undefined
-                    }
-                    onCheckedChange={() =>
-                      table
-                        .getColumn("exam_required")
-                        ?.setFilterValue(undefined)
-                    }
-                  >
-                    All Programs
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={
-                      table.getColumn("exam_required")?.getFilterValue() ===
-                      true
-                    }
-                    onCheckedChange={() =>
-                      table.getColumn("exam_required")?.setFilterValue(true)
-                    }
-                  >
-                    Exam Required
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={
-                      table.getColumn("exam_required")?.getFilterValue() ===
-                      false
-                    }
-                    onCheckedChange={() =>
-                      table.getColumn("exam_required")?.setFilterValue(false)
-                    }
-                  >
-                    No Exam Required
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+    <>
+      {/* Global deleting overlay */}
+      {onDeletingProgram && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="mt-2 text-gray-700">Deleting program...</p>
           </div>
         </div>
+      )}
 
-        {/* Table */}
-        <div className="border rounded overflow-hidden">
+      <div className="space-y-8">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-1 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full" />
+              <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                Programs
+              </h1>
+              <Badge variant="secondary" className="ml-2 bg-blue-50 text-blue-700 border-blue-200">
+                {filteredData.length} Total
+              </Badge>
+            </div>
+            <p className="text-sm text-gray-500 ml-3">
+              Manage academic programs offered across universities and faculties
+            </p>
+          </div>
+          <Link href="/admin/programs/create">
+            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/30">
+              <Plus className="mr-2 h-4 w-4" />
+              Create Program
+            </Button>
+          </Link>
+        </div>
+
+        {/* Filters Section */}
+        <Card className="border-0 shadow-none">
+          <CardContent className="">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search by name, description, university, or faculty..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="pl-9 border-gray-200 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all"
+                />
+              </div>
+
+              {/* Desktop Filters */}
+              <div className="hidden lg:flex items-center gap-3">
+                <Select value={degreeFilter} onValueChange={setDegreeFilter}>
+                  <SelectTrigger className="w-[200px] border-gray-200">
+                    <Filter className="h-4 w-4 mr-2 text-gray-400" />
+                    <SelectValue placeholder="Degree Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Levels</SelectItem>
+                    {DEGREE_LEVELS.map((level) => (
+                      <SelectItem key={level.value} value={level.value.toString()}>
+                        {level.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {searchQuery || degreeFilter !== "all" ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setDegreeFilter("all");
+                      setCurrentPage(1);
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Clear filters
+                  </Button>
+                ) : null}
+              </div>
+
+              {/* Mobile Filters Button */}
+              <Button
+                variant="outline"
+                className="lg:hidden border-gray-200"
+                onClick={() => setShowMobileFilters(!showMobileFilters)}
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Filters
+                {(searchQuery || degreeFilter !== "all") && (
+                  <Badge variant="secondary" className="ml-2 bg-blue-100">Active</Badge>
+                )}
+              </Button>
+            </div>
+
+            {/* Mobile Filters Panel */}
+            {showMobileFilters && (
+              <div className="mt-4 lg:hidden space-y-3 pt-4 border-t border-gray-100">
+                <Select value={degreeFilter} onValueChange={setDegreeFilter}>
+                  <SelectTrigger className="w-full border-gray-200">
+                    <SelectValue placeholder="Degree Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Levels</SelectItem>
+                    {DEGREE_LEVELS.map((level) => (
+                      <SelectItem key={level.value} value={level.value.toString()}>
+                        {level.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {searchQuery || degreeFilter !== "all" ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setDegreeFilter("all");
+                      setCurrentPage(1);
+                    }}
+                    className="w-full text-gray-500"
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    Clear all filters
+                  </Button>
+                ) : null}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Table Section */}
+        <Card className="border p-2 overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow
-                    key={headerGroup.id}
-                    className="border-b border-gray-200 bg-gray-50/50 hover:bg-gray-50/50"
-                  >
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className="font-semibold text-gray-700 text-xs uppercase tracking-wider h-12"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
+                <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b border-gray-200">
+                  <TableHead className="font-semibold text-gray-700">Program</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Degree</TableHead>
+                  <TableHead className="font-semibold text-gray-700">University</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Faculty</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Tuition Fee</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Duration</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Scholarships</TableHead>
+                  <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                </TableRow>
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      className="border-b border-gray-100 hover:bg-gray-50/80 transition-colors"
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="py-3.5">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((program, index) => {
+                    const avatarGradient = getAvatarGradient(program.id);
+                    const degreeLabel = getDegreeLabel(program.degreeLevel);
+
+                    return (
+                      <TableRow
+                        key={program.id}
+                        className="group hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/30 transition-all duration-200"
+                      >
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <Avatar className="h-12 w-12 rounded-xl border-2 border-white shadow-md">
+                              {/* No logo in schema, use first letter */}
+                              <AvatarFallback className={`rounded-xl bg-gradient-to-br ${avatarGradient} text-white font-semibold`}>
+                                {program.name.substring(0, 2).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-semibold text-gray-900">{program.name}</div>
+                              <div className="text-xs text-gray-500 line-clamp-1 max-w-[200px]">
+                                {program.description}
+                              </div>
+                            </div>
+                          </div>
                         </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
+
+                        <TableCell>
+                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                            <GraduationCap className="h-3 w-3 mr-1" />
+                            {degreeLabel}
+                          </Badge>
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex items-center gap-1.5">
+                            <Building2 className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-700">{program.university.name}</span>
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex items-center gap-1.5">
+                            <BookOpen className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm text-gray-600">{program.faculty.name}</span>
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex items-center gap-1.5">
+                            {formatAmount(program.tuitionFeeAmount, program.currency)}
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm text-gray-600">{program.studyPeriodMonths} months</span>
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+                            <Users className="h-3 w-3 mr-1" />
+                            {program.scholarshipCount}
+                          </Badge>
+                        </TableCell>
+
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Link
+                              href={`/admin/programs/edit/${program.id}`}
+                              className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                              title="Edit"
+                            >
+                              <Edit size={16} />
+                            </Link>
+                            <button
+                              onClick={() => handleDeleteProgram(program.id)}
+                              className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-96 text-center"
-                    >
-                      <div className="flex flex-col items-center justify-center text-gray-500 py-12">
-                        <div className="h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                          <Search className="h-8 w-8 text-gray-400" />
+                    <TableCell colSpan={8} className="h-96">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full blur-xl opacity-20 animate-pulse" />
+                          <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-full">
+                            <Search className="h-12 w-12 text-blue-500" />
+                          </div>
                         </div>
-                        <p className="text-lg font-semibold text-gray-600 mb-1">
+                        <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-2">
                           No programs found
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-6 max-w-md text-center">
+                          {searchQuery || degreeFilter !== "all"
+                            ? "We couldn't find any programs matching your criteria. Try adjusting your filters."
+                            : "Get started by creating your first academic program."}
                         </p>
-                        <p className="text-sm text-gray-500 max-w-md">
-                          Try adjusting your search or filters to find what you
-                          are looking for.
-                        </p>
-                        <Button
-                          variant="outline"
-                          className="mt-4"
-                          onClick={() => {
-                            setGlobalFilter("");
-                            setColumnFilters([]);
-                          }}
-                        >
-                          Clear all filters
-                        </Button>
+                        {!searchQuery && degreeFilter === "all" && (
+                          <Link href="/admin/programs/create">
+                            <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25">
+                              <Plus className="mr-2 h-4 w-4" />
+                              Create Your First Program
+                            </Button>
+                          </Link>
+                        )}
+                        {(searchQuery || degreeFilter !== "all") && (
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              setSearchQuery("");
+                              setDegreeFilter("all");
+                              setCurrentPage(1);
+                            }}
+                          >
+                            <X className="mr-2 h-4 w-4" />
+                            Clear all filters
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -556,84 +478,176 @@ export const ProgramListTable = () => {
             </Table>
           </div>
 
-          {/* Footer - Pagination & Info */}
-          <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-t border-gray-200 bg-gray-50/50">
-            <div className="text-sm text-gray-600 mb-4 sm:mb-0">
+          {/* Pagination */}
+          {filteredData.length > 0 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+              <p className="text-sm text-gray-500">
+                Showing <span className="font-medium text-gray-900">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
+                <span className="font-medium text-gray-900">{Math.min(currentPage * itemsPerPage, filteredData.length)}</span> of{" "}
+                <span className="font-medium text-gray-900">{filteredData.length}</span> results
+              </p>
               <div className="flex items-center gap-2">
-                <span>
-                  {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                  {table.getFilteredRowModel().rows.length} row(s) selected
-                </span>
-                {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => setRowSelection({})}
-                  >
-                    Clear selection
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="h-8 w-8 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <div className="flex items-center gap-1">
+                  {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                    let pageNum = i + 1;
+                    if (totalPages > 5) {
+                      if (currentPage > 3) {
+                        pageNum = currentPage - 3 + i;
+                      }
+                    }
+                    return (
+                      <Button
+                        key={i}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="icon"
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`h-8 w-8 ${currentPage === pageNum
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
+                          : "border-gray-200 hover:bg-gray-100"
+                          }`}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="h-8 w-8 border-gray-200 hover:bg-gray-100 hover:text-gray-900"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Rows per page</span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 shadow-none focus-visible:ring-transparent rounded focus-visible:ring-offset-0 w-16"
-                    >
-                      {table.getState().pagination.pageSize}
-                      <ChevronDown className="ml-2 h-3 w-3" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
-                      <DropdownMenuItem
-                        key={pageSize}
-                        onClick={() => table.setPageSize(Number(pageSize))}
-                      >
-                        {pageSize}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span>
-                  Page {table.getState().pagination.pageIndex + 1} of{" "}
-                  {table.getPageCount()}
-                </span>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 rounded w-8"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
+          )}
+        </Card>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black/20 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg max-w-md w-full">
+              <div className="p-6">
+                <div className="flex items-center justify-center w-12 h-12 bg-rose-100 rounded-full mx-auto mb-4">
+                  <Trash2 className="w-6 h-6 text-rose-600" />
+                </div>
+                <h2 className="text-base font-semibold text-gray-900 text-center mb-2">
+                  Delete Program
+                </h2>
+                <p className="text-sm text-gray-500 text-center mb-6">
+                  Are you sure you want to delete{" "}
+                  <span className="font-medium text-gray-900">this program</span>? This action cannot be undone.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
-                    <span className="sr-only">Previous page</span>
-                    <ChevronDown className="h-4 w-4 rotate-90" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 rounded w-8"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handleConfirmDeleteProgram(programIdToDelete)}
+                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-lg hover:bg-rose-700"
                   >
-                    <span className="sr-only">Next page</span>
-                    <ChevronDown className="h-4 w-4 -rotate-90" />
-                  </Button>
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+// ============================================================================
+// Loading Skeleton (matches the table layout)
+// ============================================================================
+const ProgramSkeleton = () => (
+  <div className="space-y-8">
+    {/* Header Skeleton */}
+    <div className="flex items-center justify-between">
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-1 rounded-full bg-gray-200" />
+          <Skeleton className="h-8 w-48 bg-gray-200" />
+          <Skeleton className="h-6 w-16 rounded-full bg-gray-200" />
+        </div>
+        <Skeleton className="h-4 w-64 ml-3 bg-gray-200" />
+      </div>
+      <Skeleton className="h-10 w-36 rounded-lg bg-gray-200" />
+    </div>
+
+    {/* Filters Skeleton */}
+    <Skeleton className="h-20 rounded-xl bg-gray-200" />
+
+    {/* Table Skeleton */}
+    <div className="rounded-xl border border-gray-100 overflow-hidden">
+      {/* Table Header */}
+      <div className="bg-gray-50 p-4 border-b border-gray-100">
+        <div className="flex gap-4">
+          <Skeleton className="h-4 w-48 bg-gray-200" />
+          <Skeleton className="h-4 w-20 bg-gray-200" />
+          <Skeleton className="h-4 w-28 bg-gray-200" />
+          <Skeleton className="h-4 w-28 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-20 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-20 ml-auto bg-gray-200" />
+        </div>
+      </div>
+
+      {/* Table Rows */}
+      <div className="divide-y divide-gray-100">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="p-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 flex-1">
+                <Skeleton className="h-12 w-12 rounded-xl bg-gray-200" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-48 bg-gray-200" />
+                  <Skeleton className="h-3 w-32 bg-gray-200" />
+                </div>
+              </div>
+              <Skeleton className="h-6 w-20 bg-gray-200" />
+              <Skeleton className="h-6 w-24 bg-gray-200" />
+              <Skeleton className="h-6 w-24 bg-gray-200" />
+              <Skeleton className="h-6 w-20 bg-gray-200" />
+              <Skeleton className="h-6 w-16 bg-gray-200" />
+              <Skeleton className="h-6 w-16 bg-gray-200" />
+              <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination Skeleton */}
+      <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-4 w-48 bg-gray-200" />
+          <div className="flex gap-2">
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+          </div>
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
+
+export default TableListProgram;
