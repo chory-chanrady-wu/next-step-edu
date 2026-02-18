@@ -62,8 +62,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OverviewScholarship } from "./OverviewScholarship";
-import { number } from "zod";
 import { toast } from "sonner";
 
 // Status configuration - UPDATED for ACTIVE | INACTIVE

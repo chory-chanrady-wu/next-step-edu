@@ -95,7 +95,7 @@ export function useDeleteFaculty() {
    PROGRAMS
 ======================= */
 export function useAllPrograms() {
-  return useQuery<ProgramResponse>({
+  return useQuery<ProgramResponse[]>({
     queryKey: ["programs"],
     queryFn: api.getAllPrograms,
   });

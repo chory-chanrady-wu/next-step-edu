@@ -56,24 +56,25 @@ export interface ProgramRequest {
   facultyId?: number;
   universityId?: number;
 }
+export interface MiniEntity {
+  id: number;
+  name: string;
+}
 
 export interface ProgramResponse {
   id: number;
   name: string;
-  description?: string;
+  description: string;
   degreeLevel: number;
-  degree_level?: number; // snake_case from backend
-  tuitionFee?: number;
-  tuition_fee_amount?: number; // snake_case from backend
-  currency?: string;
-  studyPeriodMonths?: number;
-  study_period_months?: number; // snake_case from backend
-  examRequired?: boolean;
-  exam_required?: boolean; // snake_case from backend
-  facultyId?: number;
-  faculty_id?: number; // snake_case from backend
-  universityId?: number;
-  university_id?: number; // snake_case from backend
+  degreeLevelName: string; // e.g., "Bachelor's Degree"
+  examRequired: boolean;
+  tuitionFeeAmount: number; // Matches the 20000.0 value
+  currency: string; // e.g., "USD"
+  studyPeriodMonths: number;
+  university: MiniEntity; // Nested object { id, name }
+  faculty: MiniEntity; // Nested object { id, name }
+  scholarshipCount: number;
+  // Metadata (Optional: keep if your backend sometimes sends these)
   createdAt?: string;
   updatedAt?: string;
 }
