@@ -337,7 +337,6 @@ export async function updateScholarship(
   if (payload.logo instanceof File) {
     formData.append("logo", payload.logo);
   }
-
   if (payload.coverImage instanceof File) {
     formData.append("coverImage", payload.coverImage);
   }

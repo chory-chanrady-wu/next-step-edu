@@ -115,31 +115,28 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
   }, [scholarship, form]);
 
   function onSubmit(formData: ScholarshipType) {
-    // Only send File object if a new one was actually picked
-    const logoFile = formData.logo?.[0]?.originFileObj || null;
-    const coverFile = formData.coverImage?.[0]?.originFileObj || null;
+    // 1. Separate files from the rest of the data
+    const { logo, coverImage, ...restOfData } = formData;
 
-    // Transform deadline: "2026-02-26" -> "2026-02-26T00:00:00"
-    // This satisfies the Backend's java.time.LocalDateTime requirement
-    const formattedDeadline = formData.deadline
-      ? `${formData.deadline}T00:00:00`
-      : null;
+    // 2. Extract only the binary File objects (ignore existing URL strings)
+    const logoFile = logo?.[0]?.originFileObj || null;
+    const coverFile = coverImage?.[0]?.originFileObj || null;
+
+    // 3. CLEAN THE DATE: split at 'T' to get only YYYY-MM-DD
+    // This fixes the "2026-06-19T17:00:00.000ZT00:00:00" error
+    const rawDate = restOfData.deadline || "";
+    const dateOnly = rawDate.includes("T") ? rawDate.split("T")[0] : rawDate;
+    const formattedDeadline = dateOnly ? `${dateOnly}T00:00:00` : null;
 
     const payload: ScholarshipMultipartPayload = {
       logo: logoFile,
       coverImage: coverFile,
       data: {
-        name: formData.name,
-        description: formData.description,
-        level: Number(formData.level),
-        benefits: formData.benefits,
-        requirements: formData.requirements,
-        howToApply: formData.howToApply,
-        applyLink: formData.applyLink,
-        deadline: formattedDeadline, // Use the ISO-8601 formatted string
-        programId: Number(formData.programId),
-        universityId: Number(formData.universityId),
-        status: formData.status,
+        ...restOfData, // This now only contains name, desc, level, etc.
+        level: Number(restOfData.level),
+        programId: Number(restOfData.programId),
+        universityId: Number(restOfData.universityId),
+        deadline: formattedDeadline,
       },
     };
 
