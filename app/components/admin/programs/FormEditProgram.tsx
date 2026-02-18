@@ -35,8 +35,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
 import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
-// Removed unused hooks: useFaculties, useUniversities (no longer needed for selects)
-import { ProgramUpdateRequest, programUpdateSchema } from "@/lib/schema/program";
+import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program"; // 👈 use create schema
 
 const currencyOpts = [
   { label: "USD ($)", value: "USD" },
@@ -52,9 +51,10 @@ interface FormEditProgramProps {
 export function FormEditProgram({ id }: FormEditProgramProps) {
   const { data: program, isLoading, error } = useProgram(id);
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
-  const resolver = zodResolver(programUpdateSchema) as Resolver<ProgramUpdateRequest>;
-  const form = useForm<ProgramUpdateRequest>({
-    resolver,
+
+    const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
+  const form = useForm<ProgramCreateRequest>({
+    resolver, // ✅ use create schema (no id)
     defaultValues: {
       name: "",
       description: "",
@@ -73,7 +73,6 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
     if (program) {
       form.reset({
         name: program.name ?? "",
-        // If description is null in the DB, it becomes "" here
         description: program.description ?? "",
         degreeLevel: program.degreeLevel ?? 1,
         examRequired: !!program.examRequired,
@@ -86,8 +85,8 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
     }
   }, [program, form]);
 
-  function onSubmit(data: ProgramUpdateRequest) {
-    // Ensure we are passing the correct ID from the props
+  function onSubmit(data: ProgramCreateRequest) {
+    // data now contains all fields except id – perfect for the body
     updateProgram(
       { id, body: data },
       {
@@ -95,8 +94,6 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           toast.success("Program updated!", {
             description: "Changes are now live on the production server.",
           });
-          // Optional: Redirect back to the list
-          // router.push("/admin/programs");
         },
         onError: (err: any) => {
           toast.error("Update failed", {
@@ -160,7 +157,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           </h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Badge variant="secondary" className="rounded-full px-3 py-0.5">
-              ID: {program.id}
+              ID: {id}
             </Badge>
             <MoveRight className="w-3 h-3" />
             <span className="font-medium text-foreground/80">{program.university.name}</span>
@@ -183,7 +180,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
         <CardContent className="pt-5">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Program Name - full width on mobile, half on desktop */}
+              {/* Program Name */}
               <FieldGroup className="md:col-span-2">
                 <Controller
                   name="name"
@@ -202,7 +199,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 />
               </FieldGroup>
 
-              {/* University ID - now a simple number input */}
+              {/* University ID */}
               <FieldGroup>
                 <Controller
                   name="universityId"
@@ -223,7 +220,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 />
               </FieldGroup>
 
-              {/* Faculty ID - now a simple number input */}
+              {/* Faculty ID */}
               <FieldGroup>
                 <Controller
                   name="facultyId"
@@ -366,10 +363,10 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                       <FieldLabel>Program Description</FieldLabel>
                       <Textarea
                         {...field}
-                        // FIX: Ensure value is never null
                         value={field.value ?? ""}
                         rows={4}
                         placeholder="Optional details..."
+                        className="focus-visible:ring-blue-500"
                       />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>

@@ -46,7 +46,7 @@ export function FormCreateProgram() {
     resolver,
     defaultValues: {
       name: "",
-      description: "", // Matches z.string().default("")
+      description: "", 
       degreeLevel: 1,
       examRequired: false,
       tuitionFeeAmount: 0,

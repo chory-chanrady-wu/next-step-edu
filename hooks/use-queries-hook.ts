@@ -117,6 +117,7 @@ export function useCreateProgram() {
   });
 }
 
+// hooks/use-queries-hook.ts
 export function useUpdateProgram() {
   const qc = useQueryClient();
 
@@ -126,18 +127,14 @@ export function useUpdateProgram() {
     { id: number | string; body: ProgramRequest }
   >({
     mutationFn: ({ id, body }) => api.updateProgram(id, body),
-
-    // THIS IS THE TRIGGER
     onSuccess: (data, variables) => {
-      // 1. Refresh the main list table
+      // Trigger: Alert the list table to fetch fresh data
       qc.invalidateQueries({ queryKey: ["programs"] });
 
-      // 2. Refresh the specific detail view for this program
+      // Trigger: Alert the specific program detail (this form) to refetch
       qc.invalidateQueries({ queryKey: ["program", variables.id.toString()] });
 
-      console.log(
-        `Success: Production data updated. Alerting TanStack to refetch ID: ${variables.id}`,
-      );
+      console.log(`Alerted TanStack: Program ${variables.id} is stale.`);
     },
   });
 }
