@@ -442,7 +442,7 @@ export const TableListScholarship = () => {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="h-12 w-12 rounded-xl border-2 border-white shadow-md">
-                            <AvatarImage src={scholarship.university?.logoUrl || scholarship.logoUrl || ""} />
+                            <AvatarImage src={scholarship.logoUrl || ""} />
                             <AvatarFallback className={`rounded-xl bg-gradient-to-br ${avatarGradient} text-white font-semibold`}>
                               {scholarship.name?.substring(0, 2).toUpperCase()}
                             </AvatarFallback>

@@ -115,8 +115,15 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
   }, [scholarship, form]);
 
   function onSubmit(formData: ScholarshipType) {
+    // Only send File object if a new one was actually picked
     const logoFile = formData.logo?.[0]?.originFileObj || null;
     const coverFile = formData.coverImage?.[0]?.originFileObj || null;
+
+    // Transform deadline: "2026-02-26" -> "2026-02-26T00:00:00"
+    // This satisfies the Backend's java.time.LocalDateTime requirement
+    const formattedDeadline = formData.deadline
+      ? `${formData.deadline}T00:00:00`
+      : null;
 
     const payload: ScholarshipMultipartPayload = {
       logo: logoFile,
@@ -129,7 +136,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
         requirements: formData.requirements,
         howToApply: formData.howToApply,
         applyLink: formData.applyLink,
-        deadline: formData.deadline,
+        deadline: formattedDeadline, // Use the ISO-8601 formatted string
         programId: Number(formData.programId),
         universityId: Number(formData.universityId),
         status: formData.status,

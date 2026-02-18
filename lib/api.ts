@@ -329,17 +329,32 @@ export async function updateScholarship(
   payload: ScholarshipMultipartPayload,
 ): Promise<ScholarshipResponse> {
   const formData = new FormData();
-  formData.append("data", JSON.stringify(payload.data));
-  if (payload.logo) formData.append("logo", payload.logo);
-  if (payload.coverImage) formData.append("coverImage", payload.coverImage);
 
-  const { data } = await api.post<ScholarshipResponse>(
+  // 1. Append JSON metadata
+  formData.append("data", JSON.stringify(payload.data));
+
+  // 2. Append files ONLY if they are new File objects (not existing URL strings)
+  if (payload.logo instanceof File) {
+    formData.append("logo", payload.logo);
+  }
+
+  if (payload.coverImage instanceof File) {
+    formData.append("coverImage", payload.coverImage);
+  }
+
+  // 3. Request to production server
+  // Note: Using POST here to match your current logic,
+  // though many APIs use PUT for updates.
+  const { data } = await api.put<ScholarshipResponse>(
     `/api/v1/scholarship/${id}`,
     formData,
     {
-      headers: { ...authHeader(), "Content-Type": "multipart/form-data" },
+      headers: {
+        ...authHeader(), // Axios will automatically set multipart/form-data boundary
+      },
     },
   );
+
   return data;
 }
 
