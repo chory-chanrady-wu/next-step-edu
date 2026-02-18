@@ -12,16 +12,17 @@ import {
 import { format } from "date-fns";
 import { Calendar1 } from "lucide-react";
 import { Control, Controller } from "react-hook-form";
-import { ScholarshipTask } from "@/app/lib/schema/scholarship";
+import { ScholarshipType } from "@/lib/schema/scholarship";
+
 
 // Only allow fields that are strings representing dates
-type DateFieldKeys = "deadline" | "lastUpdated";
+type DateFieldKeys = "deadline";
 
 type DatePickerScholarshipProps = {
     placeholder?: string;
     id?: string;
     name: DateFieldKeys;
-    control: Control<ScholarshipTask>;
+    control: Control<ScholarshipType>;
 };
 
 export function DatePickerScholarship({
@@ -36,7 +37,7 @@ export function DatePickerScholarship({
 
             name={name}
             control={control}
-            render={({ field,fieldState }) => (
+            render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="w-full gap-1">
                     <FieldLabel htmlFor={id} className="flex  items-center">
                         Deadline<span className="text-red-500">*</span>
@@ -74,7 +75,7 @@ export function DatePickerScholarship({
                         </PopoverContent>
                     </Popover>
                     {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
+                        <FieldError errors={[fieldState.error]} />
                     )}
                 </Field>
             )}

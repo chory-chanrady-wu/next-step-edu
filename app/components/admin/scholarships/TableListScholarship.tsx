@@ -278,7 +278,7 @@ export const TableListScholarship = () => {
           </Button>
         </Link>
       </div>
-        <OverviewScholarship/>
+      <OverviewScholarship />
 
       {/* Filters Section */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50">
@@ -476,10 +476,9 @@ export const TableListScholarship = () => {
                             <div className="text-sm font-medium text-gray-900">
                               {deadline.formatted}
                             </div>
-                            <div className={`text-xs px-2 py-0.5 rounded-full inline-block ${
-                              deadline.isExpired ? "bg-gray-100 text-gray-600" :
-                              deadline.isUrgent ? "bg-rose-100 text-rose-700" : "bg-blue-50 text-blue-700"
-                            }`}>
+                            <div className={`text-xs px-2 py-0.5 rounded-full inline-block ${deadline.isExpired ? "bg-gray-100 text-gray-600" :
+                                deadline.isUrgent ? "bg-rose-100 text-rose-700" : "bg-blue-50 text-blue-700"
+                              }`}>
                               {deadline.isExpired ? "Expired" : `${deadline.daysLeft} days left`}
                             </div>
                           </div>
@@ -644,11 +643,10 @@ export const TableListScholarship = () => {
                       variant={currentPage === pageNum ? "default" : "outline"}
                       size="icon"
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`h-8 w-8 ${
-                        currentPage === pageNum
+                      className={`h-8 w-8 ${currentPage === pageNum
                           ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
                           : "border-gray-200 hover:bg-gray-100"
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </Button>
@@ -673,43 +671,44 @@ export const TableListScholarship = () => {
 };
 
 // Loading skeleton with gray colors
+// Loading skeleton with consistent gray colors
 const ScholarshipSkeleton = () => (
   <div className="space-y-8">
     {/* Header Skeleton */}
     <div className="flex items-center justify-between">
       <div className="space-y-2">
         <div className="flex items-center gap-3">
-          <Skeleton className="h-8 w-1 rounded-full" />
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-8 w-1 rounded-full bg-gray-200" />
+          <Skeleton className="h-8 w-48 bg-gray-200" />
+          <Skeleton className="h-6 w-16 rounded-full bg-gray-200" />
         </div>
-        <Skeleton className="h-4 w-64 ml-3" />
+        <Skeleton className="h-4 w-64 ml-3 bg-gray-200" />
       </div>
-      <Skeleton className="h-10 w-36 rounded-lg" />
+      <Skeleton className="h-10 w-36 rounded-lg bg-gray-200" />
     </div>
 
     {/* Stats Cards Skeleton */}
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       {[...Array(4)].map((_, i) => (
-        <Skeleton key={i} className="h-32 rounded-xl" />
+        <Skeleton key={i} className="h-32 rounded-xl bg-gray-200" />
       ))}
     </div>
 
     {/* Filters Skeleton */}
-    <Skeleton className="h-20 rounded-xl" />
+    <Skeleton className="h-20 rounded-xl bg-gray-200" />
 
     {/* Table Skeleton */}
-    <div className="rounded-xl border border-gray-200 overflow-hidden">
+    <div className="rounded-xl border border-gray-100 overflow-hidden">
       {/* Table Header */}
-      <div className="bg-gray-50 p-4">
+      <div className="bg-gray-50 p-4 border-b border-gray-100">
         <div className="flex gap-4">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-20 ml-auto" />
+          <Skeleton className="h-4 w-32 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-24 bg-gray-200" />
+          <Skeleton className="h-4 w-20 ml-auto bg-gray-200" />
         </div>
       </div>
 
@@ -719,33 +718,33 @@ const ScholarshipSkeleton = () => (
           <div key={i} className="p-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3 flex-1">
-                <Skeleton className="h-12 w-12 rounded-xl" />
+                <Skeleton className="h-12 w-12 rounded-xl bg-gray-200" />
                 <div className="space-y-2 flex-1">
-                  <Skeleton className="h-4 w-48" />
-                  <Skeleton className="h-3 w-32" />
+                  <Skeleton className="h-4 w-48 bg-gray-200" />
+                  <Skeleton className="h-3 w-32 bg-gray-200" />
                 </div>
               </div>
-              <Skeleton className="h-6 w-20" />
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-6 w-20" />
-              <Skeleton className="h-8 w-8 rounded" />
+              <Skeleton className="h-6 w-20 bg-gray-200" />
+              <Skeleton className="h-6 w-24 bg-gray-200" />
+              <Skeleton className="h-6 w-24 bg-gray-200" />
+              <Skeleton className="h-6 w-24 bg-gray-200" />
+              <Skeleton className="h-6 w-20 bg-gray-200" />
+              <Skeleton className="h-8 w-8 rounded bg-gray-200" />
             </div>
           </div>
         ))}
       </div>
 
       {/* Pagination Skeleton */}
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4 border-t border-gray-100 bg-gray-50/50">
         <div className="flex items-center justify-between">
-          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-4 w-48 bg-gray-200" />
           <div className="flex gap-2">
-            <Skeleton className="h-8 w-8 rounded" />
-            <Skeleton className="h-8 w-8 rounded" />
-            <Skeleton className="h-8 w-8 rounded" />
-            <Skeleton className="h-8 w-8 rounded" />
-            <Skeleton className="h-8 w-8 rounded" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
+            <Skeleton className="h-8 w-8 rounded bg-gray-200" />
           </div>
         </div>
       </div>

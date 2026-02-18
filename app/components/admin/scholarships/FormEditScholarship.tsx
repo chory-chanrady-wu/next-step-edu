@@ -101,6 +101,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
 
   const { isLoading, data, error } = useScholarship(id);
 
+  
+
   const {data: programData} = usePrograms();
 
 
@@ -150,6 +152,8 @@ export function FormEditScholarship({ id }: ChildrenProps) {
 
   function onSubmit(data: ScholarshipTask) {
     console.log('Data', data);
+
+
 
     toast("You submitted the following values:", {
       description: (

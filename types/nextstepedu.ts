@@ -119,11 +119,9 @@ export interface PageResponse<T> {
 
 /** For multipart create/update */
 export interface ScholarshipMultipartPayload {
-  data: ScholarshipRequest;
-  files?: {
-    logo?: File | null;
-    coverImage?: File | null;
-  };
+  logo?: File | null;
+  coverImage?: File | null;
+  data: any;
 }
 
 /* =======================

@@ -27,7 +27,8 @@ import type {
 } from "@/types/nextstepedu";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -299,18 +300,27 @@ export async function getScholarshipBySlug(
   return data;
 }
 
-export async function createScholarship(
-  payload: ScholarshipMultipartPayload,
-): Promise<any> {
+export async function createScholarship(payload: ScholarshipMultipartPayload) {
   const formData = new FormData();
-  formData.append("data", JSON.stringify(payload.data));
-  if (payload.files?.logo) formData.append("logo", payload.files.logo);
-  if (payload.files?.coverImage)
-    formData.append("coverImage", payload.files.coverImage);
 
+  // Append JSON data
+  formData.append("data", JSON.stringify(payload.data));
+
+  // Append files if they exist and are actual File objects
+  if (payload.logo instanceof File) {
+    formData.append("logo", payload.logo);
+  }
+  if (payload.coverImage instanceof File) {
+    formData.append("coverImage", payload.coverImage);
+  }
+
+  // Let Axios handle Content-Type automatically
   const { data } = await api.post("/api/v1/scholarship", formData, {
-    headers: { ...authHeader(), "Content-Type": "multipart/form-data" },
+    headers: {
+      ...authHeader(), // only auth headers
+    },
   });
+
   return data;
 }
 
@@ -320,11 +330,10 @@ export async function updateScholarship(
 ): Promise<ScholarshipResponse> {
   const formData = new FormData();
   formData.append("data", JSON.stringify(payload.data));
-  if (payload.files?.logo) formData.append("logo", payload.files.logo);
-  if (payload.files?.coverImage)
-    formData.append("coverImage", payload.files.coverImage);
+  if (payload.logo) formData.append("logo", payload.logo);
+  if (payload.coverImage) formData.append("coverImage", payload.coverImage);
 
-  const { data } = await api.put<ScholarshipResponse>(
+  const { data } = await api.post<ScholarshipResponse>(
     `/api/v1/scholarship/${id}`,
     formData,
     {
@@ -405,7 +414,10 @@ export async function deleteScholarshipContact(
 export async function createApplicant(
   body: ApplicantRequest,
 ): Promise<ApplicantResponse> {
-  const { data } = await api.post<ApplicantResponse>("/api/v1/applicants", body);
+  const { data } = await api.post<ApplicantResponse>(
+    "/api/v1/applicants",
+    body,
+  );
   return data;
 }
 
