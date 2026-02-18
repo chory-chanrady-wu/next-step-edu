@@ -119,15 +119,25 @@ export function useCreateProgram() {
 
 export function useUpdateProgram() {
   const qc = useQueryClient();
+
   return useMutation<
     ProgramResponse,
     unknown,
     { id: number | string; body: ProgramRequest }
   >({
     mutationFn: ({ id, body }) => api.updateProgram(id, body),
-    onSuccess: () => {
+
+    // THIS IS THE TRIGGER
+    onSuccess: (data, variables) => {
+      // 1. Refresh the main list table
       qc.invalidateQueries({ queryKey: ["programs"] });
-      qc.invalidateQueries({ queryKey: ["program"] });
+
+      // 2. Refresh the specific detail view for this program
+      qc.invalidateQueries({ queryKey: ["program", variables.id.toString()] });
+
+      console.log(
+        `Success: Production data updated. Alerting TanStack to refetch ID: ${variables.id}`,
+      );
     },
   });
 }

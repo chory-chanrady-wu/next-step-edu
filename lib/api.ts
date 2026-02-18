@@ -204,14 +204,10 @@ export async function getProgramById(
   return data;
 }
 
-export async function updateProgram(
-  id: number | string,
-  body: ProgramRequest,
-): Promise<ProgramResponse> {
+export async function updateProgram(id: number | string, body: ProgramRequest) {
   const { data } = await api.put<ProgramResponse>(
     `/api/v1/programs/${id}`,
     body,
-    { headers: authHeader() },
   );
   return data;
 }

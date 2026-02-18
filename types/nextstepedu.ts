@@ -48,13 +48,19 @@ export interface FacultyResponse {
 /* =======================
    PROGRAM
 ======================= */
+/* =======================
+   PROGRAM
+======================= */
 export interface ProgramRequest {
   name: string;
-  description?: string;
-  degreeLevel: number; // your backend uses "level" in Scholarship; Program controller uses /degree-level/{level}
-  tuitionFee?: number;
-  facultyId?: number;
-  universityId?: number;
+  description: string;
+  degreeLevel: number;
+  examRequired: boolean;
+  tuitionFeeAmount: number; // Corrected from tuitionFee
+  currency: string;
+  studyPeriodMonths: number;
+  universityId: number;
+  facultyId: number;
 }
 export interface MiniEntity {
   id: number;
