@@ -52,7 +52,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
   const { data: program, isLoading, error } = useProgram(id);
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
 
-    const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
+  const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
   const form = useForm<ProgramCreateRequest>({
     resolver, // ✅ use create schema (no id)
     defaultValues: {
@@ -106,7 +106,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <div className="flex flex-col  items-center justify-center h-full min-h-[85vh] gap-4">
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl" />
           <Loader2 className="w-10 h-10 animate-spin text-primary relative" />
@@ -130,8 +130,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
   }
 
   return (
-    <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-      {/* Global updating overlay */}
+    <>
       {isUpdating && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4">
@@ -143,273 +142,289 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           </div>
         </div>
       )}
+      <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Global updating overlay */}
 
-      {/* Header with back navigation */}
-      <div className="flex items-center gap-4">
-        <Link href="/admin/programs">
-          <Button variant="outline" size="icon" className="shrink-0">
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-        </Link>
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-            Edit Program
-          </h1>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Badge variant="secondary" className="rounded-full px-3 py-0.5">
-              ID: {id}
-            </Badge>
-            <MoveRight className="w-3 h-3" />
-            <span className="font-medium text-foreground/80">{program.university.name}</span>
-            <MoveRight className="w-3 h-3" />
-            <span className="font-medium text-foreground/80">{program.faculty.name}</span>
+
+        {/* Header with back navigation */}
+        <div className="flex items-center gap-4">
+          <Link href="/admin/programs">
+            <Button variant="outline" size="icon" className="shrink-0">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+          </Link>
+          <div className="space-y-1">
+            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Edit Program
+            </h1>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Badge variant="secondary" className="rounded-full px-3 py-0.5">
+                ID: {id}
+              </Badge>
+              <MoveRight className="w-3 h-3" />
+              <span className="font-medium text-foreground/80">{program.university.name}</span>
+              <MoveRight className="w-3 h-3" />
+              <span className="font-medium text-foreground/80">{program.faculty.name}</span>
+            </div>
           </div>
         </div>
+
+        {/* Form Card */}
+        <Card className="border-none overflow-hidden">
+          <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
+          <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
+            <CardTitle className="text-2xl font-bold">Program Details</CardTitle>
+            <CardDescription>
+              Edit the program information below.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="pt-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Program Name */}
+                <FieldGroup className="md:col-span-2">
+                  <Controller
+                    name="name"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Program Title *</FieldLabel>
+                        <Input
+                          {...field}
+                          placeholder="e.g. Master of Computer Science"
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* University ID */}
+                <FieldGroup>
+                  <Controller
+                    name="universityId"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>University ID *</FieldLabel>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          placeholder="Enter University ID"
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {program.university.name && (
+                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                          <span>Current:</span>
+                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{program.university.name}</span>
+                        </p>
+                      )}
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Faculty ID */}
+                <FieldGroup>
+                  <Controller
+                    name="facultyId"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Faculty ID *</FieldLabel>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          placeholder="Enter Faculty ID"
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {program.faculty.name && (
+                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                          <span>Current:</span>
+                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{program.faculty.name}</span>
+                        </p>
+                      )}
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                <Separator className="md:col-span-2" />
+
+                {/* Degree Level */}
+                <FieldGroup>
+                  <Controller
+                    name="degreeLevel"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Degree Level (1-4) *</FieldLabel>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Study Period */}
+                <FieldGroup>
+                  <Controller
+                    name="studyPeriodMonths"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Duration (Months) *</FieldLabel>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Tuition Fee */}
+                <FieldGroup>
+                  <Controller
+                    name="tuitionFeeAmount"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Tuition Fee Amount *</FieldLabel>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Currency */}
+                <FieldGroup>
+                  <Controller
+                    name="currency"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Currency *</FieldLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger aria-invalid={fieldState.invalid} className="w-full rounded">
+                            <SelectValue placeholder="Select currency" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {currencyOpts.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Exam Required Checkbox */}
+                <FieldGroup className="md:col-span-2 py-2">
+                  <Controller
+                    name="examRequired"
+                    control={form.control}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <Checkbox
+                          id="examRequired"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                        <label
+                          htmlFor="examRequired"
+                          className="text-sm font-semibold text-gray-700 cursor-pointer"
+                        >
+                          Entrance examination is mandatory for this program
+                        </label>
+                      </div>
+                    )}
+                  />
+                </FieldGroup>
+
+                {/* Description */}
+                <FieldGroup className="md:col-span-2">
+                  <Controller
+                    name="description"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Program Description</FieldLabel>
+                        <Textarea
+                          {...field}
+                          value={field.value ?? ""}
+                          rows={4}
+                          placeholder="Optional details..."
+                          className="focus-visible:ring-blue-500"
+                        />
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+              </div>
+
+              <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+              {/* Form Actions */}
+              <div className="flex items-center justify-end gap-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => form.reset()}
+                  disabled={isUpdating}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 min-w-[160px]"
+                >
+                  {isUpdating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Update Program
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
-
-      {/* Form Card */}
-      <Card className="border-none overflow-hidden">
-        <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
-        <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
-          <CardTitle className="text-2xl font-bold">Program Details</CardTitle>
-          <CardDescription>
-            Edit the program information below.
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="pt-5">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Program Name */}
-              <FieldGroup className="md:col-span-2">
-                <Controller
-                  name="name"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Program Title *</FieldLabel>
-                      <Input
-                        {...field}
-                        placeholder="e.g. Master of Computer Science"
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* University ID */}
-              <FieldGroup>
-                <Controller
-                  name="universityId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>University ID *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        placeholder="Enter University ID"
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Faculty ID */}
-              <FieldGroup>
-                <Controller
-                  name="facultyId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Faculty ID *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        placeholder="Enter Faculty ID"
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              <Separator className="md:col-span-2" />
-
-              {/* Degree Level */}
-              <FieldGroup>
-                <Controller
-                  name="degreeLevel"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Degree Level (1-4) *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Study Period */}
-              <FieldGroup>
-                <Controller
-                  name="studyPeriodMonths"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Duration (Months) *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Tuition Fee */}
-              <FieldGroup>
-                <Controller
-                  name="tuitionFeeAmount"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Tuition Fee Amount *</FieldLabel>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Currency */}
-              <FieldGroup>
-                <Controller
-                  name="currency"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Currency *</FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger aria-invalid={fieldState.invalid} className="w-full rounded">
-                          <SelectValue placeholder="Select currency" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {currencyOpts.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Exam Required Checkbox */}
-              <FieldGroup className="md:col-span-2 py-2">
-                <Controller
-                  name="examRequired"
-                  control={form.control}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                      <Checkbox
-                        id="examRequired"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                      <label
-                        htmlFor="examRequired"
-                        className="text-sm font-semibold text-gray-700 cursor-pointer"
-                      >
-                        Entrance examination is mandatory for this program
-                      </label>
-                    </div>
-                  )}
-                />
-              </FieldGroup>
-
-              {/* Description */}
-              <FieldGroup className="md:col-span-2">
-                <Controller
-                  name="description"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Program Description</FieldLabel>
-                      <Textarea
-                        {...field}
-                        value={field.value ?? ""}
-                        rows={4}
-                        placeholder="Optional details..."
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-            </div>
-
-            <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-            {/* Form Actions */}
-            <div className="flex items-center justify-end gap-4">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => form.reset()}
-                disabled={isUpdating}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
-              <Button
-                type="submit"
-                disabled={isUpdating}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 min-w-[160px]"
-              >
-                {isUpdating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4 mr-2" />
-                    Update Program
-                  </>
-                )}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    </>
   );
 }
