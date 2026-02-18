@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, Resolver, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -37,8 +37,10 @@ import { ScholarshipMultipartPayload } from "@/types/nextstepedu"
 export function FormCreateScholarship() {
   const { mutate: createScholarship, isPending: isCreating } =
     useCreateScholarship();
+  const resolver = zodResolver(scholarshipSchemaValidate) as Resolver<ScholarshipType>;
+
   const form = useForm<ScholarshipType>({
-    resolver: zodResolver(scholarshipSchemaValidate),
+    resolver,
     defaultValues: {
       name: "",
       description: "",
@@ -76,7 +78,7 @@ export function FormCreateScholarship() {
         "programId": rest.programId,
         "universityId": rest.universityId,
         "status": rest.status
-      },                                         
+      },
     };
 
     // Call your mutation
@@ -229,6 +231,7 @@ export function FormCreateScholarship() {
             <FieldGroup>
               <UploadImageControl
                 name="logo"
+                id="logo"
                 control={form.control}
                 label="Logo"
                 multiple={false}
@@ -239,6 +242,7 @@ export function FormCreateScholarship() {
             <FieldGroup>
               <UploadImageControl
                 name="coverImage"
+                id="coverImage"
                 control={form.control}
                 label="Cover Image"
                 multiple={false}

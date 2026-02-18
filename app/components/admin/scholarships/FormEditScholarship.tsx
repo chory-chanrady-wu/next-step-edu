@@ -101,7 +101,7 @@ export function FormEditScholarship({ id }: ChildrenProps) {
 
   const { isLoading, data, error } = useScholarship(id);
 
-  
+
 
   const {data: programData} = usePrograms();
 
@@ -252,7 +252,7 @@ export function FormEditScholarship({ id }: ChildrenProps) {
               ** @File Provider Logo
               */}
             <FieldGroup className="col-span-1">
-              <UploadImageControl name="providerLogo" id="form-rhf-input-provider-logo" label="Provider Logo" control={form.control} multiple={false} />
+              <UploadImageControl name="logo" id="form-rhf-input-provider-logo" label="Provider Logo" control={form.control} multiple={false} />
             </FieldGroup>
 
             {/*

@@ -6,10 +6,7 @@ export const scholarshipSchemaValidate = z.object({
 
   description: z.string().min(1, "Description is required"),
 
-  // Use preprocess to convert string input to number
-  level: z.preprocess((val) => Number(val),
-    z.number().int("Level must be an integer").positive("Level must be greater than 0")
-  ),
+  level: z.coerce.number().int().positive(),
 
   benefits: z.string().min(1, "Benefits are required"),
 
@@ -21,13 +18,9 @@ export const scholarshipSchemaValidate = z.object({
 
   deadline: z.string().min(1, "Deadline is required"),
 
-  programId: z.preprocess((val) => Number(val),
-    z.number().int("Program must be an integer").positive("Program must be valid")
-  ),
+  programId: z.coerce.number().int().positive(),
 
-  universityId: z.preprocess((val) => Number(val),
-    z.number().int("University must be an integer").positive("University must be valid")
-  ),
+  universityId: z.coerce.number().int().positive(),
 
   status: z.enum(["ACTIVE", "INACTIVE"]),
 
