@@ -165,6 +165,7 @@ type Scholarship = ScholarshipResponse & {
 export const TableListScholarship = () => {
   const { isLoading, data } = useAllScholarships();
   const [searchQuery, setSearchQuery] = React.useState("");
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const [currentPage, setCurrentPage] = React.useState(1);
   const [showMobileFilters, setShowMobileFilters] = React.useState(false);
@@ -249,6 +250,11 @@ export const TableListScholarship = () => {
       "from-rose-500 to-red-600",
     ];
     return gradients[id % gradients.length];
+  };
+
+  const handleDeleteFaculty = () => {
+    // setDeletingFaculty(faculty);
+    setShowDeleteModal(true);
   };
 
   if (isLoading) {
@@ -486,7 +492,7 @@ export const TableListScholarship = () => {
                               {deadline.formatted}
                             </div>
                             <div className={`text-xs px-2 py-0.5 rounded-full inline-block ${deadline.isExpired ? "bg-gray-100 text-gray-600" :
-                                deadline.isUrgent ? "bg-rose-100 text-rose-700" : "bg-blue-50 text-blue-700"
+                              deadline.isUrgent ? "bg-rose-100 text-rose-700" : "bg-blue-50 text-blue-700"
                               }`}>
                               {deadline.isExpired ? "Expired" : `${deadline.daysLeft} days left`}
                             </div>
@@ -518,47 +524,23 @@ export const TableListScholarship = () => {
                       </TableCell>
 
                       <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 hover:bg-gray-100 transition-colors"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48 rounded-xl shadow-xl border-0">
-                            <DropdownMenuLabel className="text-xs text-gray-500 font-normal px-2 py-1.5">
-                              Scholarship Actions
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <Link href={`/admin/scholarships/${scholarship.id}`}>
-                              <DropdownMenuItem className="cursor-pointer">
-                                <Eye className="mr-2 h-4 w-4 text-gray-500" />
-                                <span>View Details</span>
-                              </DropdownMenuItem>
-                            </Link>
-                            <Link href={`/admin/scholarships/edit/${scholarship.id}`}>
-                              <DropdownMenuItem className="cursor-pointer">
-                                <Edit className="mr-2 h-4 w-4 text-gray-500" />
-                                <span>Edit Scholarship</span>
-                              </DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="cursor-pointer text-rose-600 focus:text-rose-600 focus:bg-rose-50"
-                              onClick={() => {
-                                if (window.confirm("Are you sure you want to delete this scholarship?")) {
-                                  // Handle delete
-                                }
-                              }}
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              <span>Delete</span>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/admin/scholarships/edit/${scholarship.id}`}
+                            // onClick={() => handleEditFaculty(faculty)}
+                            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                            title="Edit"
+                          >
+                            <Edit size={16} />
+                          </Link>
+                          <button
+                            onClick={() => handleDeleteFaculty()}
+                            className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );
@@ -643,8 +625,8 @@ export const TableListScholarship = () => {
                       size="icon"
                       onClick={() => setCurrentPage(pageNum)}
                       className={`h-8 w-8 ${currentPage === pageNum
-                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
-                          : "border-gray-200 hover:bg-gray-100"
+                        ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
+                        : "border-gray-200 hover:bg-gray-100"
                         }`}
                     >
                       {pageNum}
@@ -665,6 +647,41 @@ export const TableListScholarship = () => {
           </div>
         )}
       </Card>
+
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal  && (
+        <div className="fixed inset-0 bg-black/20 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center justify-center w-12 h-12 bg-rose-100 rounded-full mx-auto mb-4">
+                <Trash2 className="w-6 h-6 text-rose-600" />
+              </div>
+              <h2 className="text-base font-semibold text-gray-900 text-center mb-2">
+                Delete Faculty
+              </h2>
+              <p className="text-sm text-gray-500 text-center mb-6">
+                Are you sure you want to delete{" "}
+                <span className="font-medium text-gray-900">This</span>?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  // onClick={confirmDeleteFaculty}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-lg hover:bg-rose-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

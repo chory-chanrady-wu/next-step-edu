@@ -1,5 +1,5 @@
 "use client";
-import { useScholarship } from "@/hooks/admin-custom-hook";
+// import { useScholarship } from "@/hooks/admin-custom-hook";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -14,7 +14,7 @@ const FormEditScholarship = dynamic(
   { ssr: false },
 );
 export const EditScholarshipCn = ({ id }: Props) => {
-  useScholarship(id);
+  // useScholarship(id);
 
   return <FormEditScholarship id={id} />;
 };
