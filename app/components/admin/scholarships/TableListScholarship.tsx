@@ -68,7 +68,7 @@ const STATUS_CONFIG = {
   ACTIVE: {
     label: "Active",
     icon: CheckCircle2,
-    gradient: "from-emerald-500 to-emerald-600",
+    gradient: "from-emerald-500  to-emerald-600",
     lightBg: "bg-emerald-50",
     textColor: "text-emerald-700",
     borderColor: "border-emerald-200",
@@ -476,10 +476,10 @@ export const TableListScholarship = () => {
 
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className={`p-1 rounded-full ${statusConfig.lightBg}`}>
+                          {/* <div className={`p-1 rounded-full ${statusConfig.lightBg}`}>
                             <StatusIcon className={`h-4 w-4 ${statusConfig.textColor}`} />
-                          </div>
-                          <span className={`text-sm font-medium capitalize ${statusConfig.textColor}`}>
+                          </div> */}
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${statusConfig.lightBg}  ${statusConfig.textColor}`}>
                             {statusConfig.label}
                           </span>
                         </div>
