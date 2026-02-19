@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react"; // Added for spinner
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +25,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,6 +41,14 @@ import { UploadFile } from "antd";
 import { useCreateScholarship } from "@/hooks/use-queries-hook";
 import { ScholarshipMultipartPayload } from "@/types/nextstepedu";
 
+// Education level options with numeric values as strings
+const educationLevel = [
+  { label: "Undergraduate", value: "1" },
+  { label: "Graduate", value: "2" },
+  { label: "PhD", value: "3" },
+  { label: "Diploma", value: "4" },
+] as const;
+
 export function FormCreateScholarship() {
   const { mutate: createScholarship, isPending: isCreating } =
     useCreateScholarship();
@@ -50,7 +59,7 @@ export function FormCreateScholarship() {
     defaultValues: {
       name: "",
       description: "",
-      level: 1,
+      level: 1, // default to Undergraduate
       benefits: "",
       requirements: "",
       howToApply: "",
@@ -73,7 +82,7 @@ export function FormCreateScholarship() {
       data: {
         name: rest.name,
         description: rest.description,
-        level: rest.level,
+        level: rest.level, // already a number
         benefits: rest.benefits,
         requirements: rest.requirements,
         howToApply: rest.howToApply,
@@ -140,65 +149,30 @@ export function FormCreateScholarship() {
                 />
               </FieldGroup>
 
-              {/* Level */}
+              {/* Level - replaced number input with select */}
               <FieldGroup>
                 <Controller
                   name="level"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Level *</FieldLabel>
-                      <Input type="number" {...field} />
+                    <Field data-invalid={fieldState.invalid} className="w-full">
+                      <FieldLabel htmlFor="level-select">Level *</FieldLabel>
+                      <Select
+                        value={field.value.toString() ?? "1"}
+                        onValueChange={(val) => field.onChange(parseInt(val, 10))}
+                      >
+                        <SelectTrigger id="level-select" className="w-full rounded">
+                          <SelectValue placeholder="Select education level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {educationLevel.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-
-              {/*
-             ** @Selection Education Level
-             */}
-              <FieldGroup className="col-span-1">
-                <Controller
-                  name="educationLevel"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field
-                      orientation="responsive"
-                      data-invalid={fieldState.invalid}
-                      className="w-full"
-                    >
-                      <div className="w-full flex flex-col gap-1">
-                        <FieldLabel htmlFor="form-rhf-select-education-level">
-                          Education Level
-                        </FieldLabel>
-                        <Select
-                          name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                        >
-                          <SelectTrigger
-                            id="form-rhf-select-education-level"
-                            aria-invalid={fieldState.invalid}
-                            className="w-[34.1rem] rounded"
-                          >
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-
-                          <SelectContent position="item-aligned">
-                            <SelectItem value="auto">Auto</SelectItem>
-                            <SelectSeparator />
-                            {educationLevel.map((language) => (
-                              <SelectItem
-                                key={language.value}
-                                value={language.value}
-                              >
-                                {language.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
                     </Field>
                   )}
                 />
@@ -212,7 +186,7 @@ export function FormCreateScholarship() {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Program ID *</FieldLabel>
-                      <Input type="number" {...field} />
+                      <Input type="number"  {...field} />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>
                   )}
