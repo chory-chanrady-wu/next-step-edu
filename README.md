@@ -30,8 +30,23 @@ Next Step Edu is a comprehensive education platform designed to connect students
 - **Styling:** Tailwind CSS
 - **State Management:** React Query
 - **Authentication:** Jwt
+- **Backend API:** RESTful API (Spring boot) 
 - **Database:** Postgresql
 - **UI Components:** Custom & Shadcn UI
+
+---
+
+## 🛠️ Hosting
+
+- **Frontend:** Vercel - free
+- **Backend:** Railway - free
+- **Database:** Railway - free
+
+---
+
+## 🛠️ DevOps Technique
+
+- **CI CD:** used github action
 
 ---
 
@@ -75,7 +90,7 @@ npm install
 ### 4. Run the development server
 
 ```bash
-pnpm dev
+pnpm run dev
 # or
 npm run dev
 ```
