@@ -30,7 +30,7 @@ const SingleSelectControlComponent: React.FC<SingleSelectProps> = ({
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <Field data-invalid={fieldState.invalid} className="gap-1">
+        <Field data-invalid={fieldState.invalid} className="">
           <FieldLabel htmlFor={id} className="flex items-center">
             {label}<span className="text-red-500">*</span>
           </FieldLabel>

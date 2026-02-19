@@ -31,14 +31,40 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
-import { useCreateProgram } from "@/hooks/use-queries-hook";
+import { useAllFaculties, useAllUniversities, useCreateProgram } from "@/hooks/use-queries-hook";
 import {
   ProgramCreateRequest,
   programCreateSchema
 } from "@/lib/schema/program";
+import SingleSelectControlComponent from "./SingleSelectControlComponent";
+
+
+const educationLevel = [
+  { label: "Undergraduate", value: "1" },
+  { label: "Graduate", value: "2" },
+  { label: "PhD", value: "3" },
+  { label: "Diploma", value: "4" },
+];
+const currencyOpts = [
+  { label: "USD ($)", value: "USD" },
+  { label: "EUR (€)", value: "EUR" },
+  { label: "GBP (£)", value: "GBP" },
+  { label: "RIEL (៛)", value: "KHR" },
+];
 
 export function FormCreateProgram() {
   const { mutate: createProgram, isPending: isCreating } = useCreateProgram();
+  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: faculties, isLoading: loadingFaculties } = useAllFaculties();
+
+  const facultyOptions = faculties?.map((fac: any) => ({
+    value: fac.id.toString(), // value must be string
+    label: fac.name,
+  })) ?? [];
+  const universityOptions = universities?.map((fac: any) => ({
+    value: fac.id.toString(), // value must be string
+    label: fac.name,
+  })) ?? [];
 
   const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
   // FIX: Ensure the generic matches the Request schema (Flat IDs)
@@ -46,14 +72,14 @@ export function FormCreateProgram() {
     resolver,
     defaultValues: {
       name: "",
-      description: "", 
+      description: "",
       degreeLevel: 1,
       examRequired: false,
       tuitionFeeAmount: 0,
       currency: "USD",
       studyPeriodMonths: 12,
-      universityId: 0,
-      facultyId: 0,
+      universityId: universityOptions[0]?.value ?? 1,
+      facultyId: facultyOptions[0]?.value ?? 1,
     },
   });
 
@@ -106,9 +132,13 @@ export function FormCreateProgram() {
                   name="name"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
                       <FieldLabel>Program Title *</FieldLabel>
-                      <Input {...field} placeholder="e.g. Master of Computer Science" />
+                      <Input
+                        {...field}
+                        placeholder="e.g. Master of Computer Science"
+                        className="rounded h-8"
+                      />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>
                   )}
@@ -116,65 +146,37 @@ export function FormCreateProgram() {
               </FieldGroup>
 
               {/* University ID */}
-              <FieldGroup>
-                <Controller
-                  name="universityId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>University ID *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        placeholder="Enter ID"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              <SingleSelectControlComponent
+                control={form.control}
+                name="universityId"
+                label="University"
+                options={universityOptions}
+                placeholder="Select a university"
+                size="middle"
+              />
 
               {/* Faculty ID */}
-              <FieldGroup>
-                <Controller
-                  name="facultyId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Faculty ID *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        placeholder="Enter ID"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              <SingleSelectControlComponent
+                control={form.control}
+                name="facultyId"
+                label="Faculty"
+                options={facultyOptions}
+                placeholder="Select a faculty"
+                size="middle"
+              />
+
 
               <Separator className="md:col-span-2" />
 
               {/* Degree Level */}
-              <FieldGroup>
-                <Controller
-                  name="degreeLevel"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Degree Level (1-4) *</FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              <SingleSelectControlComponent
+                control={form.control}
+                name="degreeLevel"
+                label="Degree Level"
+                options={educationLevel}
+                placeholder="Select a faculty"
+                size="middle"
+              />
 
               {/* Study Period */}
               <FieldGroup>
@@ -182,12 +184,13 @@ export function FormCreateProgram() {
                   name="studyPeriodMonths"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
                       <FieldLabel>Duration (Months) *</FieldLabel>
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                        className="rounded h-8"
                       />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>
@@ -201,12 +204,14 @@ export function FormCreateProgram() {
                   name="tuitionFeeAmount"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
                       <FieldLabel>Tuition Fee Amount *</FieldLabel>
                       <Input
                         type="number"
+                        step="0.01"
                         {...field}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        className="rounded h-8"
                       />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>
@@ -220,16 +225,18 @@ export function FormCreateProgram() {
                   name="currency"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
                       <FieldLabel>Currency *</FieldLabel>
                       <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger>
-                          <SelectValue />
+                        <SelectTrigger className="!h-8 rounded">
+                          <SelectValue placeholder="Select currency" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="USD">USD ($)</SelectItem>
-                          <SelectItem value="EUR">EUR (€)</SelectItem>
-                          <SelectItem value="GBP">GBP (£)</SelectItem>
+                          {currencyOpts.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -267,9 +274,9 @@ export function FormCreateProgram() {
                   name="description"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
                       <FieldLabel>Program Description</FieldLabel>
-                      <Textarea {...field} rows={4} placeholder="Optional details..." />
+                      <Textarea {...field} rows={4} className="rounded" placeholder="Optional details..." />
                       {fieldState.error && <FieldError errors={[fieldState.error]} />}
                     </Field>
                   )}

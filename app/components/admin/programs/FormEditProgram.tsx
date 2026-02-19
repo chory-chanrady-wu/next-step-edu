@@ -4,7 +4,21 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft, Save, RotateCcw, MoveRight } from "lucide-react";
+import {
+  Loader2,
+  ArrowLeft,
+  Save,
+  RotateCcw,
+  Building2,
+  GraduationCap,
+  BookOpen,
+  Calendar,
+  DollarSign,
+  CheckCircle2,
+  XCircle,
+  FileText,
+  MoveRight,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +37,13 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +52,6 @@ import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
 import { useAllUniversities, useAllFaculties } from "@/hooks/use-queries-hook";
 import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const currencyOpts = [
   { label: "USD ($)", value: "USD" },
@@ -57,12 +77,12 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
 
   const facultyOptions = faculties?.map((fac: any) => ({
-    value: fac.id.toString(), // value must be string
+    value: fac.id.toString(),
     label: fac.name,
   })) ?? [];
-  const universityOptions = universities?.map((fac: any) => ({
-    value: fac.id.toString(), // value must be string
-    label: fac.name,
+  const universityOptions = universities?.map((uni: any) => ({
+    value: uni.id.toString(),
+    label: uni.name,
   })) ?? [];
 
   const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
@@ -81,7 +101,6 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
     },
   });
 
-  // Populate form when program data arrives
   useEffect(() => {
     if (program) {
       form.reset({
@@ -154,7 +173,8 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           </div>
         </div>
       )}
-      <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header with back navigation */}
         <div className="flex items-center gap-4">
           <Link href="/admin/programs">
@@ -178,175 +198,218 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           </div>
         </div>
 
-        {/* Form Card */}
+        {/* Main Form Card */}
         <Card className="border-none overflow-hidden">
           <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
           <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
-            <CardTitle className="text-2xl font-bold">Program Details</CardTitle>
+            <CardTitle className="text-xl font-semibold">Program Information</CardTitle>
             <CardDescription>
-              Edit the program information below.
+              Edit the core details and institutional mapping for this academic program.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="pt-5">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Program Name */}
-                <FieldGroup className="md:col-span-2">
-                  <Controller
-                    name="name"
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+              {/* Core Information Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full" />
+                  Core Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Program Name */}
+                  <FieldGroup className="md:col-span-2">
+                    <Controller
+                      name="name"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel className="flex items-center gap-2">
+                            <GraduationCap className="w-4 h-4 text-muted-foreground" />
+                            Program Title <span className="text-red-500">*</span>
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            placeholder="e.g. Master of Computer Science"
+                            className="focus-visible:ring-blue-500 h-8 rounded"
+                          />
+                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </FieldGroup>
+
+                  {/* University Select */}
+                  <SingleSelectControlComponent
                     control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel>Program Title *</FieldLabel>
-                        <Input
-                          {...field}
-                          placeholder="e.g. Master of Computer Science"
-                          className="rounded h-8"
-                        />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
+                    name="universityId"
+                    label="University"
+                    options={universityOptions}
+                    placeholder="Select a university"
+                    size="middle"
                   />
-                </FieldGroup>
-                {/* University Select */}
-                <SingleSelectControlComponent
-                  control={form.control}
-                  name="universityId"
-                  label="University"
-                  options={universityOptions}
-                  placeholder="Select a university"
-                  size="middle"
-                />
 
-                {/* Faculty Select */}
-                <SingleSelectControlComponent
-                  control={form.control}
-                  name="facultyId"
-                  label="Faculty"
-                  options={facultyOptions}
-                  placeholder="Select a faculty"
-                  size="middle"
-                />
+                  {/* Faculty Select */}
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="facultyId"
+                    label="Faculty"
+                    options={facultyOptions}
+                    placeholder="Select a faculty"
+                    size="middle"
+                  />
+                </div>
+              </div>
 
+              <Separator className="bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
+              {/* Academic & Financial Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full" />
+                  Academic & Financial Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Degree Level */}
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="degreeLevel"
+                    label="Degree Level"
+                    options={educationLevel}
+                    placeholder="Select a faculty"
+                    size="middle"
+                  />
 
-                <Separator className="md:col-span-2" />
+                  {/* Study Period */}
+                  <FieldGroup>
+                    <Controller
+                      name="studyPeriodMonths"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-muted-foreground" />
+                            Duration (Months) <span className="text-red-500">*</span>
+                          </FieldLabel>
+                          <Input
+                            type="number"
+                            {...field}
+                            onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                            className="focus-visible:ring-blue-500 h-8 rounded"
+                          />
+                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </FieldGroup>
 
-                {/* Degree Level */}
-                <SingleSelectControlComponent
-                  control={form.control}
-                  name="degreeLevel"
-                  label="Degree Level"
-                  options={educationLevel}
-                  placeholder="Select a faculty"
-                  size="middle"
-                />
+                  {/* Tuition Fee */}
+                  <FieldGroup>
+                    <Controller
+                      name="tuitionFeeAmount"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel className="flex items-center gap-2">
+                            <DollarSign className="w-4 h-4 text-muted-foreground" />
+                            Tuition Fee Amount <span className="text-red-500">*</span>
+                          </FieldLabel>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            {...field}
+                            onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                            className="focus-visible:ring-blue-500 h-8 rounded"
+                          />
+                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </FieldGroup>
 
-                {/* Study Period */}
+                  {/* Currency */}
+                  <FieldGroup>
+                    <Controller
+                      name="currency"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel className="flex items-center gap-2">
+                            <DollarSign className="w-4 h-4 text-muted-foreground" />
+                            Currency <span className="text-red-500">*</span>
+                          </FieldLabel>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="h-8 rounded">
+                              <SelectValue placeholder="Select currency" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {currencyOpts.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                      )}
+                    />
+                  </FieldGroup>
+
+                  {/* Exam Required Checkbox */}
+                  <FieldGroup className="md:col-span-2 py-2">
+                    <Controller
+                      name="examRequired"
+                      control={form.control}
+                      render={({ field }) => (
+                        <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                          <Checkbox
+                            id="examRequired"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <label
+                            htmlFor="examRequired"
+                            className="text-sm font-semibold text-gray-700 cursor-pointer flex items-center gap-2"
+                          >
+                            {field.value ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                            ) : (
+                              <XCircle className="w-4 h-4 text-gray-400" />
+                            )}
+                            Entrance examination is mandatory for this program
+                          </label>
+                        </div>
+                      )}
+                    />
+                  </FieldGroup>
+                </div>
+              </div>
+
+              <Separator className="bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+              {/* Description Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full" />
+                  Program Description
+                </h3>
                 <FieldGroup>
-                  <Controller
-                    name="studyPeriodMonths"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel>Duration (Months) *</FieldLabel>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                          className="rounded h-8"
-                        />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
-
-                {/* Tuition Fee */}
-                <FieldGroup>
-                  <Controller
-                    name="tuitionFeeAmount"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel>Tuition Fee Amount *</FieldLabel>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          {...field}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                          className="rounded h-8"
-                        />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
-
-                {/* Currency */}
-                <FieldGroup>
-                  <Controller
-                    name="currency"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel>Currency *</FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger className="!h-8 rounded">
-                            <SelectValue placeholder="Select currency" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {currencyOpts.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
-
-                {/* Exam Required Checkbox */}
-                <FieldGroup className="md:col-span-2 py-2">
-                  <Controller
-                    name="examRequired"
-                    control={form.control}
-                    render={({ field }) => (
-                      <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                        <Checkbox
-                          id="examRequired"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                        <label
-                          htmlFor="examRequired"
-                          className="text-sm font-semibold text-gray-700 cursor-pointer"
-                        >
-                          Entrance examination is mandatory for this program
-                        </label>
-                      </div>
-                    )}
-                  />
-                </FieldGroup>
-
-                {/* Description */}
-                <FieldGroup className="md:col-span-2">
                   <Controller
                     name="description"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="gap-1">
-                        <FieldLabel>Program Description</FieldLabel>
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel className="flex items-center gap-2">
+                          <FileText className="w-4 h-4 text-muted-foreground" />
+                          Description
+                        </FieldLabel>
                         <Textarea
                           {...field}
                           value={field.value ?? ""}
                           rows={4}
-                          placeholder="Optional details..."
-                          className="focus-visible:ring-blue-500"
+                          placeholder="Provide an overview of the program, its objectives, and curriculum highlights..."
+                          className="resize-none focus-visible:ring-blue-500 rounded"
                         />
                         {fieldState.error && <FieldError errors={[fieldState.error]} />}
                       </Field>
@@ -355,10 +418,8 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 </FieldGroup>
               </div>
 
-              <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
               {/* Form Actions */}
-              <div className="flex items-center justify-end gap-4">
+              <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
                 <Button
                   type="button"
                   variant="ghost"
@@ -367,7 +428,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                   className="text-muted-foreground hover:text-foreground"
                 >
                   <RotateCcw className="w-4 h-4 mr-2" />
-                  Reset
+                  Reset Fields
                 </Button>
                 <Button
                   type="submit"
