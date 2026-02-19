@@ -155,6 +155,55 @@ export function FormCreateScholarship() {
                 />
               </FieldGroup>
 
+              {/*
+             ** @Selection Education Level
+             */}
+              <FieldGroup className="col-span-1">
+                <Controller
+                  name="educationLevel"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field
+                      orientation="responsive"
+                      data-invalid={fieldState.invalid}
+                      className="w-full"
+                    >
+                      <div className="w-full flex flex-col gap-1">
+                        <FieldLabel htmlFor="form-rhf-select-education-level">
+                          Education Level
+                        </FieldLabel>
+                        <Select
+                          name={field.name}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger
+                            id="form-rhf-select-education-level"
+                            aria-invalid={fieldState.invalid}
+                            className="w-[34.1rem] rounded"
+                          >
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+
+                          <SelectContent position="item-aligned">
+                            <SelectItem value="auto">Auto</SelectItem>
+                            <SelectSeparator />
+                            {educationLevel.map((language) => (
+                              <SelectItem
+                                key={language.value}
+                                value={language.value}
+                              >
+                                {language.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </Field>
+                  )}
+                />
+              </FieldGroup>
+
               {/* Program ID */}
               <FieldGroup>
                 <Controller
