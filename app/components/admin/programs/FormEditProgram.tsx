@@ -23,26 +23,27 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
 import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
-import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program"; // 👈 use create schema
+import { useAllUniversities, useAllFaculties } from "@/hooks/use-queries-hook";
+import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program";
+import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 const currencyOpts = [
   { label: "USD ($)", value: "USD" },
   { label: "EUR (€)", value: "EUR" },
   { label: "GBP (£)", value: "GBP" },
   { label: "RIEL (៛)", value: "KHR" },
-] as const;
+];
+const educationLevel = [
+  { label: "Undergraduate", value: "1" },
+  { label: "Graduate", value: "2" },
+  { label: "PhD", value: "3" },
+  { label: "Diploma", value: "4" },
+] ;
 
 interface FormEditProgramProps {
   id: string | number;
@@ -50,11 +51,18 @@ interface FormEditProgramProps {
 
 export function FormEditProgram({ id }: FormEditProgramProps) {
   const { data: program, isLoading, error } = useProgram(id);
+  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: faculties, isLoading: loadingFaculties } = useAllFaculties();
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
+
+  const facultyOptions = faculties?.map((fac: any) => ({
+    value: fac.id.toString(), // value must be string
+    label: fac.name,
+  })) ?? [];
 
   const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
   const form = useForm<ProgramCreateRequest>({
-    resolver, // ✅ use create schema (no id)
+    resolver,
     defaultValues: {
       name: "",
       description: "",
@@ -86,7 +94,6 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
   }, [program, form]);
 
   function onSubmit(data: ProgramCreateRequest) {
-    // data now contains all fields except id – perfect for the body
     updateProgram(
       { id, body: data },
       {
@@ -106,7 +113,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col  items-center justify-center h-full min-h-[85vh] gap-4">
+      <div className="flex flex-col items-center justify-center h-full min-h-[85vh] gap-4">
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl" />
           <Loader2 className="w-10 h-10 animate-spin text-primary relative" />
@@ -143,9 +150,6 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
         </div>
       )}
       <div className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Global updating overlay */}
-
-
         {/* Header with back navigation */}
         <div className="flex items-center gap-4">
           <Link href="/admin/programs">
@@ -188,94 +192,51 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                     name="name"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field data-invalid={fieldState.invalid} className="gap-1">
                         <FieldLabel>Program Title *</FieldLabel>
                         <Input
                           {...field}
                           placeholder="e.g. Master of Computer Science"
-                          className="focus-visible:ring-blue-500"
+                          className="rounded h-8"
                         />
                         {fieldState.error && <FieldError errors={[fieldState.error]} />}
                       </Field>
                     )}
                   />
                 </FieldGroup>
+                {/* University Select */}
+                <SingleSelectControlComponent
+                  control={form.control}
+                  name="universityId"
+                  label="University"
+                  options={facultyOptions}
+                  placeholder="Select a university"
+                  size="middle"
+                />
 
-                {/* University ID */}
-                <FieldGroup>
-                  <Controller
-                    name="universityId"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>University ID *</FieldLabel>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          placeholder="Enter University ID"
-                          className="focus-visible:ring-blue-500"
-                        />
-                        {program.university.name && (
-                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                          <span>Current:</span>
-                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{program.university.name}</span>
-                        </p>
-                      )}
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
+                {/* Faculty Select */}
+                <SingleSelectControlComponent
+                  control={form.control}
+                  name="facultyId"
+                  label="Faculty"
+                  options={facultyOptions}
+                  placeholder="Select a faculty"
+                  size="middle"
+                />
 
-                {/* Faculty ID */}
-                <FieldGroup>
-                  <Controller
-                    name="facultyId"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>Faculty ID *</FieldLabel>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          placeholder="Enter Faculty ID"
-                          className="focus-visible:ring-blue-500"
-                        />
-                        {program.faculty.name && (
-                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                          <span>Current:</span>
-                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{program.faculty.name}</span>
-                        </p>
-                      )}
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
+
 
                 <Separator className="md:col-span-2" />
 
                 {/* Degree Level */}
-                <FieldGroup>
-                  <Controller
-                    name="degreeLevel"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>Degree Level (1-4) *</FieldLabel>
-                        <Input
-                          type="number"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          className="focus-visible:ring-blue-500"
-                        />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
+                <SingleSelectControlComponent
+                  control={form.control}
+                  name="degreeLevel"
+                  label="Degree Level"
+                  options={educationLevel}
+                  placeholder="Select a faculty"
+                  size="middle"
+                />
 
                 {/* Study Period */}
                 <FieldGroup>
@@ -283,13 +244,13 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                     name="studyPeriodMonths"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field data-invalid={fieldState.invalid} className="gap-1">
                         <FieldLabel>Duration (Months) *</FieldLabel>
                         <Input
                           type="number"
                           {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          className="focus-visible:ring-blue-500"
+                          onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                          className="rounded h-8"
                         />
                         {fieldState.error && <FieldError errors={[fieldState.error]} />}
                       </Field>
@@ -303,14 +264,14 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                     name="tuitionFeeAmount"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field data-invalid={fieldState.invalid} className="gap-1">
                         <FieldLabel>Tuition Fee Amount *</FieldLabel>
                         <Input
                           type="number"
                           step="0.01"
                           {...field}
                           onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                          className="focus-visible:ring-blue-500"
+                          className="rounded h-8"
                         />
                         {fieldState.error && <FieldError errors={[fieldState.error]} />}
                       </Field>
@@ -319,30 +280,14 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 </FieldGroup>
 
                 {/* Currency */}
-                <FieldGroup>
-                  <Controller
-                    name="currency"
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel>Currency *</FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger aria-invalid={fieldState.invalid} className="w-full rounded">
-                            <SelectValue placeholder="Select currency" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {currencyOpts.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
+                <SingleSelectControlComponent
+                  control={form.control}
+                  name="currency"
+                  label="Currency"
+                  options={currencyOpts}
+                  placeholder="Select a currency"
+                  size="middle"
+                />
 
                 {/* Exam Required Checkbox */}
                 <FieldGroup className="md:col-span-2 py-2">
@@ -373,7 +318,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                     name="description"
                     control={form.control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field data-invalid={fieldState.invalid} className="gap-1">
                         <FieldLabel>Program Description</FieldLabel>
                         <Textarea
                           {...field}
