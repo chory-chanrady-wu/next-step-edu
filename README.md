@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+	<h1>Next Step Edu</h1>
+	<p><strong>A Modern Education Platform built with Next.js</strong></p>
+	<!-- <img src="public/logo.png" alt="Next Step Edu Logo" width="120"/> -->
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+## 🚀 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Next Step Edu is a comprehensive education platform designed to connect students with universities, scholarships, and academic programs. Built with Next.js, it features a robust admin dashboard, user authentication, and a modern, responsive UI.
+
+---
+
+## ✨ Features
+
+- University & Scholarship Listings
+- Program & Faculty Management
+- Admin Dashboard with Analytics
+- User Authentication (Admin & Student)
+- Application Management
+- Responsive Design
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Query
+- **Authentication:** Jwt
+- **Database:** Postgresql
+- **UI Components:** Custom & Shadcn UI
+
+---
+
+## 📦 Folder Structure
+
+```
+next-step-edu/
+├── app/                # Next.js app directory (routing, pages, layouts)
+│   ├── admin/          # Admin dashboard & subpages
+│   └── client/         # Client-facing pages
+├── components/         # Shared UI components
+│   └── ui/             # UI primitives (button, card, etc.)
+├── lib/                # Utilities, API, types, schema
+├── public/             # Static assets
+├── styles/             # Global styles
+├── hooks/              # Custom React hooks
+├── dataconnect/        # Data connectors & schemas
+├── types/              # TypeScript types
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone the repository
 
-## Learn More
+```bash
+git clone https://github.com/chory-chanrady-wu/next-step-edu.git
+cd next-step-edu
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Install dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm install
+# or
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run the development server
 
-## Deploy on Vercel
+```bash
+pnpm dev
+# or
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Visit [http://localhost:3000](http://localhost:3000) to view the app (client).
+Visit [http://localhost:3000/admin](http://localhost:3000/admin) to view the app (admin).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please open issues and submit pull requests for improvements or bug fixes.
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+---
+
+> Made with ❤️ by the Next Step Edu Team
+1. Phorn Rothana
+2. So Bunleng
+3. Yoeurn Kimsan
+4. Hong Bunpheng
+5. Chory Chanrady
