@@ -31,6 +31,7 @@ import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
 import { useAllUniversities, useAllFaculties } from "@/hooks/use-queries-hook";
 import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const currencyOpts = [
   { label: "USD ($)", value: "USD" },
@@ -43,7 +44,7 @@ const educationLevel = [
   { label: "Graduate", value: "2" },
   { label: "PhD", value: "3" },
   { label: "Diploma", value: "4" },
-] ;
+];
 
 interface FormEditProgramProps {
   id: string | number;
@@ -56,6 +57,10 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
 
   const facultyOptions = faculties?.map((fac: any) => ({
+    value: fac.id.toString(), // value must be string
+    label: fac.name,
+  })) ?? [];
+  const universityOptions = universities?.map((fac: any) => ({
     value: fac.id.toString(), // value must be string
     label: fac.name,
   })) ?? [];
@@ -85,7 +90,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
         degreeLevel: program.degreeLevel ?? 1,
         examRequired: !!program.examRequired,
         tuitionFeeAmount: program.tuitionFeeAmount ?? 0,
-        currency: program.currency ?? "USD",
+        currency: program.currency as "USD" | "EUR" | "GBP" | "KHR",
         studyPeriodMonths: program.studyPeriodMonths ?? 12,
         universityId: program.university?.id ?? 0,
         facultyId: program.faculty?.id ?? 0,
@@ -209,7 +214,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                   control={form.control}
                   name="universityId"
                   label="University"
-                  options={facultyOptions}
+                  options={universityOptions}
                   placeholder="Select a university"
                   size="middle"
                 />
@@ -280,14 +285,30 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 </FieldGroup>
 
                 {/* Currency */}
-                <SingleSelectControlComponent
-                  control={form.control}
-                  name="currency"
-                  label="Currency"
-                  options={currencyOpts}
-                  placeholder="Select a currency"
-                  size="middle"
-                />
+                <FieldGroup>
+                  <Controller
+                    name="currency"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid} className="gap-1">
+                        <FieldLabel>Currency *</FieldLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger className="!h-8 rounded">
+                            <SelectValue placeholder="Select currency" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {currencyOpts.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
 
                 {/* Exam Required Checkbox */}
                 <FieldGroup className="md:col-span-2 py-2">
