@@ -604,9 +604,7 @@ const UniversityForm = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-1">
-                  <FormLabel info="Contact email address.">
-                    Email
-                  </FormLabel>
+                  <FormLabel info="Contact email address.">Email</FormLabel>
                   <TextInput
                     type="email"
                     name="email"
