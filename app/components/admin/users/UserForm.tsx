@@ -99,7 +99,7 @@ const UserForm = ({ user, onClose }: UserFormProps) => {
 
         <form onSubmit={handleSubmit} className="p-8 space-y-8">
           {/* Avatar Upload Container */}
-          <div className="flex items-center gap-6">
+          <div className="flex justify-center gap-6 ">
             <div className="relative group">
               <div className="w-24 h-24 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center overflow-hidden transition-all shadow-sm relative">
                 {imagePreview ? (
@@ -123,16 +123,6 @@ const UserForm = ({ user, onClose }: UserFormProps) => {
                   onChange={handleFileChange}
                 />
               </label>
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-gray-900">
-                Profile Picture
-              </h4>
-              <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                Upload a high-resolution image.
-                <br />
-                Supports JPG, PNG or WebP.
-              </p>
             </div>
           </div>
 
