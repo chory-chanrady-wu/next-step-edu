@@ -63,6 +63,7 @@ const UserForm = ({ user, onClose }: UserFormProps) => {
         image: selectedFile || undefined,
       },
       {
+        
         onSuccess: () => {
           toast.success("Profile updated successfully");
           onClose();
