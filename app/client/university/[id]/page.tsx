@@ -169,7 +169,6 @@ export default function UniversityDetailPage() {
             email={uniData.email}
             phone={uniData.phone}
             label={uniData.label}
-            contacts={uniData.contacts || []}
           />
         </div>
       </div>

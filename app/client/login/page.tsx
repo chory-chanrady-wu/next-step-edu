@@ -26,7 +26,7 @@ export default function ClientLoginPage() {
         <h1 className="text-2xl text-center mb-10 font-bold text-teal-700">
           Login
         </h1>
-        <LoginForm onSubmit={() => {}} onSwitch={() => {}} />
+        <LoginForm onSubmit={() => {}} />
       </div>
     </div>
   );

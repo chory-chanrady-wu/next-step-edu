@@ -1,4 +1,8 @@
-import { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios, {
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
 import type {
   RegisterUserRequest,
   FacultyRequest,

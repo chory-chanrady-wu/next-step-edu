@@ -1,5 +1,3 @@
-import { ChevronDown, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +6,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, LogOut } from "lucide-react";
+import { getCurrentUser, logout } from "@/app/lib/auth";
 
 export function Header() {
-  // const notificationCount = 3; // Removed unused variable
   const user = getCurrentUser();
+
+  // If not authenticated, show guest UI or nothing
+  if (!user) {
+    return (
+      <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
+        <div className="flex h-16 items-center px-6">
+          <div className="ml-auto flex items-center gap-3">
+            <span className="text-gray-500 text-sm">Not logged in</span>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   const currentUserDetails = {
     name:
@@ -45,7 +58,7 @@ export function Header() {
                 className="flex items-center gap-3 px-2 py-2 h-auto hover:bg-gray-100 rounded-full"
               >
                 {/* Avatar */}
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 flex items-center justify-center shadow-md">
+                <div className="h-10 w-10 rounded-full bg-linear-to-br from-blue-500 via-blue-600 to-purple-600 flex items-center justify-center shadow-md">
                   <span className="text-sm font-semibold text-white">
                     {getInitials(currentUserDetails)}
                   </span>

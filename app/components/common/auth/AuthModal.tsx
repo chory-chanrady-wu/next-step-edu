@@ -44,10 +44,7 @@ export default function AuthModal({ open, onClose }: Props) {
 
           <div className="px-8 pb-10 pt-8">
             {tab === "login" ? (
-              <LoginForm
-                onSubmit={onClose}
-                onSwitch={() => setTab("register")}
-              />
+              <LoginForm onSubmit={onClose} />
             ) : (
               <RegisterForm onSwitch={() => setTab("login")} />
             )}
