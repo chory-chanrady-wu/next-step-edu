@@ -1,8 +1,4 @@
-import axios, {
-  InternalAxiosRequestConfig,
-  AxiosResponse,
-  AxiosError,
-} from "axios";
+import { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import type {
   RegisterUserRequest,
   FacultyRequest,
@@ -16,8 +12,6 @@ import type {
   ScholarshipContactResponse,
   UniversityResponse,
   UniversityMultipartPayload,
-  UniversityContactRequest,
-  UniversityContactResponse,
   UserProfileResponse,
   UpdateProfileRequest,
   LoginRequest,

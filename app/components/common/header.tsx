@@ -1,6 +1,5 @@
 "use client";
 
-import { useAllProfiles } from "../../../hooks/use-queries-hook";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,7 +15,7 @@ import {
 import { useMemo, useState, useEffect } from "react";
 
 import { routes } from "../../lib/routes";
-import AuthModal from "./auth/AuthModal";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -52,7 +51,7 @@ export default function Header() {
       console.log("[Header] user profile from API:", user);
       console.log("[Header] user image URL:", user.image);
     }
-  }, [user]);
+  }, [user, router]); // Added router to dependency array
 
   const items = useMemo(() => navLinks, []);
   const isActive = (href: string) => pathname === href;
@@ -212,16 +211,11 @@ export default function Header() {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("user-logged-in", handleUserLoggedIn);
     };
-  }, []);
+  }, [router]);
 
   // Modal login removed: no longer needed
 
   const closeMobile = () => setIsMobileMenuOpen(false);
-  const openAuth = () => {
-    // No longer used: modal login
-    // Use /client/login page instead
-    router.push("/client/login");
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

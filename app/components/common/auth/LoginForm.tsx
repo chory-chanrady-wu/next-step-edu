@@ -2,7 +2,7 @@
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Divider, Label, OutlineButton, PrimaryButton, TextInput } from "./ui";
 import { FcGoogle } from "react-icons/fc";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 interface DecodedToken {
@@ -15,10 +15,9 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   onSubmit: () => void;
-  onSwitch: () => void;
 };
 
-export default function LoginForm({ onSubmit, onSwitch }: Props) {
+export default function LoginForm({ onSubmit }: Props) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

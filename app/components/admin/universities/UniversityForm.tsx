@@ -142,7 +142,7 @@ const ImageUpload = ({
             ? "border-blue-500 bg-blue-50/5 shadow-inner"
             : "border-gray-200 hover:border-blue-400 hover:bg-gray-50",
           isDragging &&
-          "border-blue-500 bg-blue-50/50 ring-4 ring-blue-500/5 scale-[0.98]",
+            "border-blue-500 bg-blue-50/50 ring-4 ring-blue-500/5 scale-[0.98]",
         )}
       >
         {previewUrl ? (
@@ -379,8 +379,11 @@ const UniversityForm = ({
         </h2>
         <p className="text-gray-500 text-center max-w-md text-lg leading-relaxed">
           You don&apos;t have the required administrative permissions to{" "}
-          <span className="text-red-600 font-semibold">{mode === "create" ? "create" : "edit"}</span> universities.
-          Please contact your system administrator if you believe this is an error.
+          <span className="text-red-600 font-semibold">
+            {mode === "create" ? "create" : "edit"}
+          </span>{" "}
+          universities. Please contact your system administrator if you believe
+          this is an error.
         </p>
         <Button
           onClick={() => router.push("/admin/universities")}

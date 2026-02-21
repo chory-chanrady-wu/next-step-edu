@@ -1,14 +1,5 @@
-import {
-  Bell,
-  Menu,
-  Settings,
-  ChevronDown,
-  LogOut,
-  User as UserIcon,
-} from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BreadcrumbBasic } from "../../common/Breadcrumb";
-import { logout, getCurrentUser } from "@/app/lib/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,10 +8,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 
 export function Header() {
-  const notificationCount = 3;
+  // const notificationCount = 3; // Removed unused variable
   const user = getCurrentUser();
 
   const currentUserDetails = {

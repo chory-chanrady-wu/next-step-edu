@@ -1,7 +1,7 @@
 "use client";
+import * as api from "@/lib/api";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as api from "@/lib/api";
 import type {
   RegisterUserRequest,
   FacultyRequest,
@@ -15,8 +15,6 @@ import type {
   ScholarshipContactResponse,
   UniversityMultipartPayload,
   UniversityResponse,
-  UniversityContactRequest,
-  UniversityContactResponse,
   UpdateProfilePayload,
   UserProfileResponse,
   LoginRequest,

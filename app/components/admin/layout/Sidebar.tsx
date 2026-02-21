@@ -212,7 +212,9 @@ export function SideBar() {
     .filter((item) => {
       // If user is regular USER, only show Universities, Scholarships, and Programs
       if (role === "USER") {
-        return ["Universities", "Scholarships", "Programs"].includes(item.label);
+        return ["Universities", "Scholarships", "Programs"].includes(
+          item.label,
+        );
       }
       return true;
     })

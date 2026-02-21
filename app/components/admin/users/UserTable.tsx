@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Edit,
-  Eye,
   Phone,
   MoreVertical,
   Search,
@@ -37,7 +36,7 @@ import {
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+
 import DeleteConfirmationModal from "../universities/DeleteConfirmationModal";
 import UserForm from "./UserForm";
 import { toast } from "sonner";
@@ -455,7 +454,6 @@ const UserTable = () => {
                         align="end"
                         className="w-48 rounded-2xl shadow-xl border-gray-100 p-2"
                       >
-
                         <DropdownMenuItem
                           className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg"
                           onClick={() => setEditingUser(user)}

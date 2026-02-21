@@ -30,7 +30,7 @@ Next Step Edu is a comprehensive education platform designed to connect students
 - **Styling:** Tailwind CSS
 - **State Management:** React Query
 - **Authentication:** Jwt
-- **Backend API:** RESTful API (Spring boot) 
+- **Backend API:** RESTful API (Spring boot)
 - **Database:** Postgresql
 - **UI Components:** Custom & Shadcn UI
 
@@ -113,6 +113,7 @@ Contributions are welcome! Please open issues and submit pull requests for impro
 ---
 
 > Made with ❤️ by the Next Step Edu Team
+
 1. Phorn Rothana
 2. So Bunleng
 3. Yoeurn Kimsan
