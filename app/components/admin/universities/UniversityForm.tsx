@@ -18,7 +18,6 @@ import {
   AlertCircle,
   Mail,
   Phone,
-  ShieldAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +28,6 @@ import {
   useUpdateUniversity,
 } from "@/hooks/use-queries-hook";
 import { UniversityResponse } from "@/types/nextstepedu";
-import { getRole } from "@/lib/auth";
 
 // --- Sub-components ---
 
@@ -142,7 +140,7 @@ const ImageUpload = ({
             ? "border-blue-500 bg-blue-50/5 shadow-inner"
             : "border-gray-200 hover:border-blue-400 hover:bg-gray-50",
           isDragging &&
-          "border-blue-500 bg-blue-50/50 ring-4 ring-blue-500/5 scale-[0.98]",
+            "border-blue-500 bg-blue-50/50 ring-4 ring-blue-500/5 scale-[0.98]",
         )}
       >
         {previewUrl ? (
@@ -218,11 +216,6 @@ const UniversityForm = ({
   const isLoading = isCreating || isUpdating;
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [userRole, setUserRole] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    setUserRole(getRole());
-  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -367,30 +360,6 @@ const UniversityForm = ({
       }
     }
   };
-
-  if (userRole === "USER") {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in fade-in duration-700">
-        <div className="w-24 h-24 rounded-3xl bg-red-50 flex items-center justify-center mb-8 shadow-2xl shadow-red-200/50 rotate-3">
-          <ShieldAlert className="w-12 h-12 text-red-500 animate-pulse" />
-        </div>
-        <h2 className="text-4xl font-extrabold text-gray-900 font-outfit mb-4 tracking-tight">
-          Access Restricted
-        </h2>
-        <p className="text-gray-500 text-center max-w-md text-lg leading-relaxed">
-          You don&apos;t have the required administrative permissions to{" "}
-          <span className="text-red-600 font-semibold">{mode === "create" ? "create" : "edit"}</span> universities.
-          Please contact your system administrator if you believe this is an error.
-        </p>
-        <Button
-          onClick={() => router.push("/admin/universities")}
-          className="mt-10 h-12 px-8 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold shadow-xl transition-all hover:scale-105 active:scale-95"
-        >
-          Return to Dashboard
-        </Button>
-      </div>
-    );
-  }
 
   if (isSuccess) {
     return (

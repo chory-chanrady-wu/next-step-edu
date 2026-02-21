@@ -455,6 +455,14 @@ const UserTable = () => {
                         align="end"
                         className="w-48 rounded-2xl shadow-xl border-gray-100 p-2"
                       >
+                        <Link href={`/admin/users/${user.id}`}>
+                          <DropdownMenuItem className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg">
+                            <Eye className="h-4 w-4 text-blue-500" />
+                            <span className="font-bold text-gray-700 text-xs">
+                              View Full Profile
+                            </span>
+                          </DropdownMenuItem>
+                        </Link>
 
                         <DropdownMenuItem
                           className="flex items-center gap-2 cursor-pointer py-2.5 rounded-lg"
