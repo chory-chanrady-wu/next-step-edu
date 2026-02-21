@@ -1,7 +1,14 @@
+"use client";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Divider, Label, OutlineButton, PrimaryButton, TextInput } from "./ui";
 import { FcGoogle } from "react-icons/fc";
+import { useEffect } from "react";
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+interface DecodedToken {
+  role?: string;
+  [key: string]: any;
+}
 import { authenticate } from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -25,11 +32,14 @@ export default function LoginForm({ onSubmit, onSwitch }: Props) {
     try {
       const response = await authenticate({ email, password });
 
-      // Check if user is admin
-      if (response.role === "admin") {
+      // Decode JWT to get role
+      const decoded: DecodedToken = jwtDecode(response.accessToken);
+      const role = decoded.role || "user";
+
+      // Check if user is admin (case-insensitive)
+      if (role && role.toLowerCase() === "admin") {
         toast.error("Admin accounts must login via the admin portal");
         setIsLoading(false);
-        // Redirect to admin login
         setTimeout(() => {
           router.push("/admin/login");
         }, 1000);
@@ -44,42 +54,29 @@ export default function LoginForm({ onSubmit, onSwitch }: Props) {
       if (response.refreshToken) {
         localStorage.setItem("refreshToken", response.refreshToken);
       }
-      if (response.id || response.email || response.role) {
-        // Handle image URL - prepend API base URL if needed
-        let imageUrl = response.image;
-        if (imageUrl && !imageUrl.startsWith("http")) {
-          // If it's a relative path, prepend the API base URL
-          imageUrl = `https://mid-term-wing-nextstepedu-backend-production.up.railway.app${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
-        }
-
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: response.id,
-            email: response.email || email,
-            firstname: response.firstname,
-            lastname: response.lastname,
-            phone: response.phone,
-            image: imageUrl,
-            role: response.role,
-          }),
-        );
-      }
-
-      toast.success("Login successful!");
-
+      // Save user object to localStorage
+      const user = {
+        ...decoded,
+        accessToken: response.accessToken,
+        role,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
       // Close modal immediately
       onSubmit();
 
-      // Redirect to home page after a brief delay
+      // Dispatch custom event to notify header
       setTimeout(() => {
-        router.push("/");
-      }, 300);
+        window.dispatchEvent(new Event("user-logged-in"));
+        window.location.href = "/";
+      }, 100);
     } catch (error: any) {
-      console.error("Login error:", error);
       toast.error(
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
+          error?.message ||
           "Login failed. Please check your credentials.",
+      );
+      alert(
+        "Login failed: " + (error?.response?.data?.message || error?.message),
       );
     } finally {
       setIsLoading(false);
@@ -149,7 +146,7 @@ export default function LoginForm({ onSubmit, onSwitch }: Props) {
         Don&apos;t have an account?{" "}
         <button
           type="button"
-          onClick={onSwitch}
+          onClick={() => (window.location.href = "/client/register")}
           className="font-semibold text-blue-600 hover:underline"
         >
           Register

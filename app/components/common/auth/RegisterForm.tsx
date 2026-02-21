@@ -227,7 +227,7 @@ export default function RegisterForm({ onSwitch }: Props) {
         Already have an account?{" "}
         <button
           type="button"
-          onClick={onSwitch}
+          onClick={() => (window.location.href = "/client/login")}
           className="font-semibold text-blue-600 hover:underline"
         >
           Log in
