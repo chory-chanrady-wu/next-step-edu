@@ -127,7 +127,6 @@ const UserForm = ({ user, onClose }: UserFormProps) => {
             </div>
           </div>
 
-          {/* Inputs */}
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">
