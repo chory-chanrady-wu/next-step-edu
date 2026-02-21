@@ -1,5 +1,6 @@
 "use client";
 
+import { useAllProfiles } from "../../../hooks/use-queries-hook";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -35,30 +36,154 @@ const navLinks = [
 ];
 
 export default function Header() {
+  // State declarations
+  const [user, setUser] = useState<any>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const isAuthPage =
+    pathname === "/client/login" || pathname === "/client/register";
+
+  // Debug: log user profile and image URL
+  useEffect(() => {
+    if (user) {
+      console.log("[Header] user profile from API:", user);
+      console.log("[Header] user image URL:", user.image);
+    }
+  }, [user]);
 
   const items = useMemo(() => navLinks, []);
   const isActive = (href: string) => pathname === href;
 
-  // Check if user is logged in
+  // Check if user is logged in, but always fetch user info from API
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const token = localStorage.getItem("accessToken");
-      const userData = localStorage.getItem("user");
-
-      if (token && userData) {
+      if (token) {
+        setIsLoggedIn(true);
         try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          setIsLoggedIn(true);
+          const res = await fetch(
+            "https://mid-term-wing-nextstepedu-backend-production.up.railway.app/api/v1/profile",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          if (!res.ok) {
+            const errorBody = await res.text();
+            console.error(
+              "Failed to fetch user profile:",
+              res.status,
+              errorBody,
+            );
+            // Fallback: use localStorage user if available
+            const userData = localStorage.getItem("user");
+            if (userData) {
+              setUser(JSON.parse(userData));
+              console.warn(
+                "Using localStorage user fallback.",
+                JSON.parse(userData),
+              );
+            } else {
+              setUser(null);
+            }
+            setIsLoggedIn(!!token);
+            return;
+          }
+          const profileArray = await res.json();
+          // Find the correct user from the array
+          let selectedUser = null;
+          // Try to use localStorage user email if available
+          const localUserData = localStorage.getItem("user");
+          let localEmail = null;
+          if (localUserData) {
+            try {
+              const parsedLocal = JSON.parse(localUserData);
+              localEmail = parsedLocal.email;
+            } catch {}
+          }
+          // Prefer accessToken decoded email for matching user
+          if (Array.isArray(profileArray)) {
+            let tokenEmail = null;
+            if (token) {
+              try {
+                const payload = token.split(".")[1];
+                const decoded = JSON.parse(atob(payload));
+                if (decoded.sub) tokenEmail = decoded.sub;
+                console.log("[Header] Decoded accessToken email:", tokenEmail);
+              } catch (err) {
+                console.error("[Header] Failed to decode accessToken:", err);
+              }
+            }
+            // Always use decoded email for selection if present
+            if (tokenEmail) {
+              selectedUser = profileArray.find((u) => u.email === tokenEmail);
+              if (!selectedUser) {
+                console.warn(
+                  "[Header] No user found for accessToken email:",
+                  tokenEmail,
+                );
+              }
+            }
+            // If not found, try localStorage email
+            if (!selectedUser && localEmail) {
+              selectedUser = profileArray.find((u) => u.email === localEmail);
+              if (!selectedUser) {
+                console.warn(
+                  "[Header] No user found for localStorage email:",
+                  localEmail,
+                );
+              }
+            }
+            // If still not found, fallback to first user
+            if (!selectedUser && profileArray.length > 0) {
+              selectedUser = profileArray[0];
+              console.warn(
+                "[Header] Fallback to first user in array:",
+                selectedUser,
+              );
+            }
+          } else {
+            selectedUser = profileArray;
+          }
+          // Block login if status is SUSPENDED or INACTIVE
+          if (selectedUser && selectedUser.status === "SUSPENDED") {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("user");
+            setUser(null);
+            setIsLoggedIn(false);
+            localStorage.setItem("loginError", "SUSPENDED");
+            router.push("/client/login");
+            return;
+          }
+          if (selectedUser && selectedUser.status === "INACTIVE") {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("user");
+            setUser(null);
+            setIsLoggedIn(false);
+            localStorage.setItem("loginError", "INACTIVE");
+            router.push("/client/login");
+            return;
+          }
+          localStorage.setItem("user", JSON.stringify(selectedUser));
+          setUser(selectedUser);
         } catch (error) {
-          console.error("Failed to parse user data:", error);
-          setIsLoggedIn(false);
+          console.error("Failed to fetch user profile:", error);
+          // Fallback: use localStorage user if available
+          const userData = localStorage.getItem("user");
+          if (userData) {
+            setUser(JSON.parse(userData));
+            console.warn(
+              "Using localStorage user fallback.",
+              JSON.parse(userData),
+            );
+          } else {
+            setUser(null);
+          }
+          setIsLoggedIn(!!token);
         }
       } else {
         setIsLoggedIn(false);
@@ -69,43 +194,33 @@ export default function Header() {
     checkAuth();
 
     // Listen for storage changes (e.g., login in another tab)
-    const handleStorageChange = () => checkAuth();
+    const handleStorageChange = () => {
+      const userData = localStorage.getItem("user");
+      setUser(userData ? JSON.parse(userData) : null);
+      setIsLoggedIn(!!localStorage.getItem("accessToken"));
+    };
     window.addEventListener("storage", handleStorageChange);
 
-    return () => window.removeEventListener("storage", handleStorageChange);
+    // Listen for custom user-logged-in event
+    const handleUserLoggedIn = () => {
+      console.log("[Header] user-logged-in event received");
+      handleStorageChange();
+    };
+    window.addEventListener("user-logged-in", handleUserLoggedIn);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("user-logged-in", handleUserLoggedIn);
+    };
   }, []);
 
-  // Recheck auth when auth modal closes
-  useEffect(() => {
-    if (!isAuthOpen) {
-      const token = localStorage.getItem("accessToken");
-      const userData = localStorage.getItem("user");
-
-      if (token && userData) {
-        try {
-          const parsedUser = JSON.parse(userData);
-          // Use a microtask to defer state updates and avoid cascading renders
-          Promise.resolve().then(() => {
-            setUser(parsedUser);
-            setIsLoggedIn(true);
-          });
-        } catch (error) {
-          console.error("Failed to parse user data:", error);
-        }
-      }
-    }
-  }, [isAuthOpen, setUser, setIsLoggedIn]);
+  // Modal login removed: no longer needed
 
   const closeMobile = () => setIsMobileMenuOpen(false);
   const openAuth = () => {
-    // Prevent admin users from using client login modal
-    if (user?.role === "admin") {
-      toast.error("Please use the admin portal to login");
-      router.push("/admin/login");
-      return;
-    }
-    closeMobile();
-    setIsAuthOpen(true);
+    // No longer used: modal login
+    // Use /client/login page instead
+    router.push("/client/login");
   };
 
   const handleLogout = () => {
@@ -121,9 +236,16 @@ export default function Header() {
 
   const getUserInitials = () => {
     if (!user) return "U";
-    const firstname = user.firstname || user.email?.[0] || "";
-    const lastname = user.lastname || user.email?.[1] || "";
-    return `${firstname[0] || ""}${lastname[0] || ""}`.toUpperCase() || "U";
+    if (user.firstname && user.lastname) {
+      return `${user.firstname[0]}${user.lastname[0]}`.toUpperCase();
+    }
+    if (user.firstname) {
+      return user.firstname[0].toUpperCase();
+    }
+    if (user.email) {
+      return user.email[0].toUpperCase();
+    }
+    return "U";
   };
 
   const getImageUrl = () => {
@@ -191,6 +313,9 @@ export default function Header() {
                       <AvatarImage
                         src={getImageUrl()}
                         alt={user?.email || "User"}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
                       />
                       <AvatarFallback className="bg-teal-600 text-white font-semibold">
                         {getUserInitials()}
@@ -198,7 +323,11 @@ export default function Header() {
                     </Avatar>
                     <div className="hidden sm:flex flex-col items-start">
                       <span className="text-sm font-semibold text-slate-900">
-                        {user?.firstname || user?.email || "User"}
+                        {user?.firstname && user?.lastname
+                          ? `${user.firstname} ${user.lastname}`
+                          : user?.firstname
+                            ? user.firstname
+                            : user?.email}
                       </span>
                       <span className="text-xs text-slate-500">
                         {user?.email}
@@ -211,7 +340,10 @@ export default function Header() {
                     <Avatar className="h-16 w-16">
                       <AvatarImage
                         src={getImageUrl()}
-                        alt={user?.email || "User"}
+                        alt={user?.email}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
                       />
                       <AvatarFallback className="bg-teal-600 text-white text-xl font-semibold">
                         {getUserInitials()}
@@ -221,20 +353,20 @@ export default function Header() {
                       <p className="text-base font-semibold text-slate-900">
                         {user?.firstname && user?.lastname
                           ? `${user.firstname} ${user.lastname}`
-                          : user?.email}
+                          : user?.firstname
+                            ? user.firstname
+                            : user?.email}
                       </p>
                       <p className="text-xs text-slate-500">{user?.email}</p>
+                      {user?.phone && (
+                        <p className="text-xs text-slate-500 mt-1">
+                          <span className="font-semibold">Phone:</span>{" "}
+                          {user.phone}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="p-2 space-y-1">
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator className="my-1" />
                     <DropdownMenuItem
                       onClick={handleLogout}
@@ -247,15 +379,14 @@ export default function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2"
-                onClick={openAuth}
-              >
-                <LogIn className="h-4 w-4" />
-                Login
-              </Button>
+              !isAuthPage && (
+                <Link href="/client/login">
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <LogIn className="h-4 w-4" />
+                    Login
+                  </Button>
+                </Link>
+              )
             )}
           </div>
 
@@ -308,6 +439,9 @@ export default function Header() {
                           <AvatarImage
                             src={getImageUrl()}
                             alt={user?.email || "User"}
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
                           />
                           <AvatarFallback className="bg-teal-600 text-white text-lg font-semibold">
                             {getUserInitials()}
@@ -317,11 +451,19 @@ export default function Header() {
                           <p className="text-sm font-semibold text-slate-900">
                             {user?.firstname && user?.lastname
                               ? `${user.firstname} ${user.lastname}`
-                              : user?.email}
+                              : user?.firstname
+                                ? user.firstname
+                                : user?.email || "User"}
                           </p>
                           <p className="text-xs text-slate-500">
                             {user?.email}
                           </p>
+                          {user?.phone && (
+                            <p className="text-xs text-slate-500 mt-1">
+                              <span className="font-semibold">Phone:</span>{" "}
+                              {user.phone}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <Button variant="outline" size="sm" className="gap-2">
@@ -343,15 +485,12 @@ export default function Header() {
                       </Button>
                     </>
                   ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-2"
-                      onClick={openAuth}
-                    >
-                      <LogIn className="h-4 w-4" />
-                      Login
-                    </Button>
+                    <Link href="/client/login">
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <LogIn className="h-4 w-4" />
+                        Login
+                      </Button>
+                    </Link>
                   )}
                 </div>
               </nav>
@@ -360,7 +499,7 @@ export default function Header() {
         </AnimatePresence>
       </header>
 
-      <AuthModal open={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      {/* <AuthModal open={isAuthOpen} onClose={() => setIsAuthOpen(false)} /> */}
     </>
   );
 }

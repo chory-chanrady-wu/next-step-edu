@@ -286,40 +286,6 @@ export function useDeleteUniversity() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["universities"] }),
   });
 }
-
-/* =======================
-   UNIVERSITY CONTACTS
-======================= */
-export function useAllUniversityContacts() {
-  return useQuery<UniversityContactResponse[]>({
-    queryKey: ["university-contacts"],
-    queryFn: api.getAllUniversityContacts,
-  });
-}
-
-export function useUniversityContactsByUniversityId(
-  universityId?: number | string,
-) {
-  return useQuery<UniversityContactResponse[]>({
-    queryKey: ["university-contacts-by-id", universityId],
-    queryFn: () => api.getUniversityContactsByUniversityId(universityId as any),
-    enabled: !!universityId,
-  });
-}
-
-export function useCreateUniversityContact() {
-  const qc = useQueryClient();
-  return useMutation<
-    UniversityContactResponse,
-    unknown,
-    UniversityContactRequest
-  >({
-    mutationFn: (body) => api.createUniversityContact(body),
-    onSuccess: () =>
-      qc.invalidateQueries({ queryKey: ["university-contacts"] }),
-  });
-}
-
 /* =======================
    PROFILES
 ======================= */
