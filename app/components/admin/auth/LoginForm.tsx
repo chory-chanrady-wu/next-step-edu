@@ -46,9 +46,25 @@ export default function LoginForm() {
         router.push("/admin/dashboard");
       }, 800);
     } catch (err: any) {
-      console.error("Login error:", err);
-      setError(err.response?.data?.message || err.message || "Login failed");
-    }
+          const status = err?.response?.status;
+            const data = err?.response?.data;
+
+            // Your backend now returns: { detail, status, title, instance }
+            const message = data?.detail || data?.message || err?.message || "";
+
+            if (status === 404) {
+              setError("Your account doesn't exist");
+              return;
+            }
+
+            if (status === 401) {
+              setError("Incorrect email or password");
+              return;
+            }
+
+            setError(message || "Login failed");
+
+        }
   };
 
   const isLoading = loginMutation.isPending || isRedirecting;

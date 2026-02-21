@@ -15,6 +15,7 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getRole } from "@/lib/auth";
 
 interface SubItem {
   href: string;
@@ -201,6 +202,31 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
 };
 
 export function SideBar() {
+  const [role, setRole] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    setRole(getRole());
+  }, []);
+
+  const filteredItems = items
+    .filter((item) => {
+      // If user is regular USER, only show Universities, Scholarships, and Programs
+      if (role === "USER") {
+        return ["Universities", "Scholarships", "Programs"].includes(item.label);
+      }
+      return true;
+    })
+    .map((item) => {
+      // For regular USER, further restrict to only "List" sub-items (hidden Create)
+      if (role === "USER" && item.subItems) {
+        return {
+          ...item,
+          subItems: item.subItems.filter((sub) => sub.label.startsWith("List")),
+        };
+      }
+      return item;
+    });
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0B1120] border-r border-slate-800/50 flex flex-col z-50">
       {/* Brand Header */}
@@ -217,7 +243,7 @@ export function SideBar() {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 space-y-2 py-6 overflow-y-auto scrollbar-hide">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <NavItem
             key={item.label}
             href={"href" in item ? item.href : undefined}
