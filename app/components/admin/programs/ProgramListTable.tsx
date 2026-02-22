@@ -104,7 +104,6 @@ export const TableListProgram = () => {
   const [programIdToDelete, setProgramIdToDelete] = React.useState<number | string>(0);
   const [degreeFilter, setDegreeFilter] = React.useState<string>("all");
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [showMobileFilters, setShowMobileFilters] = React.useState(false);
 
   const itemsPerPage = 10;
 
@@ -232,8 +231,8 @@ export const TableListProgram = () => {
       </Card>
 
       {/* Table */}
-      <Card className="border-none shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
+      <Card className="border-none overflow-hidden ">
+        <div className="overflow-x-auto p-2 ">
           <Table>
             <TableHeader className="bg-gray-50">
               <TableRow>

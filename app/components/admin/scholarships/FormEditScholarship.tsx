@@ -12,7 +12,6 @@ import {
   Building2,
   GraduationCap,
   Link as LinkIcon,
-  CalendarDays,
   FileText,
   ListChecks,
   Gift,
@@ -54,7 +53,9 @@ import {
   ScholarshipType,
 } from "@/lib/schema/scholarship";
 import { useUpdateScholarship, useScholarship } from "@/hooks/use-queries-hook";
+import { useAllUniversities, useAllPrograms } from "@/hooks/use-queries-hook"; // add these hooks
 import { ScholarshipMultipartPayload } from "@/types/nextstepedu";
+import SingleSelectControlComponent from "../scholarships/SingleSelectControlComponent"; // specific version for scholarships
 
 interface FormEditScholarshipProps {
   id: string;
@@ -63,6 +64,26 @@ interface FormEditScholarshipProps {
 export function FormEditScholarship({ id }: FormEditScholarshipProps) {
   const { mutate: updateScholarship, isPending: isUpdating } = useUpdateScholarship();
   const { data: scholarship, isLoading, error } = useScholarship(id);
+  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: programs, isLoading: loadingPrograms } = useAllPrograms();
+
+  // Prepare options for dropdowns
+  const universityOptions = universities?.map((uni: any) => ({
+    value: uni.id.toString(),
+    label: uni.name,
+  })) ?? [];
+
+  const programOptions = programs?.map((prog: any) => ({
+    value: prog.id.toString(),
+    label: prog.name,
+  })) ?? [];
+
+  const levelOptions = [
+    { value: "1", label: "Undergraduate" },
+    { value: "2", label: "Graduate" },
+    { value: "3", label: "PhD" },
+    { value: "4", label: "Diploma" },
+  ];
 
   const form = useForm<ScholarshipType>({
     resolver: zodResolver(scholarshipSchemaValidate) as Resolver<ScholarshipType>,
@@ -114,15 +135,11 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
   }, [scholarship, form]);
 
   function onSubmit(formData: ScholarshipType) {
-    // 1. Separate files from the rest of the data
     const { logo, coverImage, ...restOfData } = formData;
 
-    // 2. Extract only the binary File objects (ignore existing URL strings)
     const logoFile = logo?.[0]?.originFileObj || null;
     const coverFile = coverImage?.[0]?.originFileObj || null;
 
-    // 3. CLEAN THE DATE: split at 'T' to get only YYYY-MM-DD
-    // This fixes the "2026-06-19T17:00:00.000ZT00:00:00" error
     const rawDate = restOfData.deadline || "";
     const dateOnly = rawDate.includes("T") ? rawDate.split("T")[0] : rawDate;
     const formattedDeadline = dateOnly ? `${dateOnly}T00:00:00` : null;
@@ -131,7 +148,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
       logo: logoFile,
       coverImage: coverFile,
       data: {
-        ...restOfData, // This now only contains name, desc, level, etc.
+        ...restOfData,
         level: Number(restOfData.level),
         programId: Number(restOfData.programId),
         universityId: Number(restOfData.universityId),
@@ -156,7 +173,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || loadingPrograms || loadingUniversities) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
         <div className="relative">
@@ -205,7 +222,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
       </div>
 
       {/* Main form card */}
-      <Card className=" border-none overflow-hidden">
+      <Card className="border-none overflow-hidden">
         <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
         <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
           <CardTitle className="text-xl font-semibold">Core Information</CardTitle>
@@ -273,83 +290,105 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
                 />
               </FieldGroup>
 
-              {/* University ID */}
-              <FieldGroup>
-                <Controller
-                  name="universityId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-muted-foreground" />
-                        University ID <span className="text-red-500">*</span>
-                      </FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {scholarship.university?.name && (
-                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                          <span>Current:</span>
-                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.university.name}</span>
-                        </p>
-                      )}
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              {/* University Select */}
+              {
+                !loadingUniversities && universityOptions.length > 0 ? (
+                  <FieldGroup>
+                    <SingleSelectControlComponent
+                      control={form.control}
+                      name="universityId"
+                      label="University"
+                      options={universityOptions}
+                      placeholder="Select a university"
+                      size="middle"
+                    />
+                    {scholarship.university?.name && (
+                      <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                        <span>Current:</span>
+                        <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.university.name}</span>
+                      </p>
+                    )}
+                  </FieldGroup>
+                ) : (
+                  <div style={{
+                    padding: '16px',
+                    textAlign: 'center',
+                    backgroundColor: '#f9f9f9',
+                    border: '1px dashed #ccc',
+                    borderRadius: '8px',
+                    color: '#666',
+                    fontSize: '14px',
+                    minHeight: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {loadingUniversities ? (
+                      <>
+                        <span style={{ marginRight: '8px' }}>Loading universities</span>
+                        <span className="spinner" /> {/* optional spinner */}
+                      </>
+                    ) : (
+                      'No universities available'
+                    )}
+                  </div>
+                )
+              }
 
-              {/* Program ID */}
-              <FieldGroup>
-                <Controller
-                  name="programId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-muted-foreground" />
-                        Program ID <span className="text-red-500">*</span>
-                      </FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {scholarship.program?.name && (
-                        <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                          <span>Current:</span>
-                          <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.program.name}</span>
-                        </p>
-                      )}
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              {/* Program Select */}
+              {
+                !loadingPrograms && programOptions.length > 0 ? (
+                  <FieldGroup>
+                    <SingleSelectControlComponent
+                      control={form.control}
+                      name="programId"
+                      label="Program"
+                      options={programOptions}
+                      placeholder="Select a program"
+                      size="middle"
+                    />
+                    {scholarship.program?.name && (
+                      <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                        <span>Current:</span>
+                        <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.program.name}</span>
+                      </p>
+                    )}
+                  </FieldGroup>
+                ) : (
+                  <div style={{
+                    padding: '16px',
+                    textAlign: 'center',
+                    backgroundColor: '#f9f9f9',
+                    border: '1px dashed #ccc',
+                    borderRadius: '8px',
+                    color: '#666',
+                    fontSize: '14px',
+                    minHeight: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {loadingPrograms ? (
+                      <>
+                        <span style={{ marginRight: '8px' }}>Loading programs</span>
+                        <span className="spinner" /> {/* optional spinner */}
+                      </>
+                    ) : (
+                      'No Program available'
+                    )}
+                  </div>
+                )
+              }
 
-              {/* Level */}
-              <FieldGroup>
-                <Controller
-                  name="level"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel className="flex items-center gap-2">
-                        <GraduationCap className="w-4 h-4 text-muted-foreground" />
-                        Education Level (1-4) <span className="text-red-500">*</span>
-                      </FieldLabel>
-                      <Input
-                        type="number"
-                        {...field}
-                        className="focus-visible:ring-blue-500"
-                      />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              {/* Level Select */}
+              <SingleSelectControlComponent
+                control={form.control}
+                name="level"
+                label="Education Level"
+                options={levelOptions}
+                placeholder="Select level"
+                size="middle"
+              />
 
               {/* Apply Link */}
               <FieldGroup className="lg:col-span-3">

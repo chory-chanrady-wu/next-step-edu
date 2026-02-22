@@ -34,6 +34,7 @@ export interface AuthResponse {
 ======================= */
 export interface FacultyRequest {
   name: string;
+  description?: string;
   universityId: number;
 }
 

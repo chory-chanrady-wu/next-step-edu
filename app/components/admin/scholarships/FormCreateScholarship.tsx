@@ -25,7 +25,6 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -38,8 +37,9 @@ import {
   ScholarshipType,
 } from "@/lib/schema/scholarship";
 import { UploadFile } from "antd";
-import { useCreateScholarship } from "@/hooks/use-queries-hook";
+import { useAllPrograms, useAllUniversities, useCreateScholarship } from "@/hooks/use-queries-hook";
 import { ScholarshipMultipartPayload } from "@/types/nextstepedu";
+import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 // Education level options with numeric values as strings
 const educationLevel = [
@@ -52,6 +52,8 @@ const educationLevel = [
 export function FormCreateScholarship() {
   const { mutate: createScholarship, isPending: isCreating } =
     useCreateScholarship();
+  const { data: universities, isLoading: loadingUniversities } = useAllUniversities()
+  const { data: programs, isLoading: loadingPrograms } = useAllPrograms();
   const resolver = zodResolver(scholarshipSchemaValidate) as Resolver<ScholarshipType>;
 
   const form = useForm<ScholarshipType>({
@@ -65,8 +67,8 @@ export function FormCreateScholarship() {
       howToApply: "",
       applyLink: "",
       deadline: "",
-      programId: 0,
-      universityId: 0,
+      programId: 1,
+      universityId: 1,
       status: "ACTIVE",
       logo: [] as UploadFile[],
       coverImage: [] as UploadFile[],
@@ -110,6 +112,15 @@ export function FormCreateScholarship() {
       },
     });
   }
+
+  const universityOptions = universities?.map((uni: any) => ({
+    value: uni.id.toString(),
+    label: uni.name,
+  })) ?? [];
+  const programOptions = programs?.map((prog: any) => ({
+    value: prog.id.toString(),
+    label: prog.name,
+  })) ?? [];
 
   return (
     <>
@@ -178,35 +189,83 @@ export function FormCreateScholarship() {
                 />
               </FieldGroup>
 
-              {/* Program ID */}
-              <FieldGroup>
-                <Controller
-                  name="programId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>Program ID *</FieldLabel>
-                      <Input type="number"  {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              {/* Program Selection */}
+              {
+                !loadingPrograms && programOptions.length > 0 ? (
+                  <FieldGroup>
+                    <SingleSelectControlComponent
+                      control={form.control}
+                      name="programId"
+                      label="Program"
+                      options={programOptions}
+                      placeholder="Select a program"
+                      size="middle"
+                    />
+                  </FieldGroup>
+                ) : (
+                  <div style={{
+                    padding: '16px',
+                    textAlign: 'center',
+                    backgroundColor: '#f9f9f9',
+                    border: '1px dashed #ccc',
+                    borderRadius: '8px',
+                    color: '#666',
+                    fontSize: '14px',
+                    minHeight: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {loadingPrograms ? (
+                      <>
+                        <span style={{ marginRight: '8px' }}>Loading programs</span>
+                        <span className="spinner" /> {/* optional spinner */}
+                      </>
+                    ) : (
+                      'No Program available'
+                    )}
+                  </div>
+                )
+              }
 
-              {/* University ID */}
-              <FieldGroup>
-                <Controller
-                  name="universityId"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel>University ID *</FieldLabel>
-                      <Input type="number" {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
+              {/* University Selection */}
+              {
+                !loadingUniversities && universityOptions.length > 0 ? (
+                  <FieldGroup>
+                    <SingleSelectControlComponent
+                      control={form.control}
+                      name="universityId"
+                      label="University"
+                      options={universityOptions}
+                      placeholder="Select a university"
+                      size="middle"
+                    />
+                  </FieldGroup>
+                ) : (
+                  <div style={{
+                    padding: '16px',
+                    textAlign: 'center',
+                    backgroundColor: '#f9f9f9',
+                    border: '1px dashed #ccc',
+                    borderRadius: '8px',
+                    color: '#666',
+                    fontSize: '14px',
+                    minHeight: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {loadingUniversities ? (
+                      <>
+                        <span style={{ marginRight: '8px' }}>Loading universities</span>
+                        <span className="spinner" /> {/* optional spinner */}
+                      </>
+                    ) : (
+                      'No universities available'
+                    )}
+                  </div>
+                )
+              }
 
               {/* Status */}
               <FieldGroup>
