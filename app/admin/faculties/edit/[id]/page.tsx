@@ -1,6 +1,4 @@
 import { FormEditFaculty } from "@/app/components/admin/faculties/FormEditFaculty";
-import { FormEditProgram } from "@/app/components/admin/programs/FormEditProgram";
-
 
 interface Props {
   params: Promise<{ id: string }>;

@@ -98,8 +98,14 @@ function mapScholarshipFromApi(
   contact?: ScholarshipContactResponse | null,
   university?: UniversityResponse | null,
 ): Scholarship {
-  const benefits = splitTextList(scholarship.benefits);
-  const requirements = splitTextList(scholarship.requirements);
+  const benefits = splitTextList(
+    typeof scholarship.benefits === "string" ? scholarship.benefits : undefined,
+  );
+  const requirements = splitTextList(
+    typeof scholarship.requirements === "string"
+      ? scholarship.requirements
+      : undefined,
+  );
 
   const mapped = {
     id: String(scholarship.id),

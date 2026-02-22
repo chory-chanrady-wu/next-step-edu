@@ -14,7 +14,6 @@ import { Calendar1 } from "lucide-react";
 import { Control, Controller } from "react-hook-form";
 import { ScholarshipType } from "@/lib/schema/scholarship";
 
-
 // Only allow fields that are strings representing dates
 type DateFieldKeys = "deadline";
 
@@ -31,11 +30,8 @@ export function DatePickerScholarship({
   name,
   control,
 }: DatePickerScholarshipProps) {
-
   return (
-
     <Controller
-
       name={name}
       control={control}
       render={({ field, fieldState }) => (
@@ -43,7 +39,7 @@ export function DatePickerScholarship({
           <FieldLabel htmlFor={id} className="flex  items-center">
             Deadline<span className="text-red-500">*</span>
           </FieldLabel>
-          <Popover >
+          <Popover>
             <PopoverTrigger asChild className="rounded">
               <Button
                 variant="outline"
@@ -51,11 +47,12 @@ export function DatePickerScholarship({
                 className="justify-start font-normal flex items-center"
               >
                 <Calendar1 />
-                {field.value
-                  ? format(new Date(field.value), "PPP")
-                  : <span>{placeholder}</span>}
+                {field.value ? (
+                  format(new Date(field.value), "PPP")
+                ) : (
+                  <span>{placeholder}</span>
+                )}
               </Button>
-
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
@@ -72,12 +69,9 @@ export function DatePickerScholarship({
                 defaultMonth={field.value ? new Date(field.value) : undefined}
                 required={false}
               />
-
             </PopoverContent>
           </Popover>
-          {fieldState.invalid && (
-            <FieldError errors={[fieldState.error]} />
-          )}
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
         </Field>
       )}
     />

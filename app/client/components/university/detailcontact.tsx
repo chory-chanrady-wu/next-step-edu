@@ -14,7 +14,6 @@ interface DetailContactProps {
 }
 
 export default function DetailContact({
-  universityId,
   officialWebsite,
   location,
   email,

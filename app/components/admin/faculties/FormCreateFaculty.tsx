@@ -25,26 +25,35 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 
 import { useAllUniversities, useCreateFaculty } from "@/hooks/use-queries-hook";
-import { facultyCreateSchema, FacultyCreateRequest } from "@/lib/schema/faculty";
+import {
+  facultyCreateSchema,
+  FacultyCreateRequest,
+} from "@/lib/schema/faculty";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 export default function CreateFacultyPage() {
   const router = useRouter();
   const { mutate: createFaculty, isPending: isCreating } = useCreateFaculty();
-  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: universities, isLoading: loadingUniversities } =
+    useAllUniversities();
 
-  const universityOptions = universities?.map((uni: any) => ({
-    value: uni.id.toString(),
-    label: uni.name,
-  })) ?? [];
+  const universityOptions =
+    universities?.map((uni: any) => ({
+      value: uni.id.toString(),
+      label: uni.name,
+    })) ?? [];
 
-  const resolver = zodResolver(facultyCreateSchema) as Resolver<FacultyCreateRequest>;
+  const resolver = zodResolver(
+    facultyCreateSchema,
+  ) as Resolver<FacultyCreateRequest>;
   const form = useForm<FacultyCreateRequest>({
     resolver,
     defaultValues: {
       name: "",
       description: "",
-      universityId: universityOptions[0]?.value ? parseInt(universityOptions[0].value) : undefined,
+      universityId: universityOptions[0]?.value
+        ? parseInt(universityOptions[0].value)
+        : undefined,
     },
   });
 
@@ -59,7 +68,10 @@ export default function CreateFacultyPage() {
       },
       onError: (error: any) => {
         toast.error("Failed to create faculty", {
-          description: error?.response?.data?.message || error?.message || "Something went wrong",
+          description:
+            error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong",
         });
       },
     });
@@ -82,7 +94,9 @@ export default function CreateFacultyPage() {
 
       <Card className="w-full px-5 shadow-none border-none">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">Create New Faculty</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Create New Faculty
+          </CardTitle>
           <CardDescription>
             Add a new faculty under an existing university.
           </CardDescription>
@@ -104,7 +118,9 @@ export default function CreateFacultyPage() {
                         placeholder="e.g. Faculty of Engineering"
                         className="rounded h-8"
                       />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -138,7 +154,9 @@ export default function CreateFacultyPage() {
                         className="rounded"
                         placeholder="Optional details about the faculty..."
                       />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />

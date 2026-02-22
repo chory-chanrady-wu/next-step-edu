@@ -29,10 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -50,11 +47,13 @@ const getAvatarGradient = (id: number) => {
 
 export const TableListFaculty = () => {
   const { isLoading, data } = useAllFaculties();
-  const { mutate: deleteFaculty, isPending: onDeletingFaculty } = useDeleteFaculty();
+  const { mutate: deleteFaculty, isPending: onDeletingFaculty } =
+    useDeleteFaculty();
 
   const [searchQuery, setSearchQuery] = React.useState("");
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  const [facultyToDelete, setFacultyToDelete] = React.useState<FacultyResponse | null>(null);
+  const [facultyToDelete, setFacultyToDelete] =
+    React.useState<FacultyResponse | null>(null);
   const [currentPage, setCurrentPage] = React.useState(1);
 
   const itemsPerPage = 10;
@@ -70,7 +69,7 @@ export const TableListFaculty = () => {
         (f) =>
           f.name.toLowerCase().includes(query) ||
           (f.description && f.description.toLowerCase().includes(query)) ||
-          (f.data[0]?.name && f.data[0].name.toLowerCase().includes(query))
+          (f.data[0]?.name && f.data[0].name.toLowerCase().includes(query)),
       );
     }
 
@@ -80,7 +79,7 @@ export const TableListFaculty = () => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   const handleDeleteClick = (faculty: FacultyResponse) => {
@@ -109,9 +108,13 @@ export const TableListFaculty = () => {
       onError: (error: any) => {
         const message = error?.response?.data?.message || error.message;
         // Check for foreign key violation
-        if (message.includes("violates foreign key constraint") || message.includes("still referenced")) {
+        if (
+          message.includes("violates foreign key constraint") ||
+          message.includes("still referenced")
+        ) {
           toast.error("Cannot delete faculty", {
-            description: "This faculty has associated programs. Please delete them first.",
+            description:
+              "This faculty has associated programs. Please delete them first.",
           });
         } else {
           toast.error("Delete failed", {
@@ -134,11 +137,16 @@ export const TableListFaculty = () => {
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
               Faculties
             </h1>
-            <Badge variant="secondary" className="ml-2 bg-blue-50 text-blue-700">
+            <Badge
+              variant="secondary"
+              className="ml-2 bg-blue-50 text-blue-700"
+            >
               {filteredData.length} Total
             </Badge>
           </div>
-          <p className="text-sm text-gray-500 ml-3">Manage academic faculties across universities</p>
+          <p className="text-sm text-gray-500 ml-3">
+            Manage academic faculties across universities
+          </p>
         </div>
         <Link href="/admin/faculties/create">
           <Button className="bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200">
@@ -152,7 +160,9 @@ export const TableListFaculty = () => {
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-2xl flex flex-col items-center gap-3">
             <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
-            <p className="text-sm font-medium text-gray-700">Syncing deletion...</p>
+            <p className="text-sm font-medium text-gray-700">
+              Syncing deletion...
+            </p>
           </div>
         </div>
       )}
@@ -204,13 +214,16 @@ export const TableListFaculty = () => {
             <TableBody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((faculty) => (
-                  <TableRow key={`${faculty.id}-${faculty.data[0]?.id}`} className="hover:bg-indigo-50/30 transition-colors">
+                  <TableRow
+                    key={`${faculty.id}-${faculty.data[0]?.id}`}
+                    className="hover:bg-indigo-50/30 transition-colors"
+                  >
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 rounded-lg shadow-sm">
                           <AvatarFallback
                             className={`rounded-lg bg-gradient-to-br ${getAvatarGradient(
-                              faculty.id
+                              faculty.id,
                             )} text-white text-xs font-bold`}
                           >
                             {faculty.name.substring(0, 2).toUpperCase()}
@@ -234,7 +247,8 @@ export const TableListFaculty = () => {
                     </TableCell>
                     <TableCell>
                       <Badge className="bg-amber-100 text-amber-700 border-amber-200">
-                        <BookOpen className="h-3 w-3 mr-1" /> {faculty.programCount ?? 0}
+                        <BookOpen className="h-3 w-3 mr-1" />{" "}
+                        {faculty.programCount ?? 0}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -257,7 +271,10 @@ export const TableListFaculty = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} className="h-64 text-center text-gray-500">
+                  <TableCell
+                    colSpan={4}
+                    className="h-64 text-center text-gray-500"
+                  >
                     No faculties found matching your search.
                   </TableCell>
                 </TableRow>
@@ -302,11 +319,15 @@ export const TableListFaculty = () => {
               <div className="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mb-4">
                 <Trash2 size={24} />
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Confirm Deletion</h3>
+              <h3 className="text-lg font-bold text-gray-900">
+                Confirm Deletion
+              </h3>
               <p className="text-sm text-gray-500 mt-2">
                 Are you sure you want to delete{" "}
-                <span className="font-semibold text-gray-900">{facultyToDelete.name}</span>?
-                This action is irreversible.
+                <span className="font-semibold text-gray-900">
+                  {facultyToDelete.name}
+                </span>
+                ? This action is irreversible.
               </p>
               <div className="flex gap-3 w-full mt-6">
                 <Button
@@ -326,7 +347,11 @@ export const TableListFaculty = () => {
                   onClick={handleConfirmDelete}
                   disabled={onDeletingFaculty}
                 >
-                  {onDeletingFaculty ? <Loader2 className="h-4 w-4 animate-spin" /> : "Delete"}
+                  {onDeletingFaculty ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "Delete"
+                  )}
                 </Button>
               </div>
             </div>

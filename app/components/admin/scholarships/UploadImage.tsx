@@ -8,7 +8,6 @@ import { Control, Controller } from "react-hook-form";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { ScholarshipType } from "@/lib/schema/scholarship";
 
-
 interface UploadImageProps {
   name: keyof ScholarshipType;
   id?: string;

@@ -1,13 +1,4 @@
 import { FormEditProgram } from "@/app/components/admin/programs/FormEditProgram";
-import { EditScholarshipCn } from "@/app/components/admin/scholarships/EditScholarshipCn";
-
-// const FormEditScholarship = dynamic(
-//     () =>
-//         import("@/app/components/admin/scholarships/FormEditScholarship").then(
-//             (mod) => mod.FormEditScholarship
-//         ),
-//     { ssr: false }
-// );
 
 interface Props {
   params: Promise<{ id: string }>;

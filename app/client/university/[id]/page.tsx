@@ -86,24 +86,16 @@ export default function UniversityDetailPage() {
       id: String(program.id),
       name: program.name,
       description: program.description ?? "",
-      degree_level: program.degreeLevel ?? program.degree_level,
-      degree_level_name: getDegreeLevelName(
-        program.degreeLevel ?? program.degree_level,
-      ),
-      exam_required: program.examRequired ?? program.exam_required ?? false,
-      tuition_fee_amount:
-        program.tuitionFee ?? program.tuition_fee_amount ?? undefined,
+      degree_level: program.degreeLevel,
+      degree_level_name: getDegreeLevelName(program.degreeLevel),
+      exam_required: program.examRequired ?? false,
+      tuition_fee_amount: program.tuitionFeeAmount ?? undefined,
       currency: program.currency ?? "USD",
-      study_period_months:
-        program.studyPeriodMonths ?? program.study_period_months ?? undefined,
-      university_id:
-        (program.universityId ?? program.university_id)
-          ? String(program.universityId ?? program.university_id)
-          : undefined,
-      faculty_id:
-        (program.facultyId ?? program.faculty_id)
-          ? String(program.facultyId ?? program.faculty_id)
-          : undefined,
+      study_period_months: program.studyPeriodMonths ?? undefined,
+      university_id: program.university
+        ? String(program.university)
+        : undefined,
+      faculty_id: program.faculty ? String(program.faculty) : undefined,
     };
   });
 

@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   Save,
   RotateCcw,
-  Building2,
   GraduationCap,
   Link as LinkIcon,
   FileText,
@@ -62,21 +61,25 @@ interface FormEditScholarshipProps {
 }
 
 export function FormEditScholarship({ id }: FormEditScholarshipProps) {
-  const { mutate: updateScholarship, isPending: isUpdating } = useUpdateScholarship();
+  const { mutate: updateScholarship, isPending: isUpdating } =
+    useUpdateScholarship();
   const { data: scholarship, isLoading, error } = useScholarship(id);
-  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: universities, isLoading: loadingUniversities } =
+    useAllUniversities();
   const { data: programs, isLoading: loadingPrograms } = useAllPrograms();
 
   // Prepare options for dropdowns
-  const universityOptions = universities?.map((uni: any) => ({
-    value: uni.id.toString(),
-    label: uni.name,
-  })) ?? [];
+  const universityOptions =
+    universities?.map((uni: any) => ({
+      value: uni.id.toString(),
+      label: uni.name,
+    })) ?? [];
 
-  const programOptions = programs?.map((prog: any) => ({
-    value: prog.id.toString(),
-    label: prog.name,
-  })) ?? [];
+  const programOptions =
+    programs?.map((prog: any) => ({
+      value: prog.id.toString(),
+      label: prog.name,
+    })) ?? [];
 
   const levelOptions = [
     { value: "1", label: "Undergraduate" },
@@ -86,7 +89,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
   ];
 
   const form = useForm<ScholarshipType>({
-    resolver: zodResolver(scholarshipSchemaValidate) as Resolver<ScholarshipType>,
+    resolver: zodResolver(
+      scholarshipSchemaValidate,
+    ) as Resolver<ScholarshipType>,
     defaultValues: {
       name: "",
       description: "",
@@ -116,20 +121,29 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
         applyLink: scholarship.applyLink || "",
         deadline: scholarship.deadline?.split("T")[0] || "",
         programId: scholarship.programId || scholarship.program?.id || 0,
-        universityId: scholarship.universityId || scholarship.university?.id || 0,
+        universityId:
+          scholarship.universityId || scholarship.university?.id || 0,
         status: (scholarship.status as "ACTIVE" | "INACTIVE") || "ACTIVE",
-        logo: scholarship.logoUrl ? [{
-          uid: "-1",
-          name: "logo.png",
-          status: "done",
-          url: scholarship.logoUrl,
-        }] : [],
-        coverImage: scholarship.coverImageUrl ? [{
-          uid: "-2",
-          name: "cover_image.png",
-          status: "done",
-          url: scholarship.coverImageUrl,
-        }] : [],
+        logo: scholarship.logoUrl
+          ? [
+              {
+                uid: "-1",
+                name: "logo.png",
+                status: "done",
+                url: scholarship.logoUrl,
+              },
+            ]
+          : [],
+        coverImage: scholarship.coverImageUrl
+          ? [
+              {
+                uid: "-2",
+                name: "cover_image.png",
+                status: "done",
+                url: scholarship.coverImageUrl,
+              },
+            ]
+          : [],
       });
     }
   }, [scholarship, form]);
@@ -169,7 +183,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
             description: err?.response?.data?.message || err.message,
           });
         },
-      }
+      },
     );
   }
 
@@ -180,7 +194,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl" />
           <Loader2 className="w-10 h-10 animate-spin text-primary relative" />
         </div>
-        <p className="text-muted-foreground animate-pulse">Synchronizing with production data...</p>
+        <p className="text-muted-foreground animate-pulse">
+          Synchronizing with production data...
+        </p>
       </div>
     );
   }
@@ -189,7 +205,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
     return (
       <Card className="border-destructive/50 bg-destructive/5 max-w-md mx-auto mt-10">
         <CardContent className="py-10 text-center">
-          <p className="text-destructive font-medium mb-4">Failed to reach production server.</p>
+          <p className="text-destructive font-medium mb-4">
+            Failed to reach production server.
+          </p>
           <Button variant="outline" onClick={() => window.location.reload()}>
             Retry Connection
           </Button>
@@ -216,7 +234,9 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
               ID: {scholarship.id}
             </Badge>
             <MoveRight className="w-3 h-3" />
-            <span className="font-medium text-foreground/80">{scholarship.university?.name || "University"}</span>
+            <span className="font-medium text-foreground/80">
+              {scholarship.university?.name || "University"}
+            </span>
           </div>
         </div>
       </div>
@@ -225,8 +245,12 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
       <Card className="border-none overflow-hidden">
         <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
         <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
-          <CardTitle className="text-xl font-semibold">Core Information</CardTitle>
-          <CardDescription>Main details and institutional mapping.</CardDescription>
+          <CardTitle className="text-xl font-semibold">
+            Core Information
+          </CardTitle>
+          <CardDescription>
+            Main details and institutional mapping.
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="pt-5">
@@ -242,14 +266,17 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel className="flex items-center gap-2">
                         <GraduationCap className="w-4 h-4 text-muted-foreground" />
-                        Scholarship Title <span className="text-red-500">*</span>
+                        Scholarship Title{" "}
+                        <span className="text-red-500">*</span>
                       </FieldLabel>
                       <Input
                         {...field}
                         placeholder="e.g. Full Tuition Merit Scholarship"
                         className="focus-visible:ring-blue-500"
                       />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -266,7 +293,10 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
                         <div className="w-2 h-2 rounded-full bg-emerald-500" />
                         Visibility Status
                       </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
                         <SelectTrigger className="bg-white">
                           <SelectValue />
                         </SelectTrigger>
@@ -291,94 +321,102 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
               </FieldGroup>
 
               {/* University Select */}
-              {
-                !loadingUniversities && universityOptions.length > 0 ? (
-                  <FieldGroup>
-                    <SingleSelectControlComponent
-                      control={form.control}
-                      name="universityId"
-                      label="University"
-                      options={universityOptions}
-                      placeholder="Select a university"
-                      size="middle"
-                    />
-                    {scholarship.university?.name && (
-                      <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                        <span>Current:</span>
-                        <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.university.name}</span>
-                      </p>
-                    )}
-                  </FieldGroup>
-                ) : (
-                  <div style={{
-                    padding: '16px',
-                    textAlign: 'center',
-                    backgroundColor: '#f9f9f9',
-                    border: '1px dashed #ccc',
-                    borderRadius: '8px',
-                    color: '#666',
-                    fontSize: '14px',
-                    minHeight: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    {loadingUniversities ? (
-                      <>
-                        <span style={{ marginRight: '8px' }}>Loading universities</span>
-                        <span className="spinner" /> {/* optional spinner */}
-                      </>
-                    ) : (
-                      'No universities available'
-                    )}
-                  </div>
-                )
-              }
+              {!loadingUniversities && universityOptions.length > 0 ? (
+                <FieldGroup>
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="universityId"
+                    label="University"
+                    options={universityOptions}
+                    placeholder="Select a university"
+                    size="middle"
+                  />
+                  {scholarship.university?.name && (
+                    <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                      <span>Current:</span>
+                      <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">
+                        @{scholarship.university.name}
+                      </span>
+                    </p>
+                  )}
+                </FieldGroup>
+              ) : (
+                <div
+                  style={{
+                    padding: "16px",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
+                    border: "1px dashed #ccc",
+                    borderRadius: "8px",
+                    color: "#666",
+                    fontSize: "14px",
+                    minHeight: "50px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loadingUniversities ? (
+                    <>
+                      <span style={{ marginRight: "8px" }}>
+                        Loading universities
+                      </span>
+                      <span className="spinner" /> {/* optional spinner */}
+                    </>
+                  ) : (
+                    "No universities available"
+                  )}
+                </div>
+              )}
 
               {/* Program Select */}
-              {
-                !loadingPrograms && programOptions.length > 0 ? (
-                  <FieldGroup>
-                    <SingleSelectControlComponent
-                      control={form.control}
-                      name="programId"
-                      label="Program"
-                      options={programOptions}
-                      placeholder="Select a program"
-                      size="middle"
-                    />
-                    {scholarship.program?.name && (
-                      <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
-                        <span>Current:</span>
-                        <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">@{scholarship.program.name}</span>
-                      </p>
-                    )}
-                  </FieldGroup>
-                ) : (
-                  <div style={{
-                    padding: '16px',
-                    textAlign: 'center',
-                    backgroundColor: '#f9f9f9',
-                    border: '1px dashed #ccc',
-                    borderRadius: '8px',
-                    color: '#666',
-                    fontSize: '14px',
-                    minHeight: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    {loadingPrograms ? (
-                      <>
-                        <span style={{ marginRight: '8px' }}>Loading programs</span>
-                        <span className="spinner" /> {/* optional spinner */}
-                      </>
-                    ) : (
-                      'No Program available'
-                    )}
-                  </div>
-                )
-              }
+              {!loadingPrograms && programOptions.length > 0 ? (
+                <FieldGroup>
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="programId"
+                    label="Program"
+                    options={programOptions}
+                    placeholder="Select a program"
+                    size="middle"
+                  />
+                  {scholarship.program?.name && (
+                    <p className="text-xs flex gap-1 items-center text-muted-foreground mt-1.5">
+                      <span>Current:</span>
+                      <span className="text-blue-500 font-bold p-1 bg-gray-300/20 rounded">
+                        @{scholarship.program.name}
+                      </span>
+                    </p>
+                  )}
+                </FieldGroup>
+              ) : (
+                <div
+                  style={{
+                    padding: "16px",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
+                    border: "1px dashed #ccc",
+                    borderRadius: "8px",
+                    color: "#666",
+                    fontSize: "14px",
+                    minHeight: "50px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loadingPrograms ? (
+                    <>
+                      <span style={{ marginRight: "8px" }}>
+                        Loading programs
+                      </span>
+                      <span className="spinner" /> {/* optional spinner */}
+                    </>
+                  ) : (
+                    "No Program available"
+                  )}
+                </div>
+              )}
 
               {/* Level Select */}
               <SingleSelectControlComponent

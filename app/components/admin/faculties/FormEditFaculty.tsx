@@ -34,9 +34,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
-import { useAllFaculties, useFaculty, useUpdateFaculty } from "@/hooks/use-queries-hook";
+import { useFaculty, useUpdateFaculty } from "@/hooks/use-queries-hook";
 import { useAllUniversities } from "@/hooks/use-queries-hook";
-import { FacultyCreateRequest, facultyCreateSchema } from "@/lib/schema/faculty";
+import {
+  FacultyCreateRequest,
+  facultyCreateSchema,
+} from "@/lib/schema/faculty";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 interface FormEditFacultyProps {
@@ -45,17 +48,17 @@ interface FormEditFacultyProps {
 
 export function FormEditFaculty({ id }: FormEditFacultyProps) {
   const { data: facultyData, isLoading, error } = useFaculty(id);
-  const { data: allFaculties } = useAllFaculties();
-  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
+  const { data: universities, isLoading: loadingUniversities } =
+    useAllUniversities();
   const { mutate: updateFaculty, isPending: isUpdating } = useUpdateFaculty();
 
-  const universityOptions = universities?.map((uni: any) => ({
-    value: uni.id.toString(),
-    label: uni.name,
-  })) ?? [];
+  const universityOptions =
+    universities?.map((uni: any) => ({
+      value: uni.id.toString(),
+      label: uni.name,
+    })) ?? [];
 
-  console.log(' Faculty: ', facultyData);
-
+  console.log(" Faculty: ", facultyData);
 
   // Memoize faculty to avoid recreating on every render
   const faculty = useMemo(() => {
@@ -71,7 +74,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
     return facultyData; // Normal object
   }, [facultyData, id]);
 
-  const resolver = zodResolver(facultyCreateSchema) as Resolver<FacultyCreateRequest>;
+  const resolver = zodResolver(
+    facultyCreateSchema,
+  ) as Resolver<FacultyCreateRequest>;
   const form = useForm<FacultyCreateRequest>({
     resolver,
     defaultValues: {
@@ -106,7 +111,7 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
             description: err?.response?.data?.message || err.message,
           });
         },
-      }
+      },
     );
   }
 
@@ -117,7 +122,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl" />
           <Loader2 className="w-10 h-10 animate-spin text-primary relative" />
         </div>
-        <p className="text-muted-foreground animate-pulse">Loading faculty data...</p>
+        <p className="text-muted-foreground animate-pulse">
+          Loading faculty data...
+        </p>
       </div>
     );
   }
@@ -126,7 +133,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
     return (
       <Card className="border-destructive/50 bg-destructive/5 max-w-md mx-auto mt-10">
         <CardContent className="py-10 text-center">
-          <p className="text-destructive font-medium mb-4">Failed to load faculty.</p>
+          <p className="text-destructive font-medium mb-4">
+            Failed to load faculty.
+          </p>
           <Button variant="outline" onClick={() => window.location.reload()}>
             Retry
           </Button>
@@ -179,7 +188,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
         <Card className="border-none overflow-hidden">
           <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
           <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
-            <CardTitle className="text-xl font-semibold">Faculty Information</CardTitle>
+            <CardTitle className="text-xl font-semibold">
+              Faculty Information
+            </CardTitle>
             <CardDescription>
               Edit the core details and university association for this faculty.
             </CardDescription>
@@ -210,7 +221,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
                             placeholder="e.g. Faculty of Engineering"
                             className="focus-visible:ring-blue-500 h-8 rounded"
                           />
-                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
                         </Field>
                       )}
                     />
@@ -255,7 +268,9 @@ export function FormEditFaculty({ id }: FormEditFacultyProps) {
                           placeholder="Provide an overview of the faculty, its departments, and academic focus..."
                           className="resize-none focus-visible:ring-blue-500 rounded"
                         />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.error && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
                       </Field>
                     )}
                   />

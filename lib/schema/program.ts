@@ -14,9 +14,8 @@ export const programCreateSchema = z.object({
 });
 export const programUpdateSchema = programCreateSchema.extend({
   id: z.number().int().positive("ID must be a positive integer"),
-})
-
+});
 
 // Infer the type DIRECTLY from the schema
 export type ProgramCreateRequest = z.infer<typeof programCreateSchema>;
-export type ProgramUpdateRequest = z.infer<typeof programUpdateSchema>
+export type ProgramUpdateRequest = z.infer<typeof programUpdateSchema>;

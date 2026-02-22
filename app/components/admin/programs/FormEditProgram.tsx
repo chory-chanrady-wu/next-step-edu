@@ -9,9 +9,7 @@ import {
   ArrowLeft,
   Save,
   RotateCcw,
-  Building2,
   GraduationCap,
-  BookOpen,
   Calendar,
   DollarSign,
   CheckCircle2,
@@ -50,7 +48,10 @@ import { Badge } from "@/components/ui/badge";
 
 import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
 import { useAllUniversities, useAllFaculties } from "@/hooks/use-queries-hook";
-import { ProgramCreateRequest, programCreateSchema } from "@/lib/schema/program";
+import {
+  ProgramCreateRequest,
+  programCreateSchema,
+} from "@/lib/schema/program";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 const currencyOpts = [
@@ -72,20 +73,24 @@ interface FormEditProgramProps {
 
 export function FormEditProgram({ id }: FormEditProgramProps) {
   const { data: program, isLoading, error } = useProgram(id);
-  const { data: universities, isLoading: loadingUniversities } = useAllUniversities();
-  const { data: faculties, isLoading: loadingFaculties } = useAllFaculties();
+  const { data: universities } = useAllUniversities();
+  const { data: faculties } = useAllFaculties();
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
 
-  const facultyOptions = faculties?.map((fac: any) => ({
-    value: fac.id.toString(),
-    label: fac.name,
-  })) ?? [];
-  const universityOptions = universities?.map((uni: any) => ({
-    value: uni.id.toString(),
-    label: uni.name,
-  })) ?? [];
+  const facultyOptions =
+    faculties?.map((fac: any) => ({
+      value: fac.id.toString(),
+      label: fac.name,
+    })) ?? [];
+  const universityOptions =
+    universities?.map((uni: any) => ({
+      value: uni.id.toString(),
+      label: uni.name,
+    })) ?? [];
 
-  const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
+  const resolver = zodResolver(
+    programCreateSchema,
+  ) as Resolver<ProgramCreateRequest>;
   const form = useForm<ProgramCreateRequest>({
     resolver,
     defaultValues: {
@@ -131,7 +136,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
             description: err?.response?.data?.message || err.message,
           });
         },
-      }
+      },
     );
   }
 
@@ -142,7 +147,9 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl" />
           <Loader2 className="w-10 h-10 animate-spin text-primary relative" />
         </div>
-        <p className="text-muted-foreground animate-pulse">Loading program data...</p>
+        <p className="text-muted-foreground animate-pulse">
+          Loading program data...
+        </p>
       </div>
     );
   }
@@ -151,7 +158,9 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
     return (
       <Card className="border-destructive/50 bg-destructive/5 max-w-md mx-auto mt-10">
         <CardContent className="py-10 text-center">
-          <p className="text-destructive font-medium mb-4">Failed to load program.</p>
+          <p className="text-destructive font-medium mb-4">
+            Failed to load program.
+          </p>
           <Button variant="outline" onClick={() => window.location.reload()}>
             Retry
           </Button>
@@ -191,9 +200,13 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                 ID: {id}
               </Badge>
               <MoveRight className="w-3 h-3" />
-              <span className="font-medium text-foreground/80">{program.university.name}</span>
+              <span className="font-medium text-foreground/80">
+                {program.university.name}
+              </span>
               <MoveRight className="w-3 h-3" />
-              <span className="font-medium text-foreground/80">{program.faculty.name}</span>
+              <span className="font-medium text-foreground/80">
+                {program.faculty.name}
+              </span>
             </div>
           </div>
         </div>
@@ -202,9 +215,12 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
         <Card className="border-none overflow-hidden">
           <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600" />
           <CardHeader className="border-b border-gray-100 bg-gray-50/50 pb-6">
-            <CardTitle className="text-xl font-semibold">Program Information</CardTitle>
+            <CardTitle className="text-xl font-semibold">
+              Program Information
+            </CardTitle>
             <CardDescription>
-              Edit the core details and institutional mapping for this academic program.
+              Edit the core details and institutional mapping for this academic
+              program.
             </CardDescription>
           </CardHeader>
 
@@ -226,14 +242,17 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel className="flex items-center gap-2">
                             <GraduationCap className="w-4 h-4 text-muted-foreground" />
-                            Program Title <span className="text-red-500">*</span>
+                            Program Title{" "}
+                            <span className="text-red-500">*</span>
                           </FieldLabel>
                           <Input
                             {...field}
                             placeholder="e.g. Master of Computer Science"
                             className="focus-visible:ring-blue-500 h-8 rounded"
                           />
-                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
                         </Field>
                       )}
                     />
@@ -291,15 +310,20 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-muted-foreground" />
-                            Duration (Months) <span className="text-red-500">*</span>
+                            Duration (Months){" "}
+                            <span className="text-red-500">*</span>
                           </FieldLabel>
                           <Input
                             type="number"
                             {...field}
-                            onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                            onChange={(e) =>
+                              field.onChange(parseInt(e.target.value, 10) || 0)
+                            }
                             className="focus-visible:ring-blue-500 h-8 rounded"
                           />
-                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
                         </Field>
                       )}
                     />
@@ -314,16 +338,21 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel className="flex items-center gap-2">
                             <DollarSign className="w-4 h-4 text-muted-foreground" />
-                            Tuition Fee Amount <span className="text-red-500">*</span>
+                            Tuition Fee Amount{" "}
+                            <span className="text-red-500">*</span>
                           </FieldLabel>
                           <Input
                             type="number"
                             step="0.01"
                             {...field}
-                            onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                            onChange={(e) =>
+                              field.onChange(parseFloat(e.target.value) || 0)
+                            }
                             className="focus-visible:ring-blue-500 h-8 rounded"
                           />
-                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
                         </Field>
                       )}
                     />
@@ -340,7 +369,10 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                             <DollarSign className="w-4 h-4 text-muted-foreground" />
                             Currency <span className="text-red-500">*</span>
                           </FieldLabel>
-                          <Select value={field.value} onValueChange={field.onChange}>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
                             <SelectTrigger className="h-8 rounded">
                               <SelectValue placeholder="Select currency" />
                             </SelectTrigger>
@@ -352,7 +384,9 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                               ))}
                             </SelectContent>
                           </Select>
-                          {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
                         </Field>
                       )}
                     />
@@ -413,7 +447,9 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                           placeholder="Provide an overview of the program, its objectives, and curriculum highlights..."
                           className="resize-none focus-visible:ring-blue-500 rounded"
                         />
-                        {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.error && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
                       </Field>
                     )}
                   />

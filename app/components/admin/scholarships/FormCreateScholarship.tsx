@@ -37,7 +37,11 @@ import {
   ScholarshipType,
 } from "@/lib/schema/scholarship";
 import { UploadFile } from "antd";
-import { useAllPrograms, useAllUniversities, useCreateScholarship } from "@/hooks/use-queries-hook";
+import {
+  useAllPrograms,
+  useAllUniversities,
+  useCreateScholarship,
+} from "@/hooks/use-queries-hook";
 import { ScholarshipMultipartPayload } from "@/types/nextstepedu";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
@@ -52,9 +56,12 @@ const educationLevel = [
 export function FormCreateScholarship() {
   const { mutate: createScholarship, isPending: isCreating } =
     useCreateScholarship();
-  const { data: universities, isLoading: loadingUniversities } = useAllUniversities()
+  const { data: universities, isLoading: loadingUniversities } =
+    useAllUniversities();
   const { data: programs, isLoading: loadingPrograms } = useAllPrograms();
-  const resolver = zodResolver(scholarshipSchemaValidate) as Resolver<ScholarshipType>;
+  const resolver = zodResolver(
+    scholarshipSchemaValidate,
+  ) as Resolver<ScholarshipType>;
 
   const form = useForm<ScholarshipType>({
     resolver,
@@ -106,21 +113,26 @@ export function FormCreateScholarship() {
       onError: (error: any) => {
         console.log("Mutation error:", error);
         toast("Failed to create scholarship", {
-          description: error?.response?.data?.message || error?.message || "Something went wrong",
+          description:
+            error?.response?.data?.message ||
+            error?.message ||
+            "Something went wrong",
           position: "bottom-right",
         });
       },
     });
   }
 
-  const universityOptions = universities?.map((uni: any) => ({
-    value: uni.id.toString(),
-    label: uni.name,
-  })) ?? [];
-  const programOptions = programs?.map((prog: any) => ({
-    value: prog.id.toString(),
-    label: prog.name,
-  })) ?? [];
+  const universityOptions =
+    universities?.map((uni: any) => ({
+      value: uni.id.toString(),
+      label: uni.name,
+    })) ?? [];
+  const programOptions =
+    programs?.map((prog: any) => ({
+      value: prog.id.toString(),
+      label: prog.name,
+    })) ?? [];
 
   return (
     <>
@@ -154,7 +166,9 @@ export function FormCreateScholarship() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Name *</FieldLabel>
                       <Input {...field} placeholder="Scholarship Name" />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -170,9 +184,14 @@ export function FormCreateScholarship() {
                       <FieldLabel htmlFor="level-select">Level *</FieldLabel>
                       <Select
                         value={field.value.toString() ?? "1"}
-                        onValueChange={(val) => field.onChange(parseInt(val, 10))}
+                        onValueChange={(val) =>
+                          field.onChange(parseInt(val, 10))
+                        }
                       >
-                        <SelectTrigger id="level-select" className="w-full rounded">
+                        <SelectTrigger
+                          id="level-select"
+                          className="w-full rounded"
+                        >
                           <SelectValue placeholder="Select education level" />
                         </SelectTrigger>
                         <SelectContent>
@@ -183,89 +202,95 @@ export function FormCreateScholarship() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
               </FieldGroup>
 
               {/* Program Selection */}
-              {
-                !loadingPrograms && programOptions.length > 0 ? (
-                  <FieldGroup>
-                    <SingleSelectControlComponent
-                      control={form.control}
-                      name="programId"
-                      label="Program"
-                      options={programOptions}
-                      placeholder="Select a program"
-                      size="middle"
-                    />
-                  </FieldGroup>
-                ) : (
-                  <div style={{
-                    padding: '16px',
-                    textAlign: 'center',
-                    backgroundColor: '#f9f9f9',
-                    border: '1px dashed #ccc',
-                    borderRadius: '8px',
-                    color: '#666',
-                    fontSize: '14px',
-                    minHeight: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    {loadingPrograms ? (
-                      <>
-                        <span style={{ marginRight: '8px' }}>Loading programs</span>
-                        <span className="spinner" /> {/* optional spinner */}
-                      </>
-                    ) : (
-                      'No Program available'
-                    )}
-                  </div>
-                )
-              }
+              {!loadingPrograms && programOptions.length > 0 ? (
+                <FieldGroup>
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="programId"
+                    label="Program"
+                    options={programOptions}
+                    placeholder="Select a program"
+                    size="middle"
+                  />
+                </FieldGroup>
+              ) : (
+                <div
+                  style={{
+                    padding: "16px",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
+                    border: "1px dashed #ccc",
+                    borderRadius: "8px",
+                    color: "#666",
+                    fontSize: "14px",
+                    minHeight: "50px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loadingPrograms ? (
+                    <>
+                      <span style={{ marginRight: "8px" }}>
+                        Loading programs
+                      </span>
+                      <span className="spinner" /> {/* optional spinner */}
+                    </>
+                  ) : (
+                    "No Program available"
+                  )}
+                </div>
+              )}
 
               {/* University Selection */}
-              {
-                !loadingUniversities && universityOptions.length > 0 ? (
-                  <FieldGroup>
-                    <SingleSelectControlComponent
-                      control={form.control}
-                      name="universityId"
-                      label="University"
-                      options={universityOptions}
-                      placeholder="Select a university"
-                      size="middle"
-                    />
-                  </FieldGroup>
-                ) : (
-                  <div style={{
-                    padding: '16px',
-                    textAlign: 'center',
-                    backgroundColor: '#f9f9f9',
-                    border: '1px dashed #ccc',
-                    borderRadius: '8px',
-                    color: '#666',
-                    fontSize: '14px',
-                    minHeight: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    {loadingUniversities ? (
-                      <>
-                        <span style={{ marginRight: '8px' }}>Loading universities</span>
-                        <span className="spinner" /> {/* optional spinner */}
-                      </>
-                    ) : (
-                      'No universities available'
-                    )}
-                  </div>
-                )
-              }
+              {!loadingUniversities && universityOptions.length > 0 ? (
+                <FieldGroup>
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="universityId"
+                    label="University"
+                    options={universityOptions}
+                    placeholder="Select a university"
+                    size="middle"
+                  />
+                </FieldGroup>
+              ) : (
+                <div
+                  style={{
+                    padding: "16px",
+                    textAlign: "center",
+                    backgroundColor: "#f9f9f9",
+                    border: "1px dashed #ccc",
+                    borderRadius: "8px",
+                    color: "#666",
+                    fontSize: "14px",
+                    minHeight: "50px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loadingUniversities ? (
+                    <>
+                      <span style={{ marginRight: "8px" }}>
+                        Loading universities
+                      </span>
+                      <span className="spinner" /> {/* optional spinner */}
+                    </>
+                  ) : (
+                    "No universities available"
+                  )}
+                </div>
+              )}
 
               {/* Status */}
               <FieldGroup>
@@ -275,7 +300,10 @@ export function FormCreateScholarship() {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Status *</FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -284,7 +312,9 @@ export function FormCreateScholarship() {
                           <SelectItem value="INACTIVE">INACTIVE</SelectItem>
                         </SelectContent>
                       </Select>
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -298,8 +328,13 @@ export function FormCreateScholarship() {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Apply Link *</FieldLabel>
-                      <Input {...field} placeholder="https://example.com/apply" />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      <Input
+                        {...field}
+                        placeholder="https://example.com/apply"
+                      />
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -346,7 +381,9 @@ export function FormCreateScholarship() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Benefits *</FieldLabel>
                       <Textarea {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -361,7 +398,9 @@ export function FormCreateScholarship() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Requirements *</FieldLabel>
                       <Textarea {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -376,7 +415,9 @@ export function FormCreateScholarship() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>How To Apply *</FieldLabel>
                       <Textarea {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
@@ -391,7 +432,9 @@ export function FormCreateScholarship() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Description *</FieldLabel>
                       <Textarea {...field} />
-                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.error && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />
