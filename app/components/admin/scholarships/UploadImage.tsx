@@ -4,13 +4,15 @@ import React from "react";
 import { Upload, Button } from "antd";
 import type { UploadFile, UploadProps } from "antd";
 import { Control, Controller } from "react-hook-form";
-import { ScholarshipTask } from "@/app/lib/schema/scholarship";
+
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { ScholarshipType } from "@/lib/schema/scholarship";
+
 
 interface UploadImageProps {
-  name: keyof ScholarshipTask;
+  name: keyof ScholarshipType;
   id?: string;
-  control: Control<ScholarshipTask>;
+  control: Control<ScholarshipType>;
   multiple?: boolean;
   url?: string;
   listType?: UploadProps["listType"];

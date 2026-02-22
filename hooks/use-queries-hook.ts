@@ -52,13 +52,14 @@ export function useAllFaculties(universityId?: number | string) {
   });
 }
 
-export function useFaculty(id?: number | string) {
+export const useFaculty = (id?: number | string) => {
   return useQuery<FacultyResponse>({
-    queryKey: ["faculty", id],
-    queryFn: () => api.getFacultyById(id as any),
+    queryKey: ['faculty', id],
+    queryFn: async () => api.fetchFacultyById(id as any),
     enabled: !!id,
   });
-}
+};
+
 
 export function useCreateFaculty() {
   const qc = useQueryClient();
@@ -125,6 +126,7 @@ export function useCreateProgram() {
   });
 }
 
+// hooks/use-queries-hook.ts
 export function useUpdateProgram() {
   const qc = useQueryClient();
   return useMutation<
@@ -133,9 +135,14 @@ export function useUpdateProgram() {
     { id: number | string; body: ProgramRequest }
   >({
     mutationFn: ({ id, body }) => api.updateProgram(id, body),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      // Trigger: Alert the list table to fetch fresh data
       qc.invalidateQueries({ queryKey: ["programs"] });
-      qc.invalidateQueries({ queryKey: ["program"] });
+
+      // Trigger: Alert the specific program detail (this form) to refetch
+      qc.invalidateQueries({ queryKey: ["program", variables.id.toString()] });
+
+      console.log(`Alerted TanStack: Program ${variables.id} is stale.`);
     },
   });
 }
@@ -187,9 +194,14 @@ export function useUpdateScholarship() {
     { id: number | string; payload: ScholarshipMultipartPayload }
   >({
     mutationFn: ({ id, payload }) => api.updateScholarship(id, payload),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
+      // 1. Alert: Refresh the list
       qc.invalidateQueries({ queryKey: ["scholarships"] });
-      qc.invalidateQueries({ queryKey: ["scholarship"] });
+
+      // 2. Alert: Refresh ONLY this specific ID
+      qc.invalidateQueries({ queryKey: ["scholarship", variables.id] });
+
+      console.log(`Refetch triggered for scholarship ID: ${variables.id}`);
     },
   });
 }
@@ -284,6 +296,9 @@ export function useDeleteUniversity() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["universities"] }),
   });
 }
+
+/* =======================
+   UNIVERSITY CONTACTS
 /* =======================
    PROFILES
 ======================= */

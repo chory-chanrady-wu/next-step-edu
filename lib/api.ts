@@ -23,6 +23,7 @@ import type {
   ApplicantRequest,
   ApplicantResponse,
 } from "@/types/nextstepedu";
+// import { ProgramListResponse } from "./schema/program";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -228,14 +229,32 @@ export async function createFaculty(
   return data;
 }
 
-export async function getFacultyById(
-  id: number | string,
-): Promise<FacultyResponse> {
-  const { data } = await api.get<FacultyResponse>(`/api/v1/faculties/${id}`, {
+export async function fetchFacultyById(id: number | string): Promise<FacultyResponse> {
+  // 1. Fetch the universities array from the detail endpoint
+  const detailResponse = await api.get(`/api/v1/faculties/${id}`, {
     headers: authHeader(),
   });
-  return data;
+  const universities = detailResponse.data; // currently just the array
+
+  // 2. Fetch the list of all faculties to get the name and description
+  const listResponse = await api.get('/api/v1/faculties', {
+    headers: authHeader(),
+  });
+  const allFaculties = listResponse.data;
+
+  // 3. Find the matching faculty in the list
+  const matchingFaculty = allFaculties.find((f: any) => f.id === Number(id));
+
+  // 4. Return the combined object
+  return {
+    id: Number(id),
+    name: matchingFaculty?.name ?? `Faculty #${id}`,
+    description: matchingFaculty?.description ?? '',
+    data: universities,
+    programCount: matchingFaculty?.programCount ?? 0, // if available
+  };
 }
+
 
 export async function getAllFaculties(
   universityId?: number | string,
@@ -287,14 +306,12 @@ export async function getProgramById(
   return data;
 }
 
-export async function updateProgram(
-  id: number | string,
-  body: ProgramRequest,
-): Promise<ProgramResponse> {
+// api.ts
+export async function updateProgram(id: number | string, body: ProgramRequest) {
   const { data } = await api.put<ProgramResponse>(
     `/api/v1/programs/${id}`,
     body,
-    { headers: authHeader() },
+    { headers: authHeader() }, // Ensure auth is included
   );
   return data;
 }
@@ -388,18 +405,27 @@ export async function getScholarshipBySlug(
   return data;
 }
 
-export async function createScholarship(
-  payload: ScholarshipMultipartPayload,
-): Promise<any> {
+export async function createScholarship(payload: ScholarshipMultipartPayload) {
   const formData = new FormData();
-  formData.append("data", JSON.stringify(payload.data));
-  if (payload.files?.logo) formData.append("logo", payload.files.logo);
-  if (payload.files?.coverImage)
-    formData.append("coverImage", payload.files.coverImage);
 
+  // Append JSON data
+  formData.append("data", JSON.stringify(payload.data));
+
+  // Append files if they exist and are actual File objects
+  if (payload.logo instanceof File) {
+    formData.append("logo", payload.logo);
+  }
+  if (payload.coverImage instanceof File) {
+    formData.append("coverImage", payload.coverImage);
+  }
+
+  // Let Axios handle Content-Type automatically
   const { data } = await api.post("/api/v1/scholarship", formData, {
-    headers: { ...authHeader(), "Content-Type": "multipart/form-data" },
+    headers: {
+      ...authHeader(), // only auth headers
+    },
   });
+
   return data;
 }
 
@@ -408,18 +434,31 @@ export async function updateScholarship(
   payload: ScholarshipMultipartPayload,
 ): Promise<ScholarshipResponse> {
   const formData = new FormData();
-  formData.append("data", JSON.stringify(payload.data));
-  if (payload.files?.logo) formData.append("logo", payload.files.logo);
-  if (payload.files?.coverImage)
-    formData.append("coverImage", payload.files.coverImage);
 
+  // 1. Append JSON metadata
+  formData.append("data", JSON.stringify(payload.data));
+
+  // 2. Append files ONLY if they are new File objects (not existing URL strings)
+  if (payload.logo instanceof File) {
+    formData.append("logo", payload.logo);
+  }
+  if (payload.coverImage instanceof File) {
+    formData.append("coverImage", payload.coverImage);
+  }
+
+  // 3. Request to production server
+  // Note: Using POST here to match your current logic,
+  // though many APIs use PUT for updates.
   const { data } = await api.put<ScholarshipResponse>(
     `/api/v1/scholarship/${id}`,
     formData,
     {
-      headers: { ...authHeader(), "Content-Type": "multipart/form-data" },
+      headers: {
+        ...authHeader(), // Axios will automatically set multipart/form-data boundary
+      },
     },
   );
+
   return data;
 }
 
@@ -488,9 +527,6 @@ export async function deleteScholarshipContact(
   });
 }
 
-/* =======================
-   UNIVERSITIES
-======================= */
 export async function createUniversity(
   payload: UniversityMultipartPayload,
 ): Promise<UniversityResponse> {

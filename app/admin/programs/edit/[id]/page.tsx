@@ -1,3 +1,4 @@
+import { FormEditProgram } from "@/app/components/admin/programs/FormEditProgram";
 import { EditScholarshipCn } from "@/app/components/admin/scholarships/EditScholarshipCn";
 
 // const FormEditScholarship = dynamic(
@@ -16,7 +17,7 @@ export default async function EditScholarshipPage({ params }: Props) {
   const { id } = await params;
   return (
     <div className="min-h-[90vh] divide-y p-4 gap-4 flex flex-col">
-      <EditScholarshipCn id={id} />
+      <FormEditProgram id={id} />
     </div>
   );
 }

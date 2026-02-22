@@ -34,46 +34,65 @@ export interface AuthResponse {
 ======================= */
 export interface FacultyRequest {
   name: string;
+  description?: string;
   universityId: number;
 }
 
+// types/nextstepedu.ts (or wherever you keep types)
 export interface FacultyResponse {
   id: number;
   name: string;
-  universityId: number;
-  createdAt?: string;
-  updatedAt?: string;
+  description?: string;
+  data: Array<{
+    id: number;
+    name: string;
+    slug: string;
+    description?: string;
+    degreeLevel: number;
+    examRequired: boolean;
+    tuitionFeeAmount: number;
+    currency: string;
+    studyPeriodMonths: number;
+  }>;
+  programCount?: number;
 }
 
 /* =======================
    PROGRAM
 ======================= */
+/* =======================
+   PROGRAM
+======================= */
 export interface ProgramRequest {
   name: string;
-  description?: string;
-  degreeLevel: number; // your backend uses "level" in Scholarship; Program controller uses /degree-level/{level}
-  tuitionFee?: number;
-  facultyId?: number;
-  universityId?: number;
+  description: string;
+  degreeLevel: number;
+  examRequired: boolean;
+  tuitionFeeAmount: number; // Corrected from tuitionFee
+  currency: string;
+  studyPeriodMonths: number;
+  universityId: number;
+  facultyId: number;
+}
+export interface MiniEntity {
+  id: number;
+  name: string;
 }
 
 export interface ProgramResponse {
   id: number;
   name: string;
-  description?: string;
+  description: string;
   degreeLevel: number;
-  degree_level?: number; // snake_case from backend
-  tuitionFee?: number;
-  tuition_fee_amount?: number; // snake_case from backend
-  currency?: string;
-  studyPeriodMonths?: number;
-  study_period_months?: number; // snake_case from backend
-  examRequired?: boolean;
-  exam_required?: boolean; // snake_case from backend
-  facultyId?: number;
-  faculty_id?: number; // snake_case from backend
-  universityId?: number;
-  university_id?: number; // snake_case from backend
+  degreeLevelName: string; // e.g., "Bachelor's Degree"
+  examRequired: boolean;
+  tuitionFeeAmount: number; // Matches the 20000.0 value
+  currency: string; // e.g., "USD"
+  studyPeriodMonths: number;
+  university: MiniEntity; // Nested object { id, name }
+  faculty: MiniEntity; // Nested object { id, name }
+  scholarshipCount: number;
+  // Metadata (Optional: keep if your backend sometimes sends these)
   createdAt?: string;
   updatedAt?: string;
 }
@@ -90,6 +109,7 @@ export interface ScholarshipRequest {
   benefits?: string;
   requirements?: string;
   howToApply?: string;
+  maxApplicant: number;
   applyLink?: string;
   status?: ScholarshipStatus;
   deadline?: string; // ISO date string (e.g. "2026-02-11") or datetime depending on backend
@@ -97,13 +117,54 @@ export interface ScholarshipRequest {
   universityId?: number;
 }
 
-export interface ScholarshipResponse extends ScholarshipRequest {
+export interface ScholarshipResponse {
   id: number;
+  name: string;
   slug?: string;
   logoUrl?: string;
   coverImageUrl?: string;
+  description?: string;
+  level: number;
+  maxApplicant?: number | null;
+  benefits?: string | null;
+  requirements?: string | null;
+  howToApply?: string | null;
+  applyLink?: string | null;
+  status?: string;
+  deadline?: string;
   createdAt?: string;
   updatedAt?: string;
+  programId?: number;
+  universityId?: number;
+  program?: {
+    id: number;
+    name: string;
+    description?: string;
+    degreeLevel: number;
+    examRequired: boolean;
+    tuitionFeeAmount: number;
+    currency: string;
+    studyPeriodMonths: number;
+  };
+  university?: {
+    id: number;
+    name: string;
+    slug?: string;
+    logoUrl?: string;
+    coverImageUrl?: string;
+    description?: string | null;
+    country: string;
+    city: string;
+    officialWebsite?: string | null;
+    status: string;
+  };
+  contacts?: Array<{
+    id: number;
+    label?: string;
+    email?: string;
+    phone?: string;
+    websiteUrl?: string;
+  }>;
 }
 
 export interface PageResponse<T> {
@@ -118,11 +179,9 @@ export interface PageResponse<T> {
 
 /** For multipart create/update */
 export interface ScholarshipMultipartPayload {
-  data: ScholarshipRequest;
-  files?: {
-    logo?: File | null;
-    coverImage?: File | null;
-  };
+  logo?: File | null;
+  coverImage?: File | null;
+  data: any;
 }
 
 /* =======================

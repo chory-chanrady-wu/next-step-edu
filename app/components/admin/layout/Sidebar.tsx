@@ -87,6 +87,14 @@ const items = [
     href: "/admin/faculties",
     icon: Award,
     label: "Faculties",
+    subItems: [
+      { href: "/admin/faculties", label: "List Faculties", icon: List },
+      {
+        href: "/admin/faculties/create",
+        label: "Create Faculties",
+        icon: PlusCircle,
+      },
+    ],
   },
   {
     href: "/admin/users",
