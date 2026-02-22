@@ -39,7 +39,6 @@ export default function AdminLayout({
                   </div>
                 </div>
               </main>
-              <Toaster />
             </div>
           </div>
         </AuthGuard>
