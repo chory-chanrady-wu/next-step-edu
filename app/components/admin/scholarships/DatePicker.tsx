@@ -19,17 +19,10 @@ import { ScholarshipType } from "@/lib/schema/scholarship";
 type DateFieldKeys = "deadline";
 
 type DatePickerScholarshipProps = {
-<<<<<<< HEAD
   placeholder?: string;
   id?: string;
   name: DateFieldKeys;
-  control: Control<ScholarshipTask>;
-=======
-    placeholder?: string;
-    id?: string;
-    name: DateFieldKeys;
-    control: Control<ScholarshipType>;
->>>>>>> kimsan
+  control: Control<ScholarshipType>;
 };
 
 export function DatePickerScholarship({
@@ -38,9 +31,11 @@ export function DatePickerScholarship({
   name,
   control,
 }: DatePickerScholarshipProps) {
-<<<<<<< HEAD
+
   return (
+
     <Controller
+
       name={name}
       control={control}
       render={({ field, fieldState }) => (
@@ -48,7 +43,7 @@ export function DatePickerScholarship({
           <FieldLabel htmlFor={id} className="flex  items-center">
             Deadline<span className="text-red-500">*</span>
           </FieldLabel>
-          <Popover>
+          <Popover >
             <PopoverTrigger asChild className="rounded">
               <Button
                 variant="outline"
@@ -56,12 +51,11 @@ export function DatePickerScholarship({
                 className="justify-start font-normal flex items-center"
               >
                 <Calendar1 />
-                {field.value ? (
-                  format(new Date(field.value), "PPP")
-                ) : (
-                  <span>{placeholder}</span>
-                )}
+                {field.value
+                  ? format(new Date(field.value), "PPP")
+                  : <span>{placeholder}</span>}
               </Button>
+
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
@@ -78,63 +72,14 @@ export function DatePickerScholarship({
                 defaultMonth={field.value ? new Date(field.value) : undefined}
                 required={false}
               />
+
             </PopoverContent>
           </Popover>
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          {fieldState.invalid && (
+            <FieldError errors={[fieldState.error]} />
+          )}
         </Field>
       )}
     />
   );
-=======
-    return (
-
-        <Controller
-
-            name={name}
-            control={control}
-            render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="w-full gap-1">
-                    <FieldLabel htmlFor={id} className="flex  items-center">
-                        Deadline<span className="text-red-500">*</span>
-                    </FieldLabel>
-                    <Popover >
-                        <PopoverTrigger asChild className="rounded">
-                            <Button
-                                variant="outline"
-                                id="date-picker-controlled"
-                                className="justify-start font-normal flex items-center"
-                            >
-                                <Calendar1 />
-                                {field.value
-                                    ? format(new Date(field.value), "PPP")
-                                    : <span>{placeholder}</span>}
-                            </Button>
-
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                id={id}
-                                mode="single"
-                                selected={field.value ? new Date(field.value) : undefined}
-                                onSelect={(selectedDate: Date | undefined) => {
-                                    if (selectedDate) {
-                                        field.onChange(selectedDate.toISOString()); // store as string
-                                    } else {
-                                        field.onChange(undefined); // clear value if user deselects
-                                    }
-                                }}
-                                defaultMonth={field.value ? new Date(field.value) : undefined}
-                                required={false}
-                            />
-
-                        </PopoverContent>
-                    </Popover>
-                    {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                    )}
-                </Field>
-            )}
-        />
-    );
->>>>>>> kimsan
 }

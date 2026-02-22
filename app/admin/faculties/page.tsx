@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import FacultiesPage from "@/app/components/admin/faculties/CreateFaculties";
-import React from "react";
-=======
 // import FacultiesPage from '@/app/components/admin/faculties/CreateFaculties'
 import TableListFaculty from '@/app/components/admin/faculties/FacultyListTable'
 import React from 'react'
->>>>>>> kimsan
 
 const page = () => {
   return (
@@ -13,7 +8,6 @@ const page = () => {
       {/* <FacultiesPage /> */}
       <TableListFaculty/>
     </div>
-  );
-};
-
-export default page;
+  )
+}
+export default page

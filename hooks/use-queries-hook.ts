@@ -131,10 +131,6 @@ export function useCreateProgram() {
 // hooks/use-queries-hook.ts
 export function useUpdateProgram() {
   const qc = useQueryClient();
-<<<<<<< HEAD
-=======
-
->>>>>>> kimsan
   return useMutation<
     ProgramResponse,
     unknown,
@@ -194,10 +190,6 @@ export function useCreateScholarship() {
 
 export function useUpdateScholarship() {
   const qc = useQueryClient();
-<<<<<<< HEAD
-=======
-
->>>>>>> kimsan
   return useMutation<
     ScholarshipResponse,
     unknown,
@@ -321,14 +313,9 @@ export function useUniversityContactsByUniversityId(
   universityId?: number | string,
 ) {
   return useQuery<UniversityContactResponse[]>({
-<<<<<<< HEAD
-    queryKey: ["university-contacts-by-id", universityId],
-    queryFn: () => api.getUniversityContactsByUniversityId(universityId as any),
-=======
     queryKey: ["university-contacts", "university", universityId],
     queryFn: () =>
       api.getUniversityContactsByUniversityId(universityId as number | string),
->>>>>>> kimsan
     enabled: !!universityId,
   });
 }
