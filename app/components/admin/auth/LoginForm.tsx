@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+interface DecodedToken {
+  role?: string;
+  [key: string]: any;
+}
 import { CheckCircle, Eye, EyeOff, Lock, Mail, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLogin } from "@/hooks/use-queries-hook";
@@ -27,6 +32,19 @@ export default function LoginForm() {
         throw new Error("No access token in response");
       }
 
+      // Decode JWT to get role
+      const decoded: DecodedToken = jwtDecode(data.accessToken);
+      const role = decoded.role || "user";
+
+      // Block non-admin users (case-insensitive)
+      if (role.toLowerCase() !== "admin") {
+        setError("Only admin accounts can login here. Redirecting...");
+        setTimeout(() => {
+          router.push("/client/login");
+        }, 1200);
+        return;
+      }
+
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("authToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken || "");
@@ -35,7 +53,8 @@ export default function LoginForm() {
         id: data.id || "1",
         name: data.email?.split("@")[0] || "Admin User",
         email: data.email || email,
-        role: data.role || "admin",
+        role,
+        ...decoded,
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
@@ -46,25 +65,40 @@ export default function LoginForm() {
         router.push("/admin/dashboard");
       }, 800);
     } catch (err: any) {
-      console.error("Login error:", err);
-      setError(err.response?.data?.message || err.message || "Login failed");
+      const status = err?.response?.status;
+      const data = err?.response?.data;
+
+      // Your backend now returns: { detail, status, title, instance }
+      const message = data?.detail || data?.message || err?.message || "";
+
+      if (status === 404) {
+        setError("Your account doesn't exist");
+        return;
+      }
+
+      if (status === 401) {
+        setError("Incorrect email or password");
+        return;
+      }
+
+      setError(message || "Login failed");
     }
   };
 
   const isLoading = loginMutation.isPending || isRedirecting;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
       <div className="w-full max-w-md">
         {/* Toast Notification */}
         <div
           className={`fixed top-5 right-5 bg-white rounded-xl shadow-2xl border border-green-100 p-4 flex items-start gap-3 min-w-[320px] transition-all duration-500 z-50 ${
             showToast
               ? "translate-x-0 opacity-100"
-              : "translate-x-[500px] opacity-0"
+              : "translate-x-125 opacity-0"
           }`}
         >
-          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+          <div className="shrink-0 w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
             <CheckCircle className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
@@ -77,7 +111,7 @@ export default function LoginForm() {
           </div>
           <button
             onClick={() => setShowToast(false)}
-            className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+            className="shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -155,7 +189,7 @@ export default function LoginForm() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-2.5 font-medium"
+              className="w-full bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-2.5 font-medium"
             >
               {isLoading ? (
                 <>

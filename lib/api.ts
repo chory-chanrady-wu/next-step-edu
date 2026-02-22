@@ -16,8 +16,6 @@ import type {
   ScholarshipContactResponse,
   UniversityResponse,
   UniversityMultipartPayload,
-  UniversityContactRequest,
-  UniversityContactResponse,
   UserProfileResponse,
   UpdateProfileRequest,
   LoginRequest,
@@ -56,8 +54,10 @@ api.interceptors.request.use(
       config.url?.includes("/api/v1/auth/authenticate") ||
       config.url?.includes("/api/v1/auth/register") ||
       config.url?.includes("/api/v1/auth/login");
+    // Make scholarship endpoints public (no token)
+    const isScholarshipPublic = config.url?.startsWith("/api/v1/scholarship");
 
-    if (!isAuthEndpoint) {
+    if (!isAuthEndpoint && !isScholarshipPublic) {
       const token =
         localStorage.getItem("accessToken") ||
         localStorage.getItem("token") ||
@@ -637,68 +637,6 @@ export async function updateUniversity(
 export async function deleteUniversity(id: number | string): Promise<void> {
   await api.delete(`/api/v1/universities/${id}`, { headers: authHeader() });
 }
-
-/* =======================
-   UNIVERSITY CONTACTS
-======================= */
-export async function createUniversityContact(
-  body: UniversityContactRequest,
-): Promise<UniversityContactResponse> {
-  const { data } = await api.post<UniversityContactResponse>(
-    "/api/v1/university-contacts",
-    body,
-    { headers: authHeader() },
-  );
-  return data;
-}
-
-export async function getAllUniversityContacts(): Promise<
-  UniversityContactResponse[]
-> {
-  const { data } = await api.get<UniversityContactResponse[]>(
-    "/api/v1/university-contacts",
-  );
-  return data;
-}
-
-export async function getUniversityContactById(
-  id: number | string,
-): Promise<UniversityContactResponse> {
-  const { data } = await api.get<UniversityContactResponse>(
-    `/api/v1/university-contacts/${id}`,
-  );
-  return data;
-}
-
-export async function getUniversityContactsByUniversityId(
-  universityId: number | string,
-): Promise<UniversityContactResponse[]> {
-  const { data } = await api.get<UniversityContactResponse[]>(
-    `/api/v1/university-contacts/university/${universityId}`,
-  );
-  return data;
-}
-
-export async function updateUniversityContact(
-  id: number | string,
-  body: UniversityContactRequest,
-): Promise<UniversityContactResponse> {
-  const { data } = await api.put<UniversityContactResponse>(
-    `/api/v1/university-contacts/${id}`,
-    body,
-    { headers: authHeader() },
-  );
-  return data;
-}
-
-export async function deleteUniversityContact(
-  id: number | string,
-): Promise<void> {
-  await api.delete(`/api/v1/university-contacts/${id}`, {
-    headers: authHeader(),
-  });
-}
-
 /* =======================
    USER PROFILES
 ======================= */

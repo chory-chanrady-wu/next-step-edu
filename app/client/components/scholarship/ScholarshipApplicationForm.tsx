@@ -162,11 +162,10 @@ export default function ScholarshipApplicationForm({
       });
 
       setSuccessMessage("Application submitted successfully! Redirecting...");
-
-      // Redirect to scholarship detail page after 2 seconds
+      // Redirect to scholarship detail page after 0.5 seconds
       setTimeout(() => {
         router.push(`/client/scholarship/${scholarship.id}`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       console.error("[Form] Application submission failed:", error);
       let message = "Failed to submit application.";
