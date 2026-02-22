@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import "../styles/globals.css";
 import { Roboto } from "next/font/google";
 import ReactQueryProvider from "./providers";
-import { Toaster } from "sonner";
 
 const inter = Roboto({
   subsets: ["latin"],
