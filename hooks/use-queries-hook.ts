@@ -52,13 +52,14 @@ export function useAllFaculties(universityId?: number | string) {
   });
 }
 
-export function useFaculty(id?: number | string) {
+export const useFaculty = (id?: number | string) => {
   return useQuery<FacultyResponse>({
-    queryKey: ["faculty", id],
-    queryFn: () => api.getFacultyById(id as any),
+    queryKey: ['faculty', id],
+    queryFn: async () => api.fetchFacultyById(id as any),
     enabled: !!id,
   });
-}
+};
+
 
 export function useCreateFaculty() {
   const qc = useQueryClient();

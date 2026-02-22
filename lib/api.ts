@@ -145,14 +145,32 @@ export async function createFaculty(
   return data;
 }
 
-export async function getFacultyById(
-  id: number | string,
-): Promise<FacultyResponse> {
-  const { data } = await api.get<FacultyResponse>(`/api/v1/faculties/${id}`, {
+export async function fetchFacultyById(id: number | string): Promise<FacultyResponse> {
+  // 1. Fetch the universities array from the detail endpoint
+  const detailResponse = await api.get(`/api/v1/faculties/${id}`, {
     headers: authHeader(),
   });
-  return data;
+  const universities = detailResponse.data; // currently just the array
+
+  // 2. Fetch the list of all faculties to get the name and description
+  const listResponse = await api.get('/api/v1/faculties', {
+    headers: authHeader(),
+  });
+  const allFaculties = listResponse.data;
+
+  // 3. Find the matching faculty in the list
+  const matchingFaculty = allFaculties.find((f: any) => f.id === Number(id));
+
+  // 4. Return the combined object
+  return {
+    id: Number(id),
+    name: matchingFaculty?.name ?? `Faculty #${id}`,
+    description: matchingFaculty?.description ?? '',
+    data: universities,
+    programCount: matchingFaculty?.programCount ?? 0, // if available
+  };
 }
+
 
 export async function getAllFaculties(
   universityId?: number | string,

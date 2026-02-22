@@ -38,12 +38,23 @@ export interface FacultyRequest {
   universityId: number;
 }
 
+// types/nextstepedu.ts (or wherever you keep types)
 export interface FacultyResponse {
   id: number;
   name: string;
-  universityId: number;
-  createdAt?: string;
-  updatedAt?: string;
+  description?: string;
+  data: Array<{
+    id: number;
+    name: string;
+    slug: string;
+    description?: string;
+    degreeLevel: number;
+    examRequired: boolean;
+    tuitionFeeAmount: number;
+    currency: string;
+    studyPeriodMonths: number;
+  }>;
+  programCount?: number;
 }
 
 /* =======================
