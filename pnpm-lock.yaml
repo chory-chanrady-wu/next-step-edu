@@ -70,6 +70,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      emailjs-com:
+        specifier: ^3.2.0
+        version: 3.2.0
       firebase:
         specifier: ^12.9.0
         version: 12.9.0
@@ -91,6 +94,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      nodemailer:
+        specifier: ^8.0.1
+        version: 8.0.1
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -137,6 +143,9 @@ importers:
       "@types/node":
         specifier: ^20
         version: 20.19.30
+      "@types/nodemailer":
+        specifier: ^7.0.11
+        version: 7.0.11
       "@types/react":
         specifier: ^19
         version: 19.2.9
@@ -3181,6 +3190,12 @@ packages:
         integrity: sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==,
       }
 
+  "@types/nodemailer@7.0.11":
+    resolution:
+      {
+        integrity: sha512-E+U4RzR2dKrx+u3N4DlsmLaDC6mMZOM/TPROxA0UAPiTgI0y4CEFBmZE+coGWTjakDriRsXG368lNk1u9Q0a2g==,
+      }
+
   "@types/react-dom@19.2.3":
     resolution:
       {
@@ -4683,6 +4698,14 @@ packages:
       {
         integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==,
       }
+
+  emailjs-com@3.2.0:
+    resolution:
+      {
+        integrity: sha512-Prbz3E1usiAwGjMNYRv6EsJ5c373cX7/AGnZQwOfrpNJrygQJ15+E9OOq4pU8yC977Z5xMetRfc3WmDX6RcjAA==,
+      }
+    engines: { node: ">=12.0.0" }
+    deprecated: The SDK name changed to @emailjs/browser
 
   emoji-regex@8.0.0:
     resolution:
@@ -7305,6 +7328,13 @@ packages:
       {
         integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==,
       }
+
+  nodemailer@8.0.1:
+    resolution:
+      {
+        integrity: sha512-5kcldIXmaEjZcHR6F28IKGSgpmZHaF1IXLWFTG+Xh3S+Cce4MiakLtWY+PlBU69fLbRa8HlaGIrC/QolUpHkhg==,
+      }
+    engines: { node: ">=6.0.0" }
 
   nopt@9.0.0:
     resolution:
@@ -11659,6 +11689,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  "@types/nodemailer@7.0.11":
+    dependencies:
+      "@types/node": 20.19.30
+
   "@types/react-dom@19.2.3(@types/react@19.2.9)":
     dependencies:
       "@types/react": 19.2.9
@@ -12609,6 +12643,8 @@ snapshots:
   ee-first@1.1.1: {}
 
   electron-to-chromium@1.5.267: {}
+
+  emailjs-com@3.2.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -14475,6 +14511,8 @@ snapshots:
     optional: true
 
   node-releases@2.0.27: {}
+
+  nodemailer@8.0.1: {}
 
   nopt@9.0.0:
     dependencies:

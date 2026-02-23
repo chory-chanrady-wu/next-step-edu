@@ -40,6 +40,7 @@ import {
 } from "@/hooks/use-queries-hook";
 import DeleteConfirmationModal from "../universities/DeleteConfirmationModal";
 import { toast } from "sonner";
+import emailjs from "emailjs-com";
 
 const ApplicantTable = () => {
   const { data: applicants = [], isLoading } = useAllApplicants();
@@ -89,12 +90,54 @@ const ApplicantTable = () => {
     });
   };
 
-  const handleStatusUpdate = (id: number, status: string) => {
+  // State for approve modal
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [approveMessage, setApproveMessage] = useState("");
+  const [approvingApplicantId, setApprovingApplicantId] = useState<
+    number | null
+  >(null);
+
+  const handleStatusUpdate = async (
+    id: number,
+    status: string,
+    message?: string,
+  ) => {
+    // Find the applicant to get their email
+    const applicant = applicants.find((a) => a.id === id);
     updateStatus(
       { id, status },
       {
-        onSuccess: () =>
-          toast.success(`Applicant ${status.toLowerCase()} successfully`),
+        onSuccess: async () => {
+          toast.success(`Applicant ${status.toLowerCase()} successfully`);
+          // Only send email if approving and message is provided
+          if (
+            status.toLowerCase() === "approved" &&
+            message &&
+            applicant?.email
+          ) {
+            try {
+              await emailjs.send(
+                "NextStepEdu", // <-- replace with your EmailJS Service ID
+                "template_x1qiq5t", // <-- replace with your EmailJS Template ID
+                {
+                  email: applicant.email,
+                  message: message,
+                  applicant: `${applicant.firstName} ${applicant.lastName}`,
+                  title:
+                    "Congratulations! Your scholarship application has been approved!",
+                  scholarship: applicant.intendedMajor,
+                },
+                "bZtkQ7Ff5qy7_DKpI", // <-- replace with your EmailJS Public Key
+              );
+              toast.success("Approval email sent to applicant.");
+            } catch (err: any) {
+              toast.error(
+                "Failed to send approval email: " +
+                  (err?.text || err?.message || err),
+              );
+            }
+          }
+        },
         onError: (err: any) =>
           toast.error(
             err.response?.data?.message ||
@@ -204,7 +247,7 @@ const ApplicantTable = () => {
         <Table>
           <TableHeader className="bg-gray-50/50">
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-[300px]">
+              <TableHead className="w-75">
                 <div className="flex items-center gap-2 cursor-pointer group py-2">
                   Applicant
                   <ArrowUpDown className="h-3 w-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
@@ -319,7 +362,11 @@ const ApplicantTable = () => {
                           Update Status
                         </div>
                         <DropdownMenuItem
-                          onClick={() => handleStatusUpdate(app.id, "APPROVED")}
+                          onClick={() => {
+                            setApprovingApplicantId(app.id);
+                            setIsApproveModalOpen(true);
+                            setApproveMessage("");
+                          }}
                           className="flex items-center gap-2 cursor-pointer py-2 text-green-600 font-semibold"
                         >
                           <div className="w-2 h-2 rounded-full bg-green-500" />{" "}
@@ -427,6 +474,44 @@ const ApplicantTable = () => {
           </div>
         </div>
       </div>
+      {/* Approve Modal (moved outside table) */}
+      {isApproveModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h2 className="text-lg font-bold mb-2">Approval Message</h2>
+            <textarea
+              className="w-full border rounded p-2 mb-4"
+              rows={4}
+              placeholder="Enter a message to send to the applicant..."
+              value={approveMessage}
+              onChange={(e) => setApproveMessage(e.target.value)}
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsApproveModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                disabled={!approveMessage.trim()}
+                onClick={() => {
+                  if (approvingApplicantId) {
+                    handleStatusUpdate(
+                      approvingApplicantId,
+                      "APPROVED",
+                      approveMessage,
+                    );
+                    setIsApproveModalOpen(false);
+                  }
+                }}
+              >
+                Approve & Send
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

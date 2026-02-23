@@ -1,3 +1,22 @@
+// Send email via Next.js API route
+export async function sendEmail({
+  to,
+  subject,
+  text,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+}) {
+  const res = await fetch("/api/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ to, subject, text }),
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.error || "Failed to send email");
+  return data;
+}
 import axios, {
   InternalAxiosRequestConfig,
   AxiosResponse,
@@ -767,10 +786,11 @@ export async function updateApplicant(
 export async function updateApplicantStatus(
   id: number | string,
   status: string,
+  message?: string,
 ): Promise<ApplicantResponse> {
   const { data } = await api.patch<ApplicantResponse>(
     `/api/v1/applicants/${id}/status`,
-    {},
+    message ? { message } : {},
     {
       params: { status },
       headers: authHeader(),

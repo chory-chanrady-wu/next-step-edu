@@ -401,9 +401,10 @@ export function useUpdateApplicantStatus() {
   return useMutation<
     ApplicantResponse,
     unknown,
-    { id: number | string; status: string }
+    { id: number | string; status: string; message?: string }
   >({
-    mutationFn: ({ id, status }) => api.updateApplicantStatus(id, status),
+    mutationFn: ({ id, status, message }) =>
+      api.updateApplicantStatus(id, status, message),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["applicants"] });
       qc.invalidateQueries({ queryKey: ["applicant"] });
