@@ -126,6 +126,7 @@ const ApplicantTable = () => {
                   title:
                     "Congratulations! Your scholarship application has been approved!",
                   scholarship: applicant.intendedMajor,
+                  contact: "Please contact us within 14 business days to claim your scholarship.",
                 },
                 "bZtkQ7Ff5qy7_DKpI", // <-- replace with your EmailJS Public Key
               );
