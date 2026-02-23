@@ -3,12 +3,16 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useAllFaculties } from "@/hooks/use-queries-hook";
+import {
+  useAllFaculties,
+  useProgramsByUniversity,
+} from "@/hooks/use-queries-hook";
 import type { FacultyResponse } from "@/types/nextstepedu";
 
 type FacultyItem = FacultyResponse & {
   description?: string;
   icon?: string;
+  scholarshipCount?: number;
 };
 
 interface DetailFacultyProps {
@@ -18,7 +22,23 @@ interface DetailFacultyProps {
 
 export default function DetailFaculty({ universityId }: DetailFacultyProps) {
   const { data: faculties = [], isLoading } = useAllFaculties(universityId);
-  const items = faculties as FacultyItem[];
+  const { data: programs = [] } = useProgramsByUniversity(universityId);
+
+  // Aggregate scholarshipCount per facultyId from programs
+  const facultyScholarshipMap: Record<string, number> = {};
+  (programs as any[]).forEach((program) => {
+    if (program.faculty && program.faculty.id != null) {
+      const fid = String(program.faculty.id);
+      facultyScholarshipMap[fid] =
+        (facultyScholarshipMap[fid] || 0) + (program.scholarshipCount || 0);
+    }
+  });
+
+  // Merge scholarshipCount into faculty items
+  const items: FacultyItem[] = (faculties as FacultyItem[]).map((faculty) => ({
+    ...faculty,
+    scholarshipCount: facultyScholarshipMap[String(faculty.id)] || 0,
+  }));
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true, offset: 100 });
@@ -98,15 +118,27 @@ export default function DetailFaculty({ universityId }: DetailFacultyProps) {
           <div
             data-aos="fade-up"
             data-aos-delay="600"
-            className="mt-8 bg-linear-to-r from-teal-600 to-teal-400 rounded-xl p-4 text-white shadow-lg"
+            className="mt-8 bg-linear-to-r from-teal-600 to-teal-400 rounded-xl p-2 text-white shadow-lg"
           >
-            <div className="flex justify-center items-center">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-3">
               <div>
-                <div className="text-3xl font-bold mb-1 text-center">
+                <div className="text-xl font-bold mb-1 text-center">
                   {items.length}
                 </div>
                 <p className="text-teal-100 text-center text-sm">
                   Academic Faculties
+                </p>
+              </div>
+              <div className="border-l border-teal-200 h-10 mx-4 hidden md:block" />
+              <div>
+                <div className="text-xl font-bold mb-1 text-center">
+                  {items.reduce(
+                    (sum, faculty) => sum + (faculty.scholarshipCount || 0),
+                    0,
+                  )}
+                </div>
+                <p className="text-teal-100 text-center text-sm">
+                  Scholarships
                 </p>
               </div>
             </div>

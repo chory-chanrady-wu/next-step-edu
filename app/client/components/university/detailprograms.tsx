@@ -7,7 +7,7 @@ import "aos/dist/aos.css";
 interface Program {
   id: string;
   university_id?: string;
-  faculty_id?: string;
+  faculty?: { name: string } | string;
   name: string;
   description?: string;
   degree_level?: number;
@@ -53,6 +53,18 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
   const getExamRequired = (program: Program) =>
     program.exam_required ?? program.examRequired;
   const getCurrency = (program: Program) => program.currency ?? "USD";
+  const getFacultyName = (program: any) => {
+    if (program.faculty) {
+      if (typeof program.faculty === "object") {
+        if (program.faculty.name) return program.faculty.name;
+        if (program.faculty.id) return `Faculty #${program.faculty.id}`;
+      }
+      if (typeof program.faculty === "string") {
+        return program.faculty;
+      }
+    }
+    return "N/A";
+  };
 
   if (programs.length === 0) {
     return (
@@ -92,6 +104,9 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                   Program Name
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-semibold">
+                  Faculty Name
+                </th>
+                <th className="px-3 py-2 text-left text-xs font-semibold">
                   Degree Level
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-semibold">
@@ -115,6 +130,8 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                 const duration = getDuration(program);
                 const examRequired = getExamRequired(program);
                 const currency = getCurrency(program);
+                // Support both faculty object and faculty name string
+                const facultyName = getFacultyName(program);
                 return (
                   <tr
                     key={program.id}
@@ -125,6 +142,11 @@ export default function DetailPrograms({ programs }: DetailProgramsProps) {
                     <td className="px-3 py-2">
                       <span className="font-semibold text-gray-900 text-xs">
                         {program.name}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2">
+                      <span className="text-xs text-gray-700">
+                        {facultyName}
                       </span>
                     </td>
                     <td className="px-3 py-2">

@@ -93,9 +93,9 @@ export default function UniversityDetailPage() {
       currency: program.currency ?? "USD",
       study_period_months: program.studyPeriodMonths ?? undefined,
       university_id: program.university
-        ? String(program.university)
+        ? String(program.university.id ?? program.university)
         : undefined,
-      faculty_id: program.faculty ? String(program.faculty) : undefined,
+      faculty: program.faculty ? program.faculty : undefined,
     };
   });
 

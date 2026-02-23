@@ -156,12 +156,9 @@ export default function Header() {
           localStorage.setItem("user", JSON.stringify(selectedUser));
           setUser(selectedUser);
         } catch (error) {
-          // console.error removed
-          // Fallback: use localStorage user if available
           const userData = localStorage.getItem("user");
           if (userData) {
             setUser(JSON.parse(userData));
-            // console.warn removed
           } else {
             setUser(null);
           }
@@ -236,7 +233,6 @@ export default function Header() {
         "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
       return `${baseUrl}${user.image.startsWith("/") ? "" : "/"}${user.image}`;
     } catch (error) {
-      // console.error removed
       return "";
     }
   };
