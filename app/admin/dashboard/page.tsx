@@ -17,12 +17,7 @@ export default function Dashboard() {
   const { data: scholarships } = useAllScholarships({ size: 1 });
   const { data: programs } = useAllPrograms();
   const { data: profiles } = useAllProfiles();
-  console.log("Dashboard Data:", {
-    universities,
-    scholarships,
-    programs,
-    profiles,
-  });
+  // console.log removed
 
   return (
     <div className="space-y-6">

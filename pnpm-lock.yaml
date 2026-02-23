@@ -112,6 +112,9 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      sweetalert2:
+        specifier: ^11.26.20
+        version: 11.26.20
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -8759,6 +8762,12 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
+  sweetalert2@11.26.20:
+    resolution:
+      {
+        integrity: sha512-mG3guPRzmpqGufTQ05Kr7WQIe1xfBEB9JwPIJbR2plL0ezVzS3qmazuzse0J8+/YYGCGrAL4Us2Sm5VCgHyuRg==,
+      }
+
   tagged-tag@1.0.0:
     resolution:
       {
@@ -15458,6 +15467,8 @@ snapshots:
       supports-color: 7.2.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  sweetalert2@11.26.20: {}
 
   tagged-tag@1.0.0: {}
 

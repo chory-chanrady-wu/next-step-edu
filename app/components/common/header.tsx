@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   GraduationCap,
   LogIn,
+  ChevronDown,
   Menu,
   User,
   X,
@@ -26,7 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 const navLinks = [
   { href: routes.client.home, label: "Home" },
@@ -45,13 +46,7 @@ export default function Header() {
   const isAuthPage =
     pathname === "/client/login" || pathname === "/client/register";
 
-  // Debug: log user profile and image URL
-  useEffect(() => {
-    if (user) {
-      console.log("[Header] user profile from API:", user);
-      console.log("[Header] user image URL:", user.image);
-    }
-  }, [user, router]); // Added router to dependency array
+  // Debug logs removed
 
   const items = useMemo(() => navLinks, []);
   const isActive = (href: string) => pathname === href;
@@ -112,7 +107,7 @@ export default function Header() {
                 const payload = token.split(".")[1];
                 const decoded = JSON.parse(atob(payload));
                 if (decoded.sub) tokenEmail = decoded.sub;
-                console.log("[Header] Decoded accessToken email:", tokenEmail);
+                // console.log removed
               } catch (err) {
                 console.error("[Header] Failed to decode accessToken:", err);
               }
@@ -121,29 +116,20 @@ export default function Header() {
             if (tokenEmail) {
               selectedUser = profileArray.find((u) => u.email === tokenEmail);
               if (!selectedUser) {
-                console.warn(
-                  "[Header] No user found for accessToken email:",
-                  tokenEmail,
-                );
+                // console.warn removed
               }
             }
             // If not found, try localStorage email
             if (!selectedUser && localEmail) {
               selectedUser = profileArray.find((u) => u.email === localEmail);
               if (!selectedUser) {
-                console.warn(
-                  "[Header] No user found for localStorage email:",
-                  localEmail,
-                );
+                // console.warn removed
               }
             }
             // If still not found, fallback to first user
             if (!selectedUser && profileArray.length > 0) {
               selectedUser = profileArray[0];
-              console.warn(
-                "[Header] Fallback to first user in array:",
-                selectedUser,
-              );
+              // console.warn removed
             }
           } else {
             selectedUser = profileArray;
@@ -170,15 +156,12 @@ export default function Header() {
           localStorage.setItem("user", JSON.stringify(selectedUser));
           setUser(selectedUser);
         } catch (error) {
-          console.error("Failed to fetch user profile:", error);
+          // console.error removed
           // Fallback: use localStorage user if available
           const userData = localStorage.getItem("user");
           if (userData) {
             setUser(JSON.parse(userData));
-            console.warn(
-              "Using localStorage user fallback.",
-              JSON.parse(userData),
-            );
+            // console.warn removed
           } else {
             setUser(null);
           }
@@ -202,7 +185,7 @@ export default function Header() {
 
     // Listen for custom user-logged-in event
     const handleUserLoggedIn = () => {
-      console.log("[Header] user-logged-in event received");
+      // console.log removed
       handleStorageChange();
     };
     window.addEventListener("user-logged-in", handleUserLoggedIn);
@@ -224,7 +207,7 @@ export default function Header() {
     localStorage.removeItem("user");
     setUser(null);
     setIsLoggedIn(false);
-    toast.success("Logged out successfully");
+    // toast.success("Logged out successfully");
     router.push("/");
   };
 
@@ -253,7 +236,7 @@ export default function Header() {
         "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
       return `${baseUrl}${user.image.startsWith("/") ? "" : "/"}${user.image}`;
     } catch (error) {
-      console.error("Error constructing image URL:", error);
+      // console.error removed
       return "";
     }
   };
@@ -302,7 +285,7 @@ export default function Header() {
             {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-3 rounded-full transition-opacity hover:opacity-80 hover:bg-slate-50 px-2 py-1">
+                  <button className="flex items-center gap-3 rounded-full transition-opacity hover:opacity-80 hover:bg-slate-50 px-2 py-1 focus:outline-none">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
                         src={getImageUrl()}
@@ -310,6 +293,7 @@ export default function Header() {
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                         }}
+                        className="h-10 w-10 rounded-full"
                       />
                       <AvatarFallback className="bg-teal-600 text-white font-semibold">
                         {getUserInitials()}
@@ -327,6 +311,7 @@ export default function Header() {
                         {user?.email}
                       </span>
                     </div>
+                    <ChevronDown className="h-4 w-4 text-gray-500" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64">
@@ -338,6 +323,7 @@ export default function Header() {
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
                         }}
+                        className="h-16 w-16 rounded-full"
                       />
                       <AvatarFallback className="bg-teal-600 text-white text-xl font-semibold">
                         {getUserInitials()}
@@ -360,10 +346,24 @@ export default function Header() {
                       )}
                     </div>
                   </div>
-                  <div className="p-2 space-y-1">
+                  <div className="p-2 space-y-1 justify-center flex">
                     <DropdownMenuSeparator className="my-1" />
                     <DropdownMenuItem
-                      onClick={handleLogout}
+                      onClick={async () => {
+                        const result = await Swal.fire({
+                          title: "Are you sure?",
+                          text: "Do you want to logout?",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#d33",
+                          cancelButtonColor: "#3085d6",
+                          confirmButtonText: "Yes, logout",
+                          cancelButtonText: "Cancel",
+                        });
+                        if (result.isConfirmed) {
+                          handleLogout();
+                        }
+                      }}
                       variant="destructive"
                     >
                       <LogOut className="mr-2 h-4 w-4" />
@@ -436,6 +436,7 @@ export default function Header() {
                             onError={(e) => {
                               e.currentTarget.style.display = "none";
                             }}
+                            className="h-14 w-14 rounded-full"
                           />
                           <AvatarFallback className="bg-teal-600 text-white text-lg font-semibold">
                             {getUserInitials()}

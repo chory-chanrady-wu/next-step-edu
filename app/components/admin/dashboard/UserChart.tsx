@@ -35,8 +35,8 @@ export function UserChart() {
     })
     .reverse();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  console.log("UserChart Profiles:", profiles);
-  console.log("UserChart DATA:", DATA);
+  // console.log removed
+  // console.log removed
 
   const max =
     Math.max(...DATA.map((d) => d.value)) > 0

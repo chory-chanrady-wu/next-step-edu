@@ -295,9 +295,6 @@ export function useDeleteUniversity() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["universities"] }),
   });
 }
-
-/* =======================
-   UNIVERSITY CONTACTS
 /* =======================
    PROFILES
 ======================= */

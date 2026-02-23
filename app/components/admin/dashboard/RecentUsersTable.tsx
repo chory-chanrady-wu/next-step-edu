@@ -15,7 +15,7 @@ import { Shield, GraduationCap, Phone, Calendar } from "lucide-react";
 
 export function RecentUsersTable() {
   const { data: profiles = [], isLoading } = useAllProfiles();
-  console.log("Recent Users Data:", profiles);
+  // console.log removed
 
   if (isLoading) {
     return <div className="p-4 text-center">Loading users...</div>;
