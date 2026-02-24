@@ -62,21 +62,6 @@ export default function LoginForm({ onSubmit }: Props) {
       localStorage.setItem("user", JSON.stringify(user));
       // Close modal immediately
       onSubmit();
-
-      // Dispatch custom event to notify header
-      setTimeout(() => {
-        window.dispatchEvent(new Event("user-logged-in"));
-        window.location.href = "/";
-      }, 100);
-    } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message ||
-          error?.message ||
-          "Login failed. Please check your credentials.",
-      );
-      alert(
-        "Login failed: " + (error?.response?.data?.message || error?.message),
-      );
     } finally {
       setIsLoading(false);
     }

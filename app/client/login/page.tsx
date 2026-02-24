@@ -7,15 +7,12 @@ export default function ClientLoginPage() {
   // Show toast if redirected due to SUSPENDED/INACTIVE
   useEffect(() => {
     const loginError = localStorage.getItem("loginError");
-    console.log("[LoginPage] loginError flag:", loginError);
     if (loginError === "SUSPENDED") {
-      console.log("[LoginPage] Showing suspended toast");
       toast.error(
         "Your account has been suspended, please contact to support for activating",
       );
       localStorage.removeItem("loginError");
     } else if (loginError === "INACTIVE") {
-      console.log("[LoginPage] Showing inactive toast");
       toast.error("Your account is not active. Please contact support.");
       localStorage.removeItem("loginError");
     }
