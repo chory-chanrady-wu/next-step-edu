@@ -69,6 +69,18 @@ api.interceptors.request.use(
     // Only add auth headers in browser environment
     if (typeof window === "undefined") return config;
 
+    const publicEndpoints = [
+      "/api/v1/universities",
+      "/api/v1/universities/",
+      "/api/v1/programs",
+      "/api/v1/programs/",
+      "/api/v1/scholarship",
+      "/api/v1/scholarship/",
+    ];
+    const isPublic = publicEndpoints.some((endpoint) =>
+      config.url?.startsWith(endpoint),
+    );
+
     const isAuthEndpoint =
       config.url?.includes("/api/v1/auth/authenticate") ||
       config.url?.includes("/api/v1/auth/register") ||
@@ -76,7 +88,7 @@ api.interceptors.request.use(
     // Make scholarship endpoints public (no token)
     const isScholarshipPublic = config.url?.startsWith("/api/v1/scholarship");
 
-    if (!isAuthEndpoint && !isScholarshipPublic) {
+    if (!isAuthEndpoint && !isScholarshipPublic && !isPublic) {
       const token =
         localStorage.getItem("accessToken") ||
         localStorage.getItem("token") ||

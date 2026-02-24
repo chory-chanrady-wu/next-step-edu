@@ -59,7 +59,9 @@ export default function Header() {
         setIsLoggedIn(true);
         try {
           const res = await fetch(
-            "https://mid-term-wing-nextstepedu-backend-production.up.railway.app/api/v1/profile",
+            process.env.NEXT_PUBLIC_API_URL
+              ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profile`
+              : "https://mid-term-nextstepedu-production.up.railway.app/api/v1/profile",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -230,6 +232,7 @@ export default function Header() {
       if (user.image.startsWith("http")) return user.image;
       // If it's a relative path, prepend API base URL
       const baseUrl =
+        process.env.NEXT_PUBLIC_API_URL ||
         "https://mid-term-nextstepedu-production.up.railway.app";
       return `${baseUrl}${user.image.startsWith("/") ? "" : "/"}${user.image}`;
     } catch (error) {
