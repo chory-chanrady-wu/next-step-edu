@@ -56,7 +56,7 @@ const UserForm = ({ user, onClose }: UserFormProps) => {
     e.preventDefault();
     updateProfile(
       {
-        userId: user.id,
+        userId: user.userId,
         firstname: formData.firstname,
         lastname: formData.lastname,
         phone: formData.phone,

@@ -366,7 +366,7 @@ const UserTable = () => {
             ) : paginatedData.length > 0 ? (
               paginatedData.map((user: UserProfileResponse) => (
                 <TableRow
-                  key={user.id}
+                  key={user.userId}
                   className="hover:bg-blue-50/10 transition-colors border-gray-50"
                 >
                   <TableCell className="py-4">
