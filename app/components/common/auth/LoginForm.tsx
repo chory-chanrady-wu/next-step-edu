@@ -62,6 +62,12 @@ export default function LoginForm({ onSubmit }: Props) {
       localStorage.setItem("user", JSON.stringify(user));
       // Close modal immediately
       onSubmit();
+      toast.success("Login successful!");
+      // Dispatch custom event so Header updates profile immediately
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("user-logged-in"));
+      }
+      router.push("/client");
     } finally {
       setIsLoading(false);
     }

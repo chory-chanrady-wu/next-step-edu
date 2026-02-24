@@ -182,10 +182,8 @@ export default function Header() {
     };
     window.addEventListener("storage", handleStorageChange);
 
-    // Listen for custom user-logged-in event
     const handleUserLoggedIn = () => {
-      // console.log removed
-      handleStorageChange();
+      checkAuth();
     };
     window.addEventListener("user-logged-in", handleUserLoggedIn);
 
