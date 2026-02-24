@@ -230,7 +230,7 @@ export default function Header() {
       if (user.image.startsWith("http")) return user.image;
       // If it's a relative path, prepend API base URL
       const baseUrl =
-        "https://mid-term-wing-nextstepedu-backend-production.up.railway.app";
+        "https://mid-term-nextstepedu-production.up.railway.app";
       return `${baseUrl}${user.image.startsWith("/") ? "" : "/"}${user.image}`;
     } catch (error) {
       return "";
