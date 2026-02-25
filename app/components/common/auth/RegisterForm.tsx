@@ -68,9 +68,9 @@ export default function RegisterForm({ onSwitch }: Props) {
 
       toast.success("Registration successful! Please login.");
 
-      // Switch to login modal after successful registration
+      // Route to login page after successful registration
       setTimeout(() => {
-        onSwitch();
+        window.location.href = "/client/login";
       }, 500);
     } catch (error: any) {
       console.error("Registration error:", error);

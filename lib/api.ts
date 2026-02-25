@@ -243,7 +243,7 @@ export async function registerUser(
   if (payload.image) formData.append("image", payload.image);
 
   const { data } = await api.post<string>("/api/v1/auth/register", formData, {
-    headers: { ...authHeader(), "Content-Type": "multipart/form-data" },
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return data;
 }
