@@ -41,7 +41,7 @@ export default function CreateScholarship() {
           <span className="text-red-600 font-semibold">create</span> scholarships. Please contact your system administrator if you believe this is an error.
         </p>
         <Button
-          onClick={() => router.push("/admin/universities")}
+          onClick={() => router.push("/admin/scholarships")}
           className="mt-10 h-12 px-8 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold shadow-xl transition-all hover:scale-105 active:scale-95"
         >
           Return to Dashboard

@@ -35,7 +35,7 @@ export default function CreateProgram() {
           error.
         </p>
         <Button
-          onClick={() => router.push("/admin/universities")}
+          onClick={() => router.push("/admin/programs")}
           className="mt-10 h-12 px-8 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold shadow-xl transition-all hover:scale-105 active:scale-95"
         >
           Return to Dashboard
