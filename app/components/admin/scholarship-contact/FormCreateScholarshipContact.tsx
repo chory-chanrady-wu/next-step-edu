@@ -4,8 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Loader2, Save, RotateCcw } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,18 +22,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-import { useAllScholarships, useCreateScholarshipContact } from "@/hooks/use-queries-hook";
+import {
+  useAllScholarships,
+  useCreateScholarshipContact,
+} from "@/hooks/use-queries-hook";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
-import { ScholarshipContactCreateInput, scholarshipContactCreateSchema } from "@/lib/schema/scholarship-contact";
+import {
+  ScholarshipContactCreateInput,
+  scholarshipContactCreateSchema,
+} from "@/lib/schema/scholarship-contact";
 
 // Define the schema to match ScholarshipContactRequest
 
 export default function CreateScholarshipContactPage() {
-  const router = useRouter();
-  const { mutate: createContact, isPending: isCreating } = useCreateScholarshipContact();
-  const { data: scholarships, isLoading: loadingScholarships } = useAllScholarships();
-
-
+  const { mutate: createContact, isPending: isCreating } =
+    useCreateScholarshipContact();
+  const { data: scholarships, isLoading: loadingScholarships } =
+    useAllScholarships();
 
   const scholarshipOptions =
     scholarships?.content?.map((scholarship: any) => ({

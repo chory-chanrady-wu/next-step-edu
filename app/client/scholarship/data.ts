@@ -140,7 +140,7 @@ function mapScholarshipFromApi(
       url: scholarship.applyLink?.trim() || "#",
     },
     contact: {
-      name: contact?.name?.trim() || "Scholarship Office",
+      name: contact?.label?.trim() || "Scholarship Office",
       email: contact?.email?.trim() || "info@example.com",
       phone: contact?.phone?.trim() || "N/A",
     },
@@ -177,8 +177,7 @@ export async function getScholarshipById(
     let university: UniversityResponse | null = null;
 
     try {
-      const contacts = await getScholarshipContactsByScholarshipId(id);
-      contact = contacts[0] || null;
+      contact = (await getScholarshipContactsByScholarshipId(id)) || null;
     } catch (error) {
       console.warn(`Failed to fetch contacts for scholarship ${id}:`, error);
       contact = null;

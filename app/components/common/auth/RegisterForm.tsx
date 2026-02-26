@@ -9,7 +9,7 @@ type Props = {
   onSwitch: () => void;
 };
 
-export default function RegisterForm({ onSwitch }: Props) {
+export default function RegisterForm({}: Props) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [firstname, setFirstname] = useState("");

@@ -1,4 +1,3 @@
-
 import { FormEditScholarshipContact } from "@/app/components/admin/scholarship-contact/FormEditScholarshipContact";
 
 interface Props {

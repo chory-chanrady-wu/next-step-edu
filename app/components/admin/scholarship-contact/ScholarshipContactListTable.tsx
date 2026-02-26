@@ -71,10 +71,10 @@ export const TableListScholarshipContact = () => {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((c) => {
         // Safely handle null/undefined fields by providing empty string fallbacks
-        const label = c.label ?? '';
-        const email = c.email ?? '';
-        const phone = c.phone ?? '';
-        const website = c.websiteUrl ?? '';
+        const label = c.label ?? "";
+        const email = c.email ?? "";
+        const phone = c.phone ?? "";
+        const website = c.websiteUrl ?? "";
 
         return (
           label.toLowerCase().includes(query) ||

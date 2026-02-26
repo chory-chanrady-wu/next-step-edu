@@ -233,10 +233,13 @@ export function useDeleteScholarshipContact() {
   });
 }
 
-export function useScholarshipContactsByScholarshipId(scholarshipId?: number | string) {
+export function useScholarshipContactsByScholarshipId(
+  scholarshipId?: number | string,
+) {
   return useQuery<ScholarshipContactResponse>({
     queryKey: ["scholarship-contacts", "scholarship", scholarshipId],
-    queryFn: () => api.getScholarshipContactsByScholarshipId(scholarshipId as any),
+    queryFn: () =>
+      api.getScholarshipContactsByScholarshipId(scholarshipId as any),
     enabled: !!scholarshipId,
   });
 }

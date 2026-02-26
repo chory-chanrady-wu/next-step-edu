@@ -10,7 +10,6 @@ export const scholarshipContactCreateSchema = z.object({
   phone: z.string().optional(),
 
   websiteUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
-
 });
 
 export type ScholarshipContactCreateInput = z.infer<

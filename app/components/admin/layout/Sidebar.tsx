@@ -75,7 +75,11 @@ const items = [
     icon: Inbox,
     label: "Scholarships Contact",
     subItems: [
-      { href: "/admin/scholarships-contact", label: "List Contact", icon: List },
+      {
+        href: "/admin/scholarships-contact",
+        label: "List Contact",
+        icon: List,
+      },
       {
         href: "/admin/scholarships-contact/create",
         label: "Create Contact",
@@ -128,7 +132,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   const isActive = href
     ? href === "/dashboard"
       ? pathname === href
-      : pathname === href || pathname.startsWith(href + '/')
+      : pathname === href || pathname.startsWith(href + "/")
     : isChildActive;
 
   const handleClick = (e: React.MouseEvent) => {

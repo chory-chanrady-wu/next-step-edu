@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -13,7 +13,6 @@ import {
   Mail,
   Phone,
   Globe,
-  MapPin,
   MoveRight,
 } from "lucide-react";
 import Link from "next/link";
@@ -51,11 +50,19 @@ interface FormEditScholarshipContactProps {
   id: string | number; // should be the contact ID
 }
 
-export function FormEditScholarshipContact({ id }: FormEditScholarshipContactProps) {
+export function FormEditScholarshipContact({
+  id,
+}: FormEditScholarshipContactProps) {
   // Use the correct hook to fetch a single contact by its ID
-  const { data: contact, isLoading, error } = useScholarshipContactsByScholarshipId(id);
-  const { data: scholarships, isLoading: loadingScholarships } = useAllScholarships();
-  const { mutate: updateContact, isPending: isUpdating } = useUpdateScholarshipContact();
+  const {
+    data: contact,
+    isLoading,
+    error,
+  } = useScholarshipContactsByScholarshipId(id);
+  const { data: scholarships, isLoading: loadingScholarships } =
+    useAllScholarships();
+  const { mutate: updateContact, isPending: isUpdating } =
+    useUpdateScholarshipContact();
 
   const scholarshipOptions =
     scholarships?.content?.map((scholarship: any) => ({
@@ -79,10 +86,10 @@ export function FormEditScholarshipContact({ id }: FormEditScholarshipContactPro
     if (contact) {
       form.reset({
         scholarshipId: contact.scholarship_id,
-        label: contact.label ?? "",          // corrected: use 'name', not 'label'
+        label: contact.label ?? "", // corrected: use 'name', not 'label'
         email: contact.email ?? "",
         phone: contact.phone ?? "",
-        websiteUrl: contact.websiteUrl ?? "",     // corrected: use 'website', not 'websiteUrl'
+        websiteUrl: contact.websiteUrl ?? "", // corrected: use 'website', not 'websiteUrl'
         // address: contact. ?? "",     // added address
       });
     }
@@ -90,7 +97,7 @@ export function FormEditScholarshipContact({ id }: FormEditScholarshipContactPro
 
   function onSubmit(data: ScholarshipContactCreateInput) {
     updateContact(
-      { id, body: data },   // id is the contact ID for update
+      { id, body: data }, // id is the contact ID for update
       {
         onSuccess: () => {
           toast.success("Contact updated!", {
@@ -102,7 +109,7 @@ export function FormEditScholarshipContact({ id }: FormEditScholarshipContactPro
             description: err?.response?.data?.message || err.message,
           });
         },
-      }
+      },
     );
   }
 
@@ -321,13 +328,12 @@ export function FormEditScholarshipContact({ id }: FormEditScholarshipContactPro
 
               <Separator className="bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
-
               {/* Form Actions */}
               <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-100">
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={handleReset}        // corrected: reset to original contact
+                  onClick={handleReset} // corrected: reset to original contact
                   disabled={isUpdating}
                   className="text-muted-foreground hover:text-foreground"
                 >
