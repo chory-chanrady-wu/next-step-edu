@@ -1,8 +1,6 @@
 "use client";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
-import { Divider, Label, OutlineButton, PrimaryButton, TextInput } from "./ui";
-import { FcGoogle } from "react-icons/fc";
-// import { useEffect } from "react";
+import { Label, PrimaryButton, TextInput } from "./ui";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 interface DecodedToken {
@@ -62,7 +60,7 @@ export default function LoginForm({ onSubmit }: Props) {
       localStorage.setItem("user", JSON.stringify(user));
       // Close modal immediately
       onSubmit();
-      toast.success("Login successful!");
+      
       // Dispatch custom event so Header updates profile immediately
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("user-logged-in"));
@@ -142,13 +140,6 @@ export default function LoginForm({ onSubmit }: Props) {
           Register
         </button>
       </p>
-
-      <Divider />
-
-      <OutlineButton onClick={() => alert("Google login")}>
-        <FcGoogle className="h-4 w-4" />
-        Login with Google
-      </OutlineButton>
     </form>
   );
 }
