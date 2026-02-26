@@ -247,8 +247,9 @@ export default function Header() {
             href={routes.client.home}
             className="flex items-center gap-2 transition-opacity hover:opacity-90"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500">
-              <GraduationCap className="h-5 w-5 text-white" aria-hidden />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500">
+              {/* <GraduationCap className="h-5 w-5 text-white" aria-hidden /> */}
+              <img src="../../favicon.ico" alt="NSE" className="p-0.5" />
             </div>
             <span className="text-lg font-extrabold tracking-tight text-slate-900">
               NextStepEdu
