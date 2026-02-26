@@ -128,7 +128,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   const isActive = href
     ? href === "/dashboard"
       ? pathname === href
-      : pathname.startsWith(href)
+      : pathname === href || pathname.startsWith(href + '/')
     : isChildActive;
 
   const handleClick = (e: React.MouseEvent) => {

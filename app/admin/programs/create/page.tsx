@@ -6,7 +6,7 @@ import CreateTaskHeader from "@/app/components/admin/programs/CreateTaskHeader";
 export default function CreateProgram() {
   return (
     <div className="min-h-[90vh] divide-y p-4 gap-4 flex flex-col bg-white">
-      <CreateTaskHeader />
+      <CreateTaskHeader title="Create Program"/>
       <FormCreateProgram />
     </div>
   );
