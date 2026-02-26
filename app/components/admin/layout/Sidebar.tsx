@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Building2,
-  GraduationCap,
   Award,
   Users,
   Settings,
@@ -15,7 +15,6 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getRole } from "@/lib/auth";
 
 interface SubItem {
   href: string;
@@ -58,7 +57,7 @@ const items = [
     ],
   },
   {
-    href: "/admin/scorlarships",
+    href: "/admin/scholarships",
     icon: Building2,
     label: "Scholarships",
     subItems: [
@@ -210,19 +209,19 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
 };
 
 export function SideBar() {
-  const [role, setRole] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    setRole(getRole());
-  }, []);
-
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0B1120] border-r border-slate-800/50 flex flex-col z-50">
       {/* Brand Header */}
       <div className="p-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center shrink-0">
-            <GraduationCap className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center shrink-0">
+            <Image
+              src="/favicon.ico"
+              alt="NSE"
+              className="p-1"
+              width={48}
+              height={48}
+            />
           </div>
           <span className="text-xl font-bold text-white tracking-wide">
             EduAdmin

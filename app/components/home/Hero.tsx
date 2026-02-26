@@ -19,6 +19,12 @@ export default function HeroSection() {
   const router = useRouter();
   const [q, setQ] = useState("");
 
+  // Debug: log q on change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQ(e.target.value);
+    console.log("Input value:", e.target.value);
+  };
+
   // 1) Universities count
   const { data: universities = [] } = useQuery({
     queryKey: ["universities-count"],
@@ -61,6 +67,7 @@ export default function HeroSection() {
 
   const onSearch = () => {
     const keyword = q.trim();
+    console.log("Searching:", keyword);
     if (!keyword) return;
     router.push(`/client/search?q=${encodeURIComponent(keyword)}`);
   };
@@ -137,7 +144,7 @@ export default function HeroSection() {
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
               <input
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={handleInputChange}
                 onKeyDown={(e) => e.key === "Enter" && onSearch()}
                 placeholder="Search universities or scholarships..."
                 className="h-12 w-full rounded-2xl border-0 bg-white px-12 text-slate-900 shadow-lg outline-none"

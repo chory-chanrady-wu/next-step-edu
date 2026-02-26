@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import {
-  GraduationCap,
   LogIn,
   ChevronDown,
   Menu,
@@ -249,7 +249,13 @@ export default function Header() {
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-slate-900 via-teal-700 to-emerald-500">
               {/* <GraduationCap className="h-5 w-5 text-white" aria-hidden /> */}
-              <img src="../../favicon.ico" alt="NSE" className="p-0.5" />
+              <Image
+                src="/favicon.ico"
+                alt="NSE"
+                className="p-0.5"
+                width={48}
+                height={48}
+              />
             </div>
             <span className="text-lg font-extrabold tracking-tight text-slate-900">
               NextStepEdu
