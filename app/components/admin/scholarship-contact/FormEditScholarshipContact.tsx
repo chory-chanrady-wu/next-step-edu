@@ -166,7 +166,7 @@ export function FormEditScholarshipContact({ id }: FormEditScholarshipContactPro
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header with back navigation */}
         <div className="flex items-center gap-4">
-          <Link href="/admin/scholarship-contacts">
+          <Link href="/admin/scholarships-contact">
             <Button variant="outline" size="icon" className="shrink-0">
               <ArrowLeft className="w-5 h-5" />
             </Button>
