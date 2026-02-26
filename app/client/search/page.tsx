@@ -148,7 +148,7 @@ export default function SearchPage() {
               Scholarships
             </h2>
             {filteredScholarships.length === 0 ? (
-              <div className="bg-white rounded-xl shadow p-6 flex flex-col text-gray-400 text-center py-8">
+              <div className="text-gray-400 text-center py-8">
                 No scholarships found.
               </div>
             ) : (
