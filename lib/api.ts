@@ -512,9 +512,9 @@ export async function getAllScholarshipContacts(): Promise<
 
 export async function getScholarshipContactsByScholarshipId(
   scholarshipId: number | string,
-): Promise<ScholarshipContactResponse[]> {
-  const { data } = await api.get<ScholarshipContactResponse[]>(
-    `/api/v1/scholarship-contact/scholarship/${scholarshipId}`,
+): Promise<ScholarshipContactResponse> {
+  const { data } = await api.get<ScholarshipContactResponse>(
+    `/api/v1/scholarship-contact/${scholarshipId}`,
   );
   return data;
 }

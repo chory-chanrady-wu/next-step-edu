@@ -13,6 +13,7 @@ import {
   ChevronRight,
   List,
   PlusCircle,
+  Inbox,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -70,6 +71,19 @@ const items = [
     ],
   },
   {
+    href: "/admin/scholarships-contact",
+    icon: Inbox,
+    label: "Scholarships Contact",
+    subItems: [
+      { href: "/admin/scholarships-contact", label: "List Contact", icon: List },
+      {
+        href: "/admin/scholarships-contact/create",
+        label: "Create Contact",
+        icon: Inbox,
+      },
+    ],
+  },
+  {
     href: "/admin/programs",
     icon: Building2,
     label: "Programs",
@@ -114,7 +128,7 @@ const NavItem = ({ href, icon: Icon, label, subItems }: NavItemProps) => {
   const isActive = href
     ? href === "/dashboard"
       ? pathname === href
-      : pathname.startsWith(href)
+      : pathname === href || pathname.startsWith(href + '/')
     : isChildActive;
 
   const handleClick = (e: React.MouseEvent) => {

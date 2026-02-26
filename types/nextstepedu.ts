@@ -196,8 +196,14 @@ export interface ScholarshipContactRequest {
   address?: string;
 }
 
-export interface ScholarshipContactResponse extends ScholarshipContactRequest {
+export interface ScholarshipContactResponse {
   id: number;
+  label: string; // matches "label" in API
+  email?: string;
+  phone?: string;
+  websiteUrl?: string; // matches "websiteUrl" in API
+  scholarship_id?: number; // matches "scholarship_id" in API
+  // If there are additional fields like createdAt/updatedAt, add them as optional
   createdAt?: string;
   updatedAt?: string;
 }
