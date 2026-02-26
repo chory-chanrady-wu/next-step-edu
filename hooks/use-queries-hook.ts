@@ -22,6 +22,7 @@ import type {
   ApplicantRequest,
   ApplicantResponse,
 } from "@/types/nextstepedu";
+import { id } from "date-fns/locale/id";
 
 /* =======================
    AUTH
@@ -223,14 +224,35 @@ export function useAllScholarshipContacts() {
   });
 }
 
-export function useScholarshipContactsByScholarshipId(
-  scholarshipId?: number | string,
-) {
-  return useQuery<ScholarshipContactResponse[]>({
+export function useDeleteScholarshipContact() {
+  const qc = useQueryClient();
+  return useMutation<void, unknown, number | string>({
+    mutationFn: (id) => api.deleteScholarshipContact(id),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["scholarship-contacts"] }),
+  });
+}
+
+export function useScholarshipContactsByScholarshipId(scholarshipId?: number | string) {
+  return useQuery<ScholarshipContactResponse>({
     queryKey: ["scholarship-contacts", "scholarship", scholarshipId],
-    queryFn: () =>
-      api.getScholarshipContactsByScholarshipId(scholarshipId as any),
+    queryFn: () => api.getScholarshipContactsByScholarshipId(scholarshipId as any),
     enabled: !!scholarshipId,
+  });
+}
+
+export function useUpdateScholarshipContact() {
+  const qc = useQueryClient();
+  return useMutation<
+    ScholarshipContactResponse,
+    unknown,
+    { id: number | string; body: ScholarshipContactRequest }
+  >({
+    mutationFn: ({ id, body }) => api.updateScholarshipContact(id, body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["scholarship-contacts"] });
+      qc.invalidateQueries({ queryKey: ["scholarship-contact", id] });
+    },
   });
 }
 
