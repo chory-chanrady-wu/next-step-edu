@@ -37,13 +37,18 @@ export default function LoginForm() {
       const role = decoded.role || "user";
 
       // Block non-admin users (case-insensitive)
-      // if (role.toLowerCase() !== "admin" && role.toLowerCase() !== "student") {
-      //   setError("Only admin accounts can login here. Redirecting...");
-      //   setTimeout(() => {
-      //     router.push("/client/login");
-      //   }, 1200);
-      //   return;
-      // }
+      if (role.toLowerCase() !== "admin") {
+        // Log out any existing user before redirecting
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+        setError("Only admin accounts can login here. Redirecting to client login...");
+        setTimeout(() => {
+          router.push("/client/login");
+        }, 1200);
+        return;
+      }
 
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("authToken", data.accessToken);

@@ -368,33 +368,6 @@ const UniversityForm = ({
     }
   };
 
-  if (userRole === "USER") {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in fade-in duration-700">
-        <div className="w-24 h-24 rounded-3xl bg-red-50 flex items-center justify-center mb-8 shadow-2xl shadow-red-200/50 rotate-3">
-          <ShieldAlert className="w-12 h-12 text-red-500 animate-pulse" />
-        </div>
-        <h2 className="text-4xl font-extrabold text-gray-900 font-outfit mb-4 tracking-tight">
-          Access Restricted
-        </h2>
-        <p className="text-gray-500 text-center max-w-md text-lg leading-relaxed">
-          You don&apos;t have the required administrative permissions to{" "}
-          <span className="text-red-600 font-semibold">
-            {mode === "create" ? "create" : "edit"}
-          </span>{" "}
-          universities. Please contact your system administrator if you believe
-          this is an error.
-        </p>
-        <Button
-          onClick={() => router.push("/admin/universities")}
-          className="mt-10 h-12 px-8 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold shadow-xl transition-all hover:scale-105 active:scale-95"
-        >
-          Return to Dashboard
-        </Button>
-      </div>
-    );
-  }
-
   if (isSuccess) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in slide-in-from-bottom-8 duration-700">
