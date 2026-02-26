@@ -43,7 +43,9 @@ export default function LoginForm() {
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
-        setError("Only admin accounts can login here. Redirecting to client login...");
+        setError(
+          "Only admin accounts can login here. Redirecting to client login...",
+        );
         setTimeout(() => {
           router.push("/client/login");
         }, 1200);

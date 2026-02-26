@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import CreateScholarshipHeader from "@/app/components/admin/scholarships/CreateScholarshipHeader";
 
-
 const FormCreateScholarship = dynamic(
   () =>
     import("@/app/components/admin/scholarships/FormCreateScholarship").then(

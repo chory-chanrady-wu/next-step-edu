@@ -18,7 +18,6 @@ import {
   AlertCircle,
   Mail,
   Phone,
-  ShieldAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,7 +28,6 @@ import {
   useUpdateUniversity,
 } from "@/hooks/use-queries-hook";
 import { UniversityResponse } from "@/types/nextstepedu";
-import { getRole } from "@/lib/auth";
 
 // --- Sub-components ---
 
@@ -218,11 +216,6 @@ const UniversityForm = ({
   const isLoading = isCreating || isUpdating;
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [userRole, setUserRole] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    setUserRole(getRole());
-  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
