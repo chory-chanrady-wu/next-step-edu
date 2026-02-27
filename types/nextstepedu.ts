@@ -277,6 +277,11 @@ export interface UniversityResponse {
   createdAt?: string;
   updatedAt?: string;
   contacts?: UniversityContactResponse[];
+  faculties?: Array<{
+    id: number;
+    name: string;
+    description?: string;
+  }>;
 }
 
 /** For multipart create/update */

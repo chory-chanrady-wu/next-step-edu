@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, Resolver, useForm } from "react-hook-form";
+import { useForm, Controller, Resolver } from "react-hook-form";
 import { toast } from "sonner";
 import { Loader2, Save, RotateCcw } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,9 +33,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
 import {
-  useAllFaculties,
   useAllUniversities,
   useCreateProgram,
+  useUniversityById,
 } from "@/hooks/use-queries-hook";
 import {
   ProgramCreateRequest,
@@ -42,12 +43,14 @@ import {
 } from "@/lib/schema/program";
 import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
+// Options for static selects
 const educationLevel = [
   { label: "Undergraduate", value: "1" },
   { label: "Graduate", value: "2" },
   { label: "PhD", value: "3" },
   { label: "Diploma", value: "4" },
 ];
+
 const currencyOpts = [
   { label: "USD ($)", value: "USD" },
   { label: "EUR (€)", value: "EUR" },
@@ -57,24 +60,22 @@ const currencyOpts = [
 
 export function FormCreateProgram() {
   const { mutate: createProgram, isPending: isCreating } = useCreateProgram();
-  const { data: universities } = useAllUniversities();
-  const { data: faculties } = useAllFaculties();
+  const { data: universities, isLoading: isLoadingUniversities } = useAllUniversities();
 
-  const facultyOptions =
-    faculties?.map((fac: any) => ({
-      value: fac.id.toString(), // value must be string
-      label: fac.name,
-    })) ?? [];
-  const universityOptions =
-    universities?.map((fac: any) => ({
-      value: fac.id.toString(), // value must be string
-      label: fac.name,
-    })) ?? [];
+  // Prepare university options once data is available
+  const universityOptions = useMemo(
+    () =>
+      universities?.map((uni: any) => ({
+        value: uni.id.toString(),
+        label: uni.name,
+      })) ?? [],
+    [universities]
+  );
 
   const resolver = zodResolver(
     programCreateSchema,
   ) as Resolver<ProgramCreateRequest>;
-  // FIX: Ensure the generic matches the Request schema (Flat IDs)
+  // Form setup with zod resolver
   const form = useForm<ProgramCreateRequest>({
     resolver,
     defaultValues: {
@@ -85,16 +86,58 @@ export function FormCreateProgram() {
       tuitionFeeAmount: 0,
       currency: "USD",
       studyPeriodMonths: 12,
-      universityId: universityOptions[0]?.value ?? 1,
-      facultyId: facultyOptions[0]?.value ?? 1,
+      universityId: undefined,
+      facultyId: undefined,
     },
   });
 
+  // Watch selected university to fetch its faculties
+  const selectedUniversityId = form.watch("universityId");
+
+  // Fetch university details (including faculties) – hook already has enabled: !!id
+  const {
+    data: selectedUniversity,
+    isLoading: isLoadingFaculties,
+    isError: isFacultiesError,
+  } = useUniversityById(selectedUniversityId);
+
+  // Build faculty options from the fetched university
+  const facultyOptions = useMemo(
+    () =>
+      selectedUniversity?.faculties?.map((fac: any) => ({
+        value: fac.id.toString(),
+        label: fac.name,
+      })) ?? [],
+    [selectedUniversity]
+  );
+
+  // Once universities are loaded, set the first as default if not already set
+  useEffect(() => {
+    if (universityOptions.length > 0 && !form.getValues("universityId")) {
+      form.setValue("universityId", universityOptions[0].value);
+    }
+  }, [universityOptions, form]);
+
+  // When university changes or faculties load, reset faculty selection appropriately
+  useEffect(() => {
+    // If there are faculties, default to the first one; otherwise clear the field
+    if (facultyOptions.length > 0) {
+      const currentFacultyId = form.getValues("facultyId");
+      // Only update if current facultyId is not already valid to avoid unnecessary re-renders
+      if (!currentFacultyId || !facultyOptions.some(opt => opt.value === currentFacultyId)) {
+        form.setValue("facultyId", facultyOptions[0].value);
+      }
+    } else {
+      form.setValue("facultyId", 0);
+    }
+  }, [facultyOptions, form]);
+
+  // Submit handler
   function onSubmit(data: ProgramCreateRequest) {
     createProgram(data, {
       onSuccess: () => {
         toast.success("Program created successfully!", {
-          description: `${data.name} has been added to production.`,
+          description: `${data.name} has been added.`,
         });
         form.reset();
       },
@@ -109,18 +152,29 @@ export function FormCreateProgram() {
     });
   }
 
+  // Determine faculty dropdown state
+  const isFacultyDisabled = !selectedUniversityId || isLoadingFaculties || isFacultiesError || facultyOptions.length === 0;
+
+  const facultyPlaceholder = !selectedUniversityId
+    ? "Choose a university first"
+    : isLoadingFaculties
+      ? "Loading faculties..."
+      : isFacultiesError
+        ? "Error loading faculties"
+        : facultyOptions.length === 0
+          ? "No faculties available"
+          : "Select a faculty";
+
   return (
     <div className="relative">
-      {/* Global loading overlay */}
+      {/* Global loading overlay for submission */}
       {isCreating && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
             <div className="text-center">
               <p className="font-bold text-gray-900">Creating Program</p>
-              <p className="text-sm text-gray-500">
-                Syncing with Railway database...
-              </p>
+              <p className="text-sm text-gray-500">Saving to database...</p>
             </div>
           </div>
         </div>
@@ -160,24 +214,26 @@ export function FormCreateProgram() {
                 />
               </FieldGroup>
 
-              {/* University ID */}
+              {/* University Select */}
               <SingleSelectControlComponent
                 control={form.control}
                 name="universityId"
                 label="University"
                 options={universityOptions}
-                placeholder="Select a university"
+                placeholder={isLoadingUniversities ? "Loading universities..." : "Select a university"}
                 size="middle"
+                disabled={isLoadingUniversities}
               />
 
-              {/* Faculty ID */}
+              {/* Faculty Select (dependent) */}
               <SingleSelectControlComponent
                 control={form.control}
                 name="facultyId"
                 label="Faculty"
                 options={facultyOptions}
-                placeholder="Select a faculty"
+                placeholder={facultyPlaceholder}
                 size="middle"
+                disabled={isFacultyDisabled}
               />
 
               <Separator className="md:col-span-2" />
@@ -188,11 +244,11 @@ export function FormCreateProgram() {
                 name="degreeLevel"
                 label="Degree Level"
                 options={educationLevel}
-                placeholder="Select a faculty"
+                placeholder="Select degree level"
                 size="middle"
               />
 
-              {/* Study Period */}
+              {/* Duration */}
               <FieldGroup>
                 <Controller
                   name="studyPeriodMonths"
@@ -318,6 +374,7 @@ export function FormCreateProgram() {
               </FieldGroup>
             </div>
 
+            {/* Form Actions */}
             <div className="flex justify-end gap-3 pt-4">
               <Button
                 type="button"
