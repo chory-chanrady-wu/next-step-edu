@@ -130,7 +130,7 @@ export const TableListScholarship = () => {
 
   // Format currency
   const formatAmount = (amount?: number, currency = "USD") => {
-    if (!amount) return "—";
+    if (!amount) return "N/A";
     try {
       return new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -377,8 +377,8 @@ export const TableListScholarship = () => {
                     const deadline = formatDeadline(scholarship.deadline);
                     const statusConfig = getStatusConfig(scholarship.status);
                     const avatarGradient = getAvatarGradient(scholarship.id);
-                    const amount = scholarship.program?.tuitionFeeAmount || 0;
-                    const currency = scholarship.program?.currency || "USD";
+                    const amount = scholarship.amount || 0;
+                    const currency =  "USD";
 
                     return (
                       <TableRow

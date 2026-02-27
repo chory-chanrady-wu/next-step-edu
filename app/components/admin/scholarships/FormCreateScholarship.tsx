@@ -70,6 +70,7 @@ export function FormCreateScholarship() {
       description: "",
       level: 1, // default to Undergraduate
       benefits: "",
+      amount: 0,
       requirements: "",
       howToApply: "",
       applyLink: "",
@@ -94,6 +95,7 @@ export function FormCreateScholarship() {
         level: rest.level, // already a number
         benefits: rest.benefits,
         requirements: rest.requirements,
+        amount: rest.amount,
         howToApply: rest.howToApply,
         applyLink: rest.applyLink,
         deadline: rest.deadline,
@@ -347,6 +349,26 @@ export function FormCreateScholarship() {
                   control={form.control}
                   id="deadline"
                   placeholder="Select deadline"
+                />
+              </FieldGroup>
+
+              {/* Amount */}
+              <FieldGroup>
+                <Controller
+                  name="amount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
+                      <FieldLabel>Amount *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber || 0)} // 👈 convert to number
+                        placeholder="Scholarship Amount"
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
                 />
               </FieldGroup>
 

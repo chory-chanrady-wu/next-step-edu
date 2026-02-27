@@ -16,6 +16,8 @@ export const scholarshipSchemaValidate = z.object({
 
   applyLink: z.string().url("Invalid application link"),
 
+  amount: z.number().nonnegative("Amount cannot be negative"),
+
   deadline: z.string().min(1, "Deadline is required"),
 
   programId: z.coerce.number().int().positive(),

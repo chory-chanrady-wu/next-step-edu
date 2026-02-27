@@ -101,6 +101,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
       howToApply: "",
       applyLink: "",
       deadline: "",
+      amount: 0,
       programId: 0,
       universityId: 0,
       status: "ACTIVE",
@@ -120,29 +121,30 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
         howToApply: scholarship.howToApply || "",
         applyLink: scholarship.applyLink || "",
         deadline: scholarship.deadline?.split("T")[0] || "",
+        amount: scholarship.amount || 0,
         programId: scholarship.programId || scholarship.program?.id || 0,
         universityId:
           scholarship.universityId || scholarship.university?.id || 0,
         status: (scholarship.status as "ACTIVE" | "INACTIVE") || "ACTIVE",
         logo: scholarship.logoUrl
           ? [
-              {
-                uid: "-1",
-                name: "logo.png",
-                status: "done",
-                url: scholarship.logoUrl,
-              },
-            ]
+            {
+              uid: "-1",
+              name: "logo.png",
+              status: "done",
+              url: scholarship.logoUrl,
+            },
+          ]
           : [],
         coverImage: scholarship.coverImageUrl
           ? [
-              {
-                uid: "-2",
-                name: "cover_image.png",
-                status: "done",
-                url: scholarship.coverImageUrl,
-              },
-            ]
+            {
+              uid: "-2",
+              name: "cover_image.png",
+              status: "done",
+              url: scholarship.coverImageUrl,
+            },
+          ]
           : [],
       });
     }
@@ -164,6 +166,7 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
       data: {
         ...restOfData,
         level: Number(restOfData.level),
+        amount: Number(restOfData.amount),
         programId: Number(restOfData.programId),
         universityId: Number(restOfData.universityId),
         deadline: formattedDeadline,
@@ -450,11 +453,31 @@ export function FormEditScholarship({ id }: FormEditScholarshipProps) {
               </FieldGroup>
 
               {/* Deadline */}
-              <FieldGroup>
+              <FieldGroup className="lg:col-span-1/2">
                 <DatePickerScholarship
                   name="deadline"
                   control={form.control}
                   id="deadline"
+                />
+              </FieldGroup>
+
+              {/* Amount */}
+              <FieldGroup className="lg:col-span-1/2">
+                <Controller
+                  name="amount"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid} className="gap-1">
+                      <FieldLabel>Amount *</FieldLabel>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber || 0)} // 👈 convert to number
+                        placeholder="Scholarship Amount"
+                      />
+                      {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
                 />
               </FieldGroup>
             </div>
