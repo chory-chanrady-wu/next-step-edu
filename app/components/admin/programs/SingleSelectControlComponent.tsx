@@ -14,6 +14,7 @@ interface SingleSelectProps {
   placeholder?: string;
   label?: string;
   size?: "small" | "middle" | "large";
+  disabled?: boolean;
 }
 
 const SingleSelectControlComponent: React.FC<SingleSelectProps> = ({
@@ -24,6 +25,8 @@ const SingleSelectControlComponent: React.FC<SingleSelectProps> = ({
   options,
   placeholder = "Select an option",
   size = "middle",
+  disabled = false,
+
 }) => {
   return (
     <Controller
@@ -38,6 +41,7 @@ const SingleSelectControlComponent: React.FC<SingleSelectProps> = ({
           <Select
             {...field}
             id={id}
+            disabled={disabled}
             status={fieldState.invalid ? "error" : undefined}
             size={size}
             placeholder={placeholder}
