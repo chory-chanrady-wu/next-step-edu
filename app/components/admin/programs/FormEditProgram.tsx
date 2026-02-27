@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,8 +46,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 
-import { useProgram, useUpdateProgram } from "@/hooks/use-queries-hook";
-import { useAllUniversities, useAllFaculties } from "@/hooks/use-queries-hook";
+import {
+  useProgram,
+  useUpdateProgram,
+  useAllUniversities,
+  useUniversityById,
+} from "@/hooks/use-queries-hook";
 import {
   ProgramCreateRequest,
   programCreateSchema,
@@ -73,24 +77,20 @@ interface FormEditProgramProps {
 
 export function FormEditProgram({ id }: FormEditProgramProps) {
   const { data: program, isLoading, error } = useProgram(id);
-  const { data: universities } = useAllUniversities();
-  const { data: faculties } = useAllFaculties();
+  const { data: universities, isLoading: isLoadingUniversities } = useAllUniversities();
   const { mutate: updateProgram, isPending: isUpdating } = useUpdateProgram();
 
-  const facultyOptions =
-    faculties?.map((fac: any) => ({
-      value: fac.id.toString(),
-      label: fac.name,
-    })) ?? [];
-  const universityOptions =
-    universities?.map((uni: any) => ({
-      value: uni.id.toString(),
-      label: uni.name,
-    })) ?? [];
+  // Prepare university options
+  const universityOptions = useMemo(
+    () =>
+      universities?.map((uni: any) => ({
+        value: uni.id.toString(),
+        label: uni.name,
+      })) ?? [],
+    [universities]
+  );
 
-  const resolver = zodResolver(
-    programCreateSchema,
-  ) as Resolver<ProgramCreateRequest>;
+  const resolver = zodResolver(programCreateSchema) as Resolver<ProgramCreateRequest>;
   const form = useForm<ProgramCreateRequest>({
     resolver,
     defaultValues: {
@@ -101,11 +101,32 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
       tuitionFeeAmount: 0,
       currency: "USD",
       studyPeriodMonths: 12,
-      universityId: 0,
-      facultyId: 0,
+      universityId: undefined,
+      facultyId: 0, // allow null
     },
   });
 
+  // Watch selected university to fetch its faculties
+  const selectedUniversityId = form.watch("universityId");
+
+  // Fetch university details (including faculties)
+  const {
+    data: selectedUniversity,
+    isLoading: isLoadingFaculties,
+    isError: isFacultiesError,
+  } = useUniversityById(selectedUniversityId);
+
+  // Build faculty options from the fetched university
+  const facultyOptions = useMemo(
+    () =>
+      selectedUniversity?.faculties?.map((fac: any) => ({
+        value: fac.id.toString(),
+        label: fac.name,
+      })) ?? [],
+    [selectedUniversity]
+  );
+
+  // Set initial values when program data loads
   useEffect(() => {
     if (program) {
       form.reset({
@@ -116,11 +137,25 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
         tuitionFeeAmount: program.tuitionFeeAmount ?? 0,
         currency: program.currency as "USD" | "EUR" | "GBP" | "KHR",
         studyPeriodMonths: program.studyPeriodMonths ?? 12,
-        universityId: program.university?.id ?? 0,
-        facultyId: program.faculty?.id ?? 0,
+        universityId: program.university?.id ?? undefined,
+        facultyId: program.faculty?.id ?? null,
       });
     }
   }, [program, form]);
+
+  // Ensure faculty selection remains valid when faculties load or university changes
+  useEffect(() => {
+    const currentFacultyId = form.getValues("facultyId");
+    if (facultyOptions.length > 0) {
+      // If current faculty is not in options, reset to first available or null
+      if (!currentFacultyId || !facultyOptions.some(opt => opt.value === currentFacultyId)) {
+        form.setValue("facultyId", facultyOptions[0].value);
+      }
+    } else {
+      // No faculties available, set to null
+      form.setValue("facultyId", 0);
+    }
+  }, [facultyOptions, form]);
 
   function onSubmit(data: ProgramCreateRequest) {
     updateProgram(
@@ -139,6 +174,18 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
       },
     );
   }
+
+  // Determine faculty dropdown state
+  const isFacultyDisabled = !selectedUniversityId || isLoadingFaculties || isFacultiesError || facultyOptions.length === 0;
+  const facultyPlaceholder = !selectedUniversityId
+    ? "Choose a university first"
+    : isLoadingFaculties
+      ? "Loading faculties..."
+      : isFacultiesError
+        ? "Error loading faculties"
+        : facultyOptions.length === 0
+          ? "No faculties available"
+          : "Select a faculty";
 
   if (isLoading) {
     return (
@@ -201,11 +248,11 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
               </Badge>
               <MoveRight className="w-3 h-3" />
               <span className="font-medium text-foreground/80">
-                {program.university.name}
+                {program.university?.name || "No university"}
               </span>
               <MoveRight className="w-3 h-3" />
               <span className="font-medium text-foreground/80">
-                {program.faculty.name}
+                {program.faculty?.name || "No faculty"}
               </span>
             </div>
           </div>
@@ -259,25 +306,25 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                   </FieldGroup>
 
                   {/* University Select */}
-                  <FieldGroup>
-                    <SingleSelectControlComponent
-                      control={form.control}
-                      name="universityId"
-                      label="University"
-                      options={universityOptions}
-                      placeholder="Select a university"
-                      size="middle"
-                    />
-                  </FieldGroup>
+                  <SingleSelectControlComponent
+                    control={form.control}
+                    name="universityId"
+                    label="University"
+                    options={universityOptions}
+                    placeholder={isLoadingUniversities ? "Loading universities..." : "Select a university"}
+                    size="middle"
+                    disabled={isLoadingUniversities}
+                  />
 
-                  {/* Faculty Select */}
+                  {/* Faculty Select (dependent) */}
                   <SingleSelectControlComponent
                     control={form.control}
                     name="facultyId"
                     label="Faculty"
                     options={facultyOptions}
-                    placeholder="Select a faculty"
+                    placeholder={facultyPlaceholder}
                     size="middle"
+                    disabled={isFacultyDisabled}
                   />
                 </div>
               </div>
@@ -297,7 +344,7 @@ export function FormEditProgram({ id }: FormEditProgramProps) {
                     name="degreeLevel"
                     label="Degree Level"
                     options={educationLevel}
-                    placeholder="Select a faculty"
+                    placeholder="Select degree level"
                     size="middle"
                   />
 
