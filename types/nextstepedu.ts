@@ -126,6 +126,7 @@ export interface ScholarshipResponse {
   description?: string;
   level: number;
   maxApplicant?: number | null;
+  amount?: number | null;
   benefits?: string | null;
   requirements?: string | null;
   howToApply?: string | null;
