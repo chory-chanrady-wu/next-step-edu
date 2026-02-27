@@ -45,10 +45,12 @@ import SingleSelectControlComponent from "./SingleSelectControlComponent";
 
 // Options for static selects
 const educationLevel = [
-  { label: "Undergraduate", value: "1" },
-  { label: "Graduate", value: "2" },
-  { label: "PhD", value: "3" },
-  { label: "Diploma", value: "4" },
+  { label: "Associate Degree", value: "1" },
+  { label: "Bachelor's Degree", value: "2" },
+  { label: "Master's Degree", value: "3" },
+  { label: "Doctoral Degree", value: "4" },
+  { label: "Certificate", value: "5" },
+  { label: "N/A", value: "6" },
 ];
 
 const currencyOpts = [
